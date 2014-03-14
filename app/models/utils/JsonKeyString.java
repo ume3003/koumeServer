@@ -32,6 +32,8 @@ public class JsonKeyString {
 
     // json structure Key
     final static public String DATA             = "c001";
+    final static public String SESSION          = "c002";
+    final static public String SESSION_ID       = "c003";
 
     // db table key
     final static public String LOGIN            = "d001";

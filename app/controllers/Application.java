@@ -32,13 +32,13 @@ public class Application extends Controller {
 
     public static Login getLoginFromSession(JsonNode req)
     {
-        String sessionId = session("uuid");
+        String sessionId = session(JsonKeyString.SESSION_ID);
         if(sessionId == null){
             sessionId = UUID.randomUUID().toString();
-            session("uuid",sessionId);
+            session(JsonKeyString.SESSION_ID,sessionId);
         }
-        Logger.info("sessionId " + session("uuid"));
-        Login login = (Login) Cache.get(sessionId + "login");
+        Logger.info("sessionId " + session(JsonKeyString.SESSION_ID));
+        Login login = (Login) Cache.get(sessionId + JsonKeyString.LOGIN);
         if(login == null){
             login = Login.gppLogin(req);
             if(login == null){
@@ -54,9 +54,9 @@ public class Application extends Controller {
 
         }
         if(login != null){
-            Cache.set(sessionId + "login",login);
+            Cache.set(sessionId + JsonKeyString.LOGIN,login);
         }
-        Login L = (Login)(Cache.get(sessionId + "login"));
+        Login L = (Login)(Cache.get(sessionId + JsonKeyString.LOGIN));
         Logger.info("cache login data " + L.id + " " + L.gppUUID + " " + L.uuid );
         return login;
     }
@@ -66,6 +66,7 @@ public class Application extends Controller {
         Login login = getLoginFromSession(req);
         if(login != null){
             GameCharacter chara = login.gameCharacter;
+            result.put(JsonKeyString.SESSION,session(JsonKeyString.SESSION_ID));
             result.put(JsonKeyString.UUID,login.uuid);
             result.put(JsonKeyString.GAMECHARACTER,chara.toJsonObject());
         }
