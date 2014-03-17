@@ -48,7 +48,7 @@ public class JsonUtil {
     {
         if(node != null){
             JsonNode o = node.findPath(key);
-            if(o != null && !o.isMissingNode()){
+            if(o != null && !o.isMissingNode() && o.getTextValue().length() > 0){
                 return o.getTextValue();
             }
         }

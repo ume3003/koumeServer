@@ -1,5 +1,6 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import models.data.GameCharacter;
 import models.data.Login;
 import models.master.DirectionManager;
@@ -32,11 +33,15 @@ public class Application extends Controller {
 
     public static Login getLoginFromSession(JsonNode req)
     {
-        String sessionId = session(JsonKeyString.SESSION_ID);
-        if(sessionId == null){
+        //String sessionId = session(JsonKeyString.SESSION_ID);
+        String sessionId = JsonUtil.getString(req,JsonKeyString.SESSION_ID,"");
+        if(sessionId.length() == 0){
             sessionId = UUID.randomUUID().toString();
-            session(JsonKeyString.SESSION_ID,sessionId);
         }
+        else{
+            Logger.info("use exist session " + sessionId);
+        }
+        session(JsonKeyString.SESSION_ID,sessionId);
         Logger.info("sessionId " + session(JsonKeyString.SESSION_ID));
         Login login = (Login) Cache.get(sessionId + JsonKeyString.LOGIN);
         if(login == null){
@@ -47,8 +52,9 @@ public class Application extends Controller {
                     login = Login.createNewLogin(req);
                     GameCharacter chara = GameCharacter.createGameCharacter();
                     login.gameCharacter = chara;
-                    chara.save();
+                    chara.login = login;
                     login.save();
+                    chara.save();
                 }
             }
 
@@ -63,14 +69,31 @@ public class Application extends Controller {
     public static Result login() {
         ObjectNode result = Json.newObject();
         JsonNode req = JsonUtil.getJsonFromRequest(request());
-        Login login = getLoginFromSession(req);
-        if(login != null){
-            GameCharacter chara = login.gameCharacter;
-            result.put(JsonKeyString.SESSION,session(JsonKeyString.SESSION_ID));
-            result.put(JsonKeyString.UUID,login.uuid);
-            result.put(JsonKeyString.GAMECHARACTER,chara.toJsonObject());
+        try{
+            Ebean.beginTransaction();
+            Login login = getLoginFromSession(req);
+            if(login != null){
+                GameCharacter chara = login.gameCharacter;
+                result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
+                result.put(JsonKeyString.UUID,login.uuid);
+                result.put(JsonKeyString.GAMECHARACTER,chara.toJsonObject());
+            }
+            Ebean.commitTransaction();
+        }
+        catch(RuntimeException e){
+            result.put(JsonKeyString.ERROR, "exception in login " + e.getMessage());
+            Logger.info("exception in login() " + e.getMessage());
+            Ebean.rollbackTransaction();
+        }
+        finally
+        {
+            Ebean.endTransaction();
         }
 
         return ok(result);
+    }
+
+    public static Result master() {
+        return Results.TODO;
     }
 }

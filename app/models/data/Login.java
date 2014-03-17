@@ -103,7 +103,7 @@ public class Login extends Model implements BaseData {
     {
         String uuid = JsonUtil.getString(node,JsonKeyString.UUID,"");
         if(uuid.length() > 0){
-            com.avaje.ebean.Query<Login> q = find.where(JsonKeyString.UUID + "='" + uuid + "'");
+            com.avaje.ebean.Query<Login> q = find.where("uuid" + "='" + uuid + "'");
             Login l = q.findUnique();
             return l;
         }
@@ -114,7 +114,7 @@ public class Login extends Model implements BaseData {
     {
         String gpp = JsonUtil.getString(node,JsonKeyString.GPP_UUID,"");
         if(gpp.length() > 0){
-            com.avaje.ebean.Query<Login> q = find.where(JsonKeyString.GPP_UUID + "='" + gpp + "'");
+            com.avaje.ebean.Query<Login> q = find.where("gppUUID" + "='" + gpp + "'");
             Login l = q.findUnique();
             return l;
         }
