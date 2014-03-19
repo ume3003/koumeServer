@@ -71,6 +71,7 @@ public abstract class BaseMasterManager {
 
     public void saveMasterData()
     {
+        setVersion(System.currentTimeMillis());
         ObjectNode result = toJsonObject();
         File file = new File(getJsonFileName());
         PrintWriter pw = null;
@@ -110,7 +111,7 @@ public abstract class BaseMasterManager {
     {
         ObjectNode result = Json.newObject();
         ArrayNode array = Json.newObject().arrayNode();
-        result.put(JsonKeyString.VERSION, getVersion());
+        result.put(JsonKeyString.VERSION, String.valueOf(getVersion()));
         for(java.util.Map.Entry<Long,BaseMaster> e:Data.entrySet()){
             BaseMaster m = e.getValue();
             array.add(m.toJsonObject());

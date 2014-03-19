@@ -1,6 +1,8 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
+import models.BaseMasterManager;
+import models.Game;
 import models.data.GameCharacter;
 import models.data.Login;
 import models.master.DirectionManager;
@@ -77,6 +79,7 @@ public class Application extends Controller {
                 result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
                 result.put(JsonKeyString.UUID,login.uuid);
                 result.put(JsonKeyString.GAMECHARACTER,chara.toJsonObject());
+                result.put(JsonKeyString.UNIX_TIME,String.valueOf(System.currentTimeMillis() / 1000));
             }
             Ebean.commitTransaction();
         }
@@ -94,6 +97,48 @@ public class Application extends Controller {
     }
 
     public static Result master() {
-        return Results.TODO;
+        ObjectNode result = Json.newObject();
+        JsonNode req = JsonUtil.getJsonFromRequest(request());
+        Login login = getLoginFromSession(req);
+        if(req != null && login != null){
+            int masterNo = JsonUtil.getInt(req,JsonKeyString.MASTER_NO,-1);
+            result.put(JsonKeyString.MASTER_NO,String.valueOf(masterNo));
+            result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
+            if(masterNo >= 0){
+                Game game = Game.getInstance();
+                BaseMasterManager manager = game.getMasterManager(masterNo);
+                if(manager != null){
+                    result.putAll(manager.toJsonObject());
+                    return ok(result);
+                }
+            }
+        }
+        result.put(JsonKeyString.ERROR,"request is bad");
+        return ok(result);
+    }
+
+    public static Result masterVersion() {
+        ObjectNode result = Json.newObject();
+        JsonNode req = JsonUtil.getJsonFromRequest(request());
+        Login login = getLoginFromSession(req);
+        if(req != null && login != null){
+            result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
+            Game game = Game.getInstance();
+            result.putAll(game.getMasterVersions());
+            return ok(result);
+        }
+        result.put(JsonKeyString.ERROR,"request is bad");
+        return ok(result);
+    }
+
+    public static Result checkTime() {
+        ObjectNode result = Json.newObject();
+        JsonNode req = JsonUtil.getJsonFromRequest(request());
+        Login login = getLoginFromSession(req);
+        if(req != null && login != null){
+            result.put(JsonKeyString.UNIX_TIME,String.valueOf(System.currentTimeMillis()/1000L ));
+            result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
+        }
+        return ok(result);
     }
 }

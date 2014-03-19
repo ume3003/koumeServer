@@ -5,6 +5,7 @@ import models.BaseMaster;
 import models.master.Direction;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
+import play.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,4 +31,9 @@ public class DirectionManager extends BaseMasterManager {
         return new Direction(col);
     }
 
+    protected DirectionManager()
+    {
+        Logger.info("DirectionManager created");
+        loadMasterData();
+    }
 }

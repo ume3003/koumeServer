@@ -1,3 +1,4 @@
+import models.Game;
 import models.master.Direction;
 import models.master.DirectionManager;
 import models.utils.JsonKeyString;
@@ -19,7 +20,7 @@ public class Global extends GlobalSettings {
     @Override
     public void onStart(Application app) {
         super.onStart(app);    //To change body of overridden methods use File | Settings | File Templates.
-        DirectionManager.getInstance().loadMasterData();
+        Game.getInstance().init();
 
     }
 }

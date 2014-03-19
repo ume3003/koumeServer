@@ -35,6 +35,8 @@ public class JsonKeyString {
     final static public String SESSION          = "c002";
     final static public String SESSION_ID       = "c003";
     final static public String ERROR            = "c004";
+    final static public String MASTER_NO        = "c005";
+    final static public String UNIX_TIME         = "c006";
 
     // db table key
     final static public String LOGIN            = "d001";

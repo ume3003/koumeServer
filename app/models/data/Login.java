@@ -125,15 +125,16 @@ public class Login extends Model implements BaseData {
     public ObjectNode toJsonObject()
     {
         ObjectNode result = Json.newObject();
-        result.put(JsonKeyString.ID,id);
-        result.put(JsonKeyString.GPP_UUID,gppUUID);
-        result.put(JsonKeyString.UUID,uuid);
-        result.put(JsonKeyString.DISPLAY_NAME,displayName);
-        result.put(JsonKeyString.MAIL_ADDRESS,mailAddress);
-        result.put(JsonKeyString.IMAGE_URL,imageUrl);
-        result.put(JsonKeyString.ACCESS_COUNT,accessCnt);
-        result.put(JsonKeyString.CREATE_DATE,createDate.getTime());
-        result.put(JsonKeyString.UPDATE_DATE,updateDate.getTime());
+        result.put(JsonKeyString.ID             ,String.valueOf(id));
+        result.put(JsonKeyString.GPP_UUID       ,gppUUID);
+        result.put(JsonKeyString.UUID           ,uuid);
+        result.put(JsonKeyString.DISPLAY_NAME   ,displayName);
+        result.put(JsonKeyString.MAIL_ADDRESS   ,mailAddress);
+        result.put(JsonKeyString.IMAGE_URL      ,imageUrl);
+        result.put(JsonKeyString.ACCESS_COUNT   ,String.valueOf(accessCnt));
+        result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(createDate.getTime() / 1000));
+        result.put(JsonKeyString.UPDATE_DATE    ,String.valueOf(updateDate.getTime() / 1000));
+
 
         return result;
     }

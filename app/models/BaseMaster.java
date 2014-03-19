@@ -28,7 +28,7 @@ public class BaseMaster {
     public ObjectNode toJsonObject()
     {
         ObjectNode result = Json.newObject();
-        result.put(JsonKeyString.NO,masterNo);
+        result.put(JsonKeyString.NO,String.valueOf(masterNo));
         return result;
     }
 }

@@ -55,24 +55,24 @@ public class GameCharacter extends Model implements BaseData {
     public ObjectNode toJsonObject()
     {
         ObjectNode result = Json.newObject();
-        result.put(JsonKeyString.ID,id);
-        result.put(JsonKeyString.STAMINA,stamina);
-        result.put(JsonKeyString.MAX_STAMINA,maxStamina);
-        result.put(JsonKeyString.MONEY,money);
-        result.put(JsonKeyString.GOLD,gold);
-        result.put(JsonKeyString.LAST_COMMAND,lastCommand.getTime());
-        result.put(JsonKeyString.CREATE_DATE,createDate.getTime());
-        result.put(JsonKeyString.UPDATE_DATE,updateDate.getTime());
+        result.put(JsonKeyString.ID             ,String.valueOf(id));
+        result.put(JsonKeyString.STAMINA        ,String.valueOf(stamina));
+        result.put(JsonKeyString.MAX_STAMINA    ,String.valueOf(maxStamina));
+        result.put(JsonKeyString.MONEY          ,String.valueOf(money));
+        result.put(JsonKeyString.GOLD           ,String.valueOf(gold));
+        result.put(JsonKeyString.LAST_COMMAND   ,String.valueOf(lastCommand.getTime() / 1000));
+        result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(createDate.getTime()/ 1000));
+        result.put(JsonKeyString.UPDATE_DATE    ,String.valueOf(updateDate.getTime()/ 1000));
 
         return result;
     }
     public void loadFromJson(JsonNode node)
     {
-        id = JsonUtil.getLong(node,JsonKeyString.ID,id);
-        stamina = JsonUtil.getLong(node,JsonKeyString.STAMINA,stamina);
-        maxStamina = JsonUtil.getLong(node,JsonKeyString.MAX_STAMINA,maxStamina);
-        money = JsonUtil.getLong(node,JsonKeyString.MONEY,money);
-        gold = JsonUtil.getLong(node,JsonKeyString.GOLD,gold);
+        id          = JsonUtil.getLong(node,JsonKeyString.ID,id);
+        stamina     = JsonUtil.getLong(node,JsonKeyString.STAMINA,stamina);
+        maxStamina  = JsonUtil.getLong(node,JsonKeyString.MAX_STAMINA,maxStamina);
+        money       = JsonUtil.getLong(node,JsonKeyString.MONEY,money);
+        gold        = JsonUtil.getLong(node,JsonKeyString.GOLD,gold);
         lastCommand = new Date(JsonUtil.getLong(node,JsonKeyString.LAST_COMMAND,lastCommand.getTime()));
 
     }
