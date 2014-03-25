@@ -1,12 +1,10 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
-import models.BaseMasterManager;
-import models.Game;
+import models.*;
 import models.data.GameCharacter;
 import models.data.Login;
-import models.master.DirectionManager;
-import models.master.Direction;
+import models.master.*;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -24,12 +22,20 @@ import java.util.UUID;
 public class Application extends Controller {
   
     public static Result index() {
-        DirectionManager directionManager = DirectionManager.getInstance();
-        long size = directionManager.size();
-        for(int i = 0;i < size;i++){
-            Direction d = (Direction)directionManager.getMaster(i);
-            Logger.info(d.getMasterNo() + " " + d.getName() + " " + d.getDetail() + " " + d.getImage());
+        for(int i = 0; i < ID.MASTER_COUNT;i++){
+            BaseMasterManager manager = Game.getInstance().getMasterManager(i);
+            if(manager != null){
+                Logger.info("master " + i + " version " + manager.getVersion());
+                long size = manager.size();
+                for(int j = 0 ;j < size;j++){
+                    BaseMaster master = manager.getMaster(j);
+                    if(master != null){
+                        Logger.info(master.toJsonObject().toString());
+                    }
+                }
+            }
         }
+
         return ok(index.render("Your new application is ready."));
     }
 

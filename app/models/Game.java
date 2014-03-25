@@ -1,6 +1,8 @@
 package models;
 
 import models.master.DirectionManager;
+import models.master.MajorQuestManager;
+import models.master.MinorQuestManager;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -30,7 +32,9 @@ public class Game {
     };
     public boolean init()
     {
-        m_data.put(ID.MASTER_DIRECTION, DirectionManager.getInstance());
+        m_data.put(ID.MASTER_DIRECTION  , DirectionManager.getInstance());
+        m_data.put(ID.MASTER_MAJOR_QUEST, MajorQuestManager.getInstance());
+        m_data.put(ID.MASTER_MINOR_QUEST, MinorQuestManager.getInstance());
         return true;
 
     }

@@ -1,6 +1,9 @@
 import models.Game;
+import models.ID;
 import models.master.Direction;
 import models.master.DirectionManager;
+import models.master.*;
+import models.master.MajorQuestManager;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -21,6 +24,5 @@ public class Global extends GlobalSettings {
     public void onStart(Application app) {
         super.onStart(app);    //To change body of overridden methods use File | Settings | File Templates.
         Game.getInstance().init();
-
     }
 }

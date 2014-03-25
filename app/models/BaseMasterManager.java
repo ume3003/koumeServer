@@ -71,7 +71,7 @@ public abstract class BaseMasterManager {
 
     public void saveMasterData()
     {
-        setVersion(System.currentTimeMillis());
+        setVersion(System.currentTimeMillis() / 1000);
         ObjectNode result = toJsonObject();
         File file = new File(getJsonFileName());
         PrintWriter pw = null;

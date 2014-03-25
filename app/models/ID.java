@@ -10,5 +10,6 @@ package models;
 public class ID {
     public static final int MASTER_DIRECTION = 0;
     public static final int MASTER_MAJOR_QUEST = 1;
-    public static final int MASTER_COUNT = MASTER_MAJOR_QUEST + 1;
+    public static final int MASTER_MINOR_QUEST = 2;
+    public static final int MASTER_COUNT = MASTER_MINOR_QUEST + 1;
 }

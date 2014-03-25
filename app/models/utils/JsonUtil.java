@@ -28,7 +28,7 @@ public class JsonUtil {
         if(node != null){
            JsonNode o = node.findPath(key);
             if(o != null){
-                return o.getIntValue();
+                return o.asInt(defaultValue);
             }
         }
         return defaultValue;
@@ -39,7 +39,7 @@ public class JsonUtil {
         if(node != null){
             JsonNode o = node.findPath(key);
             if(o != null){
-                return o.getLongValue();
+                return o.asLong(defaultValue);
             }
         }
         return defaultValue;

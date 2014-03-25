@@ -1,6 +1,8 @@
 package models.master;
 
 import models.BaseNamedMaster;
+import models.Game;
+import models.ID;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -27,9 +29,19 @@ public class MinorQuest extends BaseNamedMaster {
 
     public void setData(JsonNode node){
         super.setData(node);
-        DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
-        MajorNo = JsonUtil.getLong(node,JsonKeyString.MAJOR,-1);
         MapNo = JsonUtil.getLong(node,JsonKeyString.MAP,-1);
+
+        DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
+        Direction direction = (Direction)Game.getInstance().getMasterManager(ID.MASTER_DIRECTION).getMaster(DirectionNo);
+        if(direction != null){
+            direction.addMajorQuestNo(getMasterNo());
+        }
+
+        MajorNo = JsonUtil.getLong(node,JsonKeyString.MAJOR,-1);
+        MajorQuest major = (MajorQuest)Game.getInstance().getMasterManager(ID.MASTER_MAJOR_QUEST).getMaster(MajorNo);
+        if(major != null){
+            major.addMinorQuestNo(getMasterNo());
+        }
     }
     public ObjectNode toJsonObject()
     {
