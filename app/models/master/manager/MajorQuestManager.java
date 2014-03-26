@@ -1,7 +1,9 @@
-package models.master;
+package models.master.manager;
 
 import models.BaseMaster;
 import models.BaseMasterManager;
+import models.Strings;
+import models.master.MajorQuest;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
@@ -20,7 +22,7 @@ public class MajorQuestManager extends BaseMasterManager {
 
     protected String getJsonFileName()
     {
-        return "major.json";
+        return Strings.MAJOR_QUEST_FILE;
     }
     protected String getTableKey()
     {
@@ -35,5 +37,9 @@ public class MajorQuestManager extends BaseMasterManager {
     {
         Logger.info("MajorQuestManager created");
         loadMasterData();
+    }
+    public MajorQuest getMajorQuest(long no)
+    {
+        return (MajorQuest)getMaster(no);
     }
 }

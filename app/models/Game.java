@@ -1,12 +1,9 @@
 package models;
 
-import models.master.DirectionManager;
-import models.master.MajorQuestManager;
-import models.master.MinorQuestManager;
+import models.master.manager.*;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
-import play.Logger;
 import play.libs.Json;
 
 import java.util.HashMap;
@@ -21,20 +18,34 @@ import java.util.HashMap;
 public class Game {
     private static Game Instance = new Game();
     public static Game getInstance()    {return Instance;}
-    private HashMap<Integer,BaseMasterManager> m_data = new HashMap<Integer,BaseMasterManager>();
+    private HashMap<Integer,BaseMasterManager> data = new HashMap<Integer,BaseMasterManager>();
 
     public BaseMasterManager getMasterManager(int masterNo)
     {
         if(0 <= masterNo && masterNo < ID.MASTER_COUNT){
-            return m_data.get(masterNo);
+            return data.get(masterNo);
         }
         return null;
     };
     public boolean init()
     {
-        m_data.put(ID.MASTER_DIRECTION  , DirectionManager.getInstance());
-        m_data.put(ID.MASTER_MAJOR_QUEST, MajorQuestManager.getInstance());
-        m_data.put(ID.MASTER_MINOR_QUEST, MinorQuestManager.getInstance());
+        data.put(ID.MASTER_DIRECTION        ,DirectionManager.getInstance());
+        data.put(ID.MASTER_MAJOR_QUEST      ,MajorQuestManager.getInstance());
+        data.put(ID.MASTER_MINOR_QUEST      ,MinorQuestManager.getInstance());
+        data.put(ID.MASTER_ITEM             ,ItemManager.getInstance());
+        data.put(ID.MASTER_MAP              ,MapManager.getInstance());
+        data.put(ID.MASTER_UNIT             ,UnitManager.getInstance());
+
+        data.put(ID.MASTER_CONDITION        ,ConditionManager.getInstance());
+        data.put(ID.MASTER_QUEST_APPEARANCE ,QuestAppearanceManager.getInstance());
+        data.put(ID.MASTER_QUEST_CLEAR      ,QuestClearManager.getInstance());
+        data.put(ID.MASTER_QUEST_REWARD     ,QuestRewardManager.getInstance());
+        data.put(ID.MASTER_QUEST_UNIT       ,QuestUnitManager.getInstance());
+
+        data.put(ID.MASTER_SCENARIO         ,ScenarioManager.getInstance());
+        data.put(ID.MASTER_COMPETITION_RULE ,CompetitionRuleManager.getInstance());
+        data.put(ID.MASTER_SCENARIO_RULE    ,ScenarioRuleManager.getInstance());
+        data.put(ID.MASTER_SCENARIO_UNIT    ,ScenarioUnitManager.getInstance());
         return true;
 
     }

@@ -4,7 +4,6 @@ import com.avaje.ebean.Ebean;
 import models.*;
 import models.data.GameCharacter;
 import models.data.Login;
-import models.master.*;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -15,7 +14,6 @@ import play.libs.Json;
 import play.mvc.*;
 
 import views.html.index;
-import views.html.main;
 
 import java.util.UUID;
 
@@ -84,7 +82,7 @@ public class Application extends Controller {
                 GameCharacter chara = login.gameCharacter;
                 result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
                 result.put(JsonKeyString.UUID,login.uuid);
-                result.put(JsonKeyString.GAMECHARACTER,chara.toJsonObject());
+                result.put(JsonKeyString.GAME_CHARACTER,chara.toJsonObject());
                 result.put(JsonKeyString.UNIX_TIME,String.valueOf(System.currentTimeMillis() / 1000));
             }
             Ebean.commitTransaction();

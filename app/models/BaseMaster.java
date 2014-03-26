@@ -16,13 +16,18 @@ import play.libs.Json;
 public class BaseMaster {
     protected long masterNo;
     public long getMasterNo()   { return masterNo;}
+
+    public void setMasterNo(long masterNo) {
+        this.masterNo = masterNo;
+    }
+
     public BaseMaster(JsonNode node){
         setData(node);
     }
 
     public void setData(JsonNode node)
     {
-        masterNo  = JsonUtil.getInt(node, JsonKeyString.NO, -1);
+        masterNo  = JsonUtil.getLong(node, JsonKeyString.NO, -1);
     }
 
     public ObjectNode toJsonObject()

@@ -1,7 +1,8 @@
-package models.master;
+package models.master.manager;
 
 import models.BaseMasterManager;
 import models.BaseMaster;
+import models.Strings;
 import models.master.Direction;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
@@ -20,7 +21,7 @@ public class DirectionManager extends BaseMasterManager {
     public static DirectionManager getInstance()    {return Instance;}
     protected String getJsonFileName()
     {
-        return "direction.json";
+        return Strings.DIRECTION_FILE;
     }
     protected String getTableKey()
     {
@@ -35,5 +36,9 @@ public class DirectionManager extends BaseMasterManager {
     {
         Logger.info("DirectionManager created");
         loadMasterData();
+    }
+    public Direction getDirection(long no)
+    {
+        return (Direction)getMaster(no);
     }
 }

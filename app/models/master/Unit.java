@@ -1,6 +1,9 @@
 package models.master;
 
-import models.BaseNamedMaster;
+import models.*;
+import models.master.*;
+import models.master.manager.DirectionManager;
+import models.utils.*;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -12,9 +15,22 @@ import org.codehaus.jackson.JsonNode;
  */
 public class Unit extends BaseNamedMaster {
 
+    protected long DirectionNo;
+    public long getDirectionNo()    {return DirectionNo;}
     public Unit(JsonNode node){
         super(node);
     }
 
+    public void setData(JsonNode node){
+        super.setData(node);
+        DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
+    }
+    public Direction getDirection()
+    {
+        return DirectionManager.getInstance().getDirection(DirectionNo);
+    }
 
+    public void setDirectionNo(long directionNo) {
+        DirectionNo = directionNo;
+    }
 }

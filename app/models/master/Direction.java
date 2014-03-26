@@ -14,21 +14,21 @@ import java.util.Vector;
  */
 public class Direction extends BaseNamedMaster {
 
-    protected Vector<Long> m_majorQuestNos = new Vector<>();
-    protected Vector<Long> m_minorQuestNos = new Vector<>();
+    protected Vector<MajorQuest> MajorQuests = new Vector<>();
+    protected Vector<MinorQuest> MinorQuests = new Vector<>();
 
     public Direction(JsonNode node){
         super(node);
     }
-    public Vector<Long> getMajorQuestNos()   { return m_majorQuestNos;};
-    public Vector<Long> getMinorQuestNos()    { return m_minorQuestNos;};
+    public Vector<MajorQuest> getMajorQuestNos()   { return MajorQuests;};
+    public Vector<MinorQuest> getMinorQuestNos()    { return MinorQuests;};
 
-    public void addMajorQuestNo(long No)
+    public void addMajorQuest(MajorQuest quest)
     {
-        m_majorQuestNos.add(No);
+        MajorQuests.add(quest);
     }
-    public void addMinorQuestNo(long No)
+    public void addMinorQuest(MinorQuest quest)
     {
-        m_minorQuestNos.add(No);
+        MinorQuests.add(quest);
     }
 }

@@ -3,6 +3,7 @@ package models.master;
 import models.BaseNamedMaster;
 import models.Game;
 import models.ID;
+import models.master.manager.DirectionManager;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -20,7 +21,11 @@ import java.util.Vector;
 public class MajorQuest extends BaseNamedMaster {
     protected long DirectionNo;
     public long getDirectionNo()    {return DirectionNo;}
-    protected Vector<Long> m_minorQuestNos = new Vector<>();
+    public void setDirectionNo(long directionNo) {
+        DirectionNo = directionNo;
+    }
+
+    protected Vector<MinorQuest> MinorQuests = new Vector<>();
 
     public MajorQuest(JsonNode node){
         super(node);
@@ -29,18 +34,23 @@ public class MajorQuest extends BaseNamedMaster {
         super.setData(node);
         DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
         Direction direction = (Direction)Game.getInstance().getMasterManager(ID.MASTER_DIRECTION).getMaster(DirectionNo);
-        direction.addMajorQuestNo(getMasterNo());
+        direction.addMajorQuest(this);
     }
-    public Vector<Long> getMinorQuestNos()    { return m_minorQuestNos;};
+    public Vector<MinorQuest> getMinorQuests()    { return MinorQuests;};
 
-    public void addMinorQuestNo(long No)
+    public void addMinorQuest(MinorQuest quest)
     {
-        m_minorQuestNos.add(No);
+        MinorQuests.add(quest);
     }
+
     public ObjectNode toJsonObject()
     {
         ObjectNode result = super.toJsonObject();
-        result.put(JsonKeyString.DIRECTION,getDirectionNo());
+        result.put(JsonKeyString.DIRECTION,String.valueOf(getDirectionNo()));
         return result;
+    }
+    public Direction getDirection()
+    {
+        return DirectionManager.getInstance().getDirection(DirectionNo);
     }
 }
