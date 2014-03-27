@@ -1,15 +1,244 @@
-@(title: String)(content: Html)
-
-<!DOCTYPE html>
+@(masterMap:HashMap[Integer,BaseMasterManager])(content: Html)
 
 <html>
+<!DOCTYPE html>
     <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+        <title>KoumeChan Master Editor</title>
+        <meta charset="UTF-8" />
+		<link rel="stylesheet" 		media="screen" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/redmond/jquery-ui.css">
+        <link rel="stylesheet" 		media="screen" href='@routes.Assets.at("stylesheets/main.css")'>
+        <link rel="stylesheet" 		media="screen" href='@routes.Assets.at("stylesheets/base.css")'>
+        <link rel="stylesheet" 		media="screen" href='@routes.Assets.at("stylesheets/bootstrap.min.css")'>
+        <link rel="shortcut icon" 	type="image/png" href='@routes.Assets.at("images/favicon.png")'>
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js" 	 	type="text/javascript"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.1.0.js" 	type="text/javascript"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"  	type="text/javascript"></script>
+		<script src='@routes.Assets.at("javascripts/jquery.fixheadertable.min.js")' type="text/javascript"></script>
+		<script src='@routes.Assets.at("javascripts/bootstrap.min.js")' type="text/javascript"></script>
+        <script type="text/javascript">
+            var kcClient = {
+                colSize : 0,
+                updateURL       : undefined,
+                dataTableName   : '#masterData',
+                $dataTable      : undefined,
+                tableInfo       : undefined,
+
+                isAutoActivate	: undefined,
+				createNewRowData: undefined,
+                setupRow        : undefined,
+                getRowData      : undefined,
+				getDeleteData	: undefined,
+                afterUpdate     : undefined,
+                init            : function(){
+                    kcClient.$dataTable = $(kcClient.dataTableName);
+
+                    kcClient.$dataTable.fixheadertable(kcClient.tableInfo);
+
+                    $ ('.addNew').click(function(){
+                        kcClient.$dataTable.append(kcClient.createNewRowData(kcClient.colSize));
+                        kcClient.setupRow(kcClient.colSize);
+                        kcClient.colSize =  kcClient.colSize + 1;
+                    });
+
+                    for(var i = 0 ;i < kcClient.colSize;i++){
+                        kcClient.setupRow(i);
+                    }
+
+                },
+                skipEnter : function($cel){
+                    $cel.keydown(function(e){
+                        if( e.keyCode == 13){
+                            e.preventDefault();
+                            $cel.trigger('focusout');
+                        }
+                        if( e.keyCode == 27){
+                            e.preventDefault();
+                            $cel.text("");
+                        }
+                    });
+                },
+                setSave : function($cel,$tgt){
+                    $cel.focusin(function(e){
+                        $cel.attr('preData',$tgt.text().trim());
+                    });
+                    $cel.focusout(function(e){
+                        var pre = $cel.attr('preData' );
+                        var aft = $tgt.text().trim();
+                        if(pre !== aft ){
+                            $cel.attr('preData','');
+                            kcClient.setModify(this.id);
+                        }
+                    });
+                },
+                makeUpdateBtn   : function(no){
+                    var $btn = $('<div>' ).addClass('label' ).addClass('label-default' ).attr('id','ud' + no);
+                    var $div = $('<div>' ).addClass('updateBtn' ).attr('id',no ).css('cursor','pointer').attr('tabindex','100');
+                    return $div.append($btn);
+                },
+				makeDeleteBtn   : function(no){
+					var $div = $('<div>' ).css('cursor','pointer').attr('tabindex','100');
+					var $btn = $('<div>' ).addClass('label' ).addClass('label-default' ).addClass('deleteBtn' ).attr('id','dl' + no);
+					return $div.append($btn);
+				},
+                makeDataCel :function(idName){
+                    return $('<div>' ).attr('id',idName);
+                },
+                makeEditCel : function(no){
+                    return $('<div>' ).attr('id',no ).attr('contenteditable','true').attr('tabindex','100');
+                },
+                makeLinkCel :   function(){
+                    return $('<div>' ).css('cursor','pointer');
+                },
+				setDelete 	: function(id){
+
+					$("#dl" + id ).click(function(){
+						kcClient.deleteDataByJson(
+							{
+								jsonData  	: kcClient.getDeleteData(id),
+								url   		: kcClient.updateURL
+						});
+					});
+				},
+                setModify   : function(id){
+                    var cNo     = id.substr(2);
+                    var $upd    = $('#ud' + cNo );
+                    if($upd.attr("update") === '0'){
+                        $("#" + cNo ).click(function(){
+                            kcClient.updateRowDataByJson(
+                            {
+                                jsonData    : kcClient.getRowData(cNo),
+                                url         : kcClient.updateURL,
+								autoActivate: kcClient.isAutoActivate === undefined ? true : kcClient.isAutoActivate(cNo),
+                                afterUpdate : kcClient.afterUpdate
+                            });
+                        });
+                        $upd.attr("update",'1');
+                        $upd.removeClass('label-default').addClass('label-danger').text('保存');
+                    }
+                },
+                activateLink    :function(no,activate){
+					var $tgt1st = $('.acon' + no + ':first' );
+					var cnt     = $tgt1st.attr('cnt') ;
+					cnt         = cnt === undefined ? 0 : cnt - 0;
+					for(var i  = 0 ;i < cnt ; i++){
+						var $tgt = $('.acon' +no + ':eq(' + i + ')');
+						if(activate){
+							if($tgt.attr('href') === '#'){
+								var $span = $('<span>' ).addClass('label' ).addClass('label-info' ).text($tgt.attr("tx"));
+								$tgt.attr('href',$tgt.attr('linkurl') ).append($span);
+							}
+						}
+						else{
+							$tgt.attr('href','#' ).html('');
+						}
+					}
+                },
+                setNotModify    : function(no){
+                    var $upd = $('#ud' + no );
+                    $upd.attr("update",'0').addClass('label-default').removeClass('label-danger').text('' ).unbind('click');
+                },
+                editCel     : function($cel){
+                    kcClient.setSave($cel,$cel);
+                    kcClient.skipEnter($cel);
+                },
+                editDropDown    : function(arg){
+                    var $key  = $('#'  + arg.key + arg.no);
+                    var $vKey = $('#v' + arg.key + arg.no);
+                    kcClient.skipEnter($key);
+                    kcClient.setSave($key,$vKey);
+                    $key.autocomplete({
+                        source : arg.source,
+                        minLength : 0,
+                        delay : 300,
+                        focus : function(e,ui){
+                            if(ui.item){
+                                $('#v' + this.id).text(ui.item.no);
+                                if(arg.callback !== undefined){
+                                    arg.callback(arg.no);
+                                }
+                            }
+                        }
+                    });
+                },
+				editDataColumn : function(arg){
+					var $key  = $('#'  + arg.key + arg.no);
+					var $vKey = $('#v' + arg.key + arg.no);
+					kcClient.skipEnter($key);
+					kcClient.setSave($key,$key);
+					$key.focusout(function(){
+						var val = $key.text() - 0;
+						$vKey.text(val);
+					});
+				},
+                makeLinkSpan    : function(arg){
+                    var $link = $('<A>' ).attr('tx',arg.label ).attr('href','#' )
+                    .attr('linkurl',arg.url ).addClass('acon' + arg.index ).attr('cnt',arg.cnt);
+                    return $link;
+                },
+				deleteDataByJson : function(arg){
+					$('#result').text(arg.jsonData.a001 + " " + arg.url + "を削除中・・・");
+					$.ajax({
+						type        : "POST",
+						dataType    : 'json',
+						cache       : false,
+						data        : JSON.stringify(arg.jsonData),
+						headers     : { 'Content-Type' : 'application/json'},
+						url         : arg.url,
+						success     : function(data,datatype){
+
+							$('#result' ).text("削除しました");
+						},
+						error       : function(XMLHttpRequest,textStatus,errorThrown){
+							alert(textStatus);
+						}
+					});
+				},
+                updateRowDataByJson : function(arg){
+                    $('#result' ).text("保存中・・・");
+                    $.ajax({
+                        type        : "POST",
+                        dataType    : 'json',
+                        cache       : false,
+                        data        : JSON.stringify(arg.jsonData),
+                        headers     : { 'Content-Type' : 'application/json'},
+                        url         : arg.url,
+                        success     : function(data,datatype){
+                            kcClient.setNotModify(arg.jsonData.a001);
+                            kcClient.activateLink(arg.jsonData.a001,arg.autoActivate);
+                            if(arg.afterUpdate !== undefined){
+                                arg.afterUpdate(data);
+                            }
+                            $('#result' ).text("保存しました");
+                        },
+                        error       : function(XMLHttpRequest,textStatus,errorThrown){
+                            alert(textStatus);
+                        }
+                    });
+                }
+
+            };
+
+
+
+        </script>
     </head>
     <body>
-        @content
+        <div class="container">
+            <div class="navbar navbar-fixed-top">
+                <div class="navber-inner">
+                    <div class="container">
+                        <ul class="nav nav-tabs">
+							<li><a href="/master/index">ホーム</a></li>
+                            @for(key <- masterMap.keySet()){
+                                @defining(masterMap.get(key).asInstanceOf[BaseMasterManager]){ manager =>
+                                    <li><A HREF="/master/list?key=@key">@manager.getName</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            @content
+        </div>
     </body>
 </html>

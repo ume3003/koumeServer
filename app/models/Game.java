@@ -18,34 +18,38 @@ import java.util.HashMap;
 public class Game {
     private static Game Instance = new Game();
     public static Game getInstance()    {return Instance;}
-    private HashMap<Integer,BaseMasterManager> data = new HashMap<Integer,BaseMasterManager>();
+    private HashMap<Integer,BaseMasterManager> Data = new HashMap<Integer,BaseMasterManager>();
+
+    public HashMap<Integer, BaseMasterManager> getData() {
+        return Data;
+    }
 
     public BaseMasterManager getMasterManager(int masterNo)
     {
         if(0 <= masterNo && masterNo < ID.MASTER_COUNT){
-            return data.get(masterNo);
+            return Data.get(masterNo);
         }
         return null;
     };
     public boolean init()
     {
-        data.put(ID.MASTER_DIRECTION        ,DirectionManager.getInstance());
-        data.put(ID.MASTER_MAJOR_QUEST      ,MajorQuestManager.getInstance());
-        data.put(ID.MASTER_MINOR_QUEST      ,MinorQuestManager.getInstance());
-        data.put(ID.MASTER_ITEM             ,ItemManager.getInstance());
-        data.put(ID.MASTER_MAP              ,MapManager.getInstance());
-        data.put(ID.MASTER_UNIT             ,UnitManager.getInstance());
+        Data.put(ID.MASTER_DIRECTION, DirectionManager.getInstance());
+        Data.put(ID.MASTER_MAJOR_QUEST, MajorQuestManager.getInstance());
+        Data.put(ID.MASTER_MINOR_QUEST, MinorQuestManager.getInstance());
+        Data.put(ID.MASTER_ITEM, ItemManager.getInstance());
+        Data.put(ID.MASTER_MAP, MapManager.getInstance());
+        Data.put(ID.MASTER_UNIT, UnitManager.getInstance());
 
-        data.put(ID.MASTER_CONDITION        ,ConditionManager.getInstance());
-        data.put(ID.MASTER_QUEST_APPEARANCE ,QuestAppearanceManager.getInstance());
-        data.put(ID.MASTER_QUEST_CLEAR      ,QuestClearManager.getInstance());
-        data.put(ID.MASTER_QUEST_REWARD     ,QuestRewardManager.getInstance());
-        data.put(ID.MASTER_QUEST_UNIT       ,QuestUnitManager.getInstance());
+        Data.put(ID.MASTER_CONDITION, ConditionManager.getInstance());
+        Data.put(ID.MASTER_QUEST_APPEARANCE, QuestAppearanceManager.getInstance());
+        Data.put(ID.MASTER_QUEST_CLEAR, QuestClearManager.getInstance());
+        Data.put(ID.MASTER_QUEST_REWARD, QuestRewardManager.getInstance());
+        Data.put(ID.MASTER_QUEST_UNIT, QuestUnitManager.getInstance());
 
-        data.put(ID.MASTER_SCENARIO         ,ScenarioManager.getInstance());
-        data.put(ID.MASTER_COMPETITION_RULE ,CompetitionRuleManager.getInstance());
-        data.put(ID.MASTER_SCENARIO_RULE    ,ScenarioRuleManager.getInstance());
-        data.put(ID.MASTER_SCENARIO_UNIT    ,ScenarioUnitManager.getInstance());
+        Data.put(ID.MASTER_SCENARIO, ScenarioManager.getInstance());
+        Data.put(ID.MASTER_COMPETITION_RULE, CompetitionRuleManager.getInstance());
+        Data.put(ID.MASTER_SCENARIO_RULE, ScenarioRuleManager.getInstance());
+        Data.put(ID.MASTER_SCENARIO_UNIT, ScenarioUnitManager.getInstance());
         return true;
 
     }

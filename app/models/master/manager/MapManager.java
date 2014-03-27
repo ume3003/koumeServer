@@ -25,8 +25,14 @@ public class MapManager extends BaseMasterManager{
         Logger.info("MapManager created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.MAP;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.MAP_FILE;
     }
 

@@ -25,7 +25,12 @@ public class UnitManager extends BaseMasterManager {
         loadMasterData();
     }
 
-    protected String getJsonFileName()
+    @Override
+    public String getName() {
+        return Strings.UNIT;
+    }
+
+    public String getJsonFileName()
     {
         return Strings.UNIT_FILE;
     }

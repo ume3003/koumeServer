@@ -23,8 +23,14 @@ public class ItemManager extends BaseMasterManager{
         Logger.info("Item created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.ITEM;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.ITEM_FILE;
 
     }

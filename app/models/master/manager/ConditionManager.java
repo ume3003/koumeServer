@@ -23,8 +23,14 @@ public class ConditionManager extends BaseMasterManager{
         Logger.info("Condition Manager created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.CONDITION;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.CONDITION_FILE;
     }
 

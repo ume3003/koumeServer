@@ -22,8 +22,14 @@ public class QuestRewardManager extends BaseMasterManager{
         Logger.info("QuestReward created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.QUEST_REWARD;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.QUEST_REWARD_FILE;
     }
 

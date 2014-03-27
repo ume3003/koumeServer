@@ -1,6 +1,7 @@
 package models.master;
 
 import models.BaseNamedMaster;
+import models.FamilyMaster;
 import models.Game;
 import models.ID;
 import models.master.manager.DirectionManager;
@@ -18,7 +19,7 @@ import java.util.Vector;
  * Time: 10:40
  * To change this template use File | Settings | File Templates.
  */
-public class MajorQuest extends BaseNamedMaster {
+public class MajorQuest extends FamilyMaster {
     protected long DirectionNo;
     public long getDirectionNo()    {return DirectionNo;}
     public void setDirectionNo(long directionNo) {
@@ -52,5 +53,17 @@ public class MajorQuest extends BaseNamedMaster {
     public Direction getDirection()
     {
         return DirectionManager.getInstance().getDirection(DirectionNo);
+    }
+    public String getDirectionName()
+    {
+        Direction d = getDirection();
+        if(d == null){
+            return "";
+        }
+        return d.getName();
+    }
+    @Override
+    public long getParentNo() {
+        return DirectionNo;
     }
 }

@@ -25,7 +25,12 @@ public class ScenarioUnitManager extends BaseMasterManager{
     }
 
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.SCENARIO_UNIT;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.SCENARIO_UNIT_FILE;
     }
 

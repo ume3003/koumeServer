@@ -26,8 +26,14 @@ public class CompetitionRuleManager extends BaseMasterManager
         loadMasterData();
     }
 
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.COMPETITION_RULE;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.COMPETITION_RULE_FILE;
     }
 

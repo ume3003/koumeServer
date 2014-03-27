@@ -3,8 +3,6 @@
 # ~~~~
 
 # Home page
-GET         /                     controllers.Application.index()
-
 POST        /login                controllers.Application.login()
 
 POST        /master               controllers.Application.master()
@@ -15,3 +13,14 @@ POST        /checkTime            controllers.Application.checkTime()
 # add for me
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file         controllers.Assets.at(path="/public", file)
+
+
+GET         /master/index         controllers.MasterApplication.index()
+GET         /master/list          controllers.MasterApplication.list(key:Integer)
+GET         /master/json          controllers.MasterApplication.json(key:Integer)
+
+POST        /master/update        controllers.MasterApplication.updateMaster()
+
+GET         /tool/master        controllers.MasterApplication.master(k:Integer,term:String)
+GET         /tool/masterSub     controllers.MasterApplication.masterSub(k:Integer,d:Integer,term:String)
+

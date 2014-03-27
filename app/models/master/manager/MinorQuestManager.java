@@ -20,7 +20,12 @@ public class MinorQuestManager  extends BaseMasterManager {
     private static MinorQuestManager instance = new MinorQuestManager();
     public static MinorQuestManager getInstance() { return instance;};
 
-    protected String getJsonFileName()
+    @Override
+    public String getName() {
+        return Strings.MINOR_QUEST;
+    }
+
+    public String getJsonFileName()
     {
         return Strings.MINOR_QUEST_FILE;
     }

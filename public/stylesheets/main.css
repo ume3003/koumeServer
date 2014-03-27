@@ -1,0 +1,33 @@
+.Head {
+    text-align: center;
+}
+.Num {
+    text-align: right;
+}
+.Text {
+    text-align: center;
+}
+.Row {
+    position:relative;
+    left:0px;
+    width:640px;
+    height:24px;
+    cursor:pointer;
+}
+.No {
+    position:absolute;
+    left:0px;
+    width:48px;
+    height:24px;
+    cursor:pointer;
+    border: thin solid #0000ff;
+
+}
+.Name {
+    position:absolute;
+    left:48px;
+    width:120px;
+    height:24px;
+    cursor:pointer;
+    border: thin solid #0000ff;
+}

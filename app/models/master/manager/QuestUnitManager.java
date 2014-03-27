@@ -25,9 +25,13 @@ public class QuestUnitManager extends BaseMasterManager
         loadMasterData();
     }
 
+    @Override
+    public String getName() {
+        return Strings.QUEST_UNIT;
+    }
 
     @Override
-    protected String getJsonFileName() {
+    public String getJsonFileName() {
         return Strings.QUEST_UNIT_FILE;
     }
 

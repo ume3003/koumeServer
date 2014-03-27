@@ -23,8 +23,14 @@ public class QuestClearManager extends BaseMasterManager{
         Logger.info("Quest Clear created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.QUEST_CLEAR;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.QUEST_CLEAR_FILE;
     }
 

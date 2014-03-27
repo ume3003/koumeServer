@@ -20,7 +20,12 @@ public class MajorQuestManager extends BaseMasterManager {
     private static MajorQuestManager instance = new MajorQuestManager();
     public static MajorQuestManager getInstance()         { return instance;};
 
-    protected String getJsonFileName()
+    @Override
+    public String getName() {
+        return Strings.MAJOR_QUEST;
+    }
+
+    public String getJsonFileName()
     {
         return Strings.MAJOR_QUEST_FILE;
     }

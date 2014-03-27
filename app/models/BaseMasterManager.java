@@ -22,6 +22,7 @@ import java.util.HashMap;
  */
 public abstract class BaseMasterManager {
 
+
     protected long Version;
     protected JsonNode Node;
     protected HashMap<Long,BaseMaster> Data = new HashMap<Long,BaseMaster>();
@@ -29,6 +30,10 @@ public abstract class BaseMasterManager {
     public JsonNode getNode()       { return Node;}
     public void setNode(JsonNode node)  { Node = node;}
     public long getVersion()        { return Version;}
+
+    public HashMap<Long, BaseMaster> getData() {
+        return Data;
+    }
     public void setVersion(long v)  { Version = v;}
 
     public BaseMaster getMaster(long no) { return Data.get(no);}
@@ -42,8 +47,8 @@ public abstract class BaseMasterManager {
     {
         return Data.size();
     }
-
-    protected abstract String getJsonFileName();
+    public abstract String getName();
+    public abstract String getJsonFileName();
     protected abstract String getTableKey();
     public abstract  BaseMaster createMaster(JsonNode col);
 
@@ -117,6 +122,29 @@ public abstract class BaseMasterManager {
             array.add(m.toJsonObject());
         }
         result.put(JsonKeyString.DATA,array);
+        return result;
+    }
+    public ObjectNode updateAndInsertData(JsonNode json)
+    {
+        if(json == null){
+            throw new RuntimeException("node is null");
+        }
+        long no = JsonUtil.getLong(json,JsonKeyString.NO,-1);
+        ObjectNode result = Json.newObject();
+        if(no >=0){
+            BaseMaster master = getMaster(no);
+            if(master == null){
+               master = createMaster(json);
+               setMaster(no,master);
+            }
+            else{
+                master.setData(json);
+            }
+            saveMasterData();
+            result.put(JsonKeyString.SUCCESS,0);
+            return result;
+        }
+        result.put(JsonKeyString.SUCCESS,1);
         return result;
     }
 }

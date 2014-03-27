@@ -23,8 +23,14 @@ public class ScenarioRuleManager extends BaseMasterManager{
         Logger.info("Scenario Rule master created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.SCENARIO_RULE;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.SCENARIO_RULE_FILE;
     }
 

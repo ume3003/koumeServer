@@ -24,5 +24,20 @@ public class Strings {
     public static final String SCENARIO_UNIT_FILE       = "json/scenarioUnit.json";
     public static final String UNIT_FILE                = "json/unit.json";
 
+    public static final String COMPETITION_RULE         = "対戦ルール";
+    public static final String DIRECTION                = "方角";
+    public static final String CONDITION                = "条件";
+    public static final String ITEM                     = "アイテム";
+    public static final String MAJOR_QUEST              = "クエスト";
+    public static final String MAP                      = "マップ";
+    public static final String MINOR_QUEST              = "サブクエスト";
+    public static final String QUEST_APPEARANCE         = "サブクエ出現条件";
+    public static final String QUEST_CLEAR              = "サブクエクリア条件";
+    public static final String QUEST_REWARD             = "サブクエ報酬";
+    public static final String QUEST_UNIT               = "サブクエ使用ユニット";
+    public static final String SCENARIO                 = "対戦シナリオ";
+    public static final String SCENARIO_RULE            = "対戦シナリオルール";
+    public static final String SCENARIO_UNIT            = "対戦シナリオ使用ユニット";
+    public static final String UNIT                     = "ユニット";
 
 }

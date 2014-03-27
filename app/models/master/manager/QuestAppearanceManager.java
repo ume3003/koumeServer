@@ -23,8 +23,14 @@ public class QuestAppearanceManager extends BaseMasterManager{
         Logger.info("Quest Appearance created");
         loadMasterData();
     }
+
     @Override
-    protected String getJsonFileName() {
+    public String getName() {
+        return Strings.QUEST_APPEARANCE;
+    }
+
+    @Override
+    public String getJsonFileName() {
         return Strings.QUEST_APPEARANCE_FILE;
     }
 

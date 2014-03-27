@@ -19,7 +19,13 @@ public class DirectionManager extends BaseMasterManager {
 
     private static DirectionManager Instance = new DirectionManager();
     public static DirectionManager getInstance()    {return Instance;}
-    protected String getJsonFileName()
+
+    @Override
+    public String getName() {
+        return Strings.DIRECTION;
+    }
+
+    public String getJsonFileName()
     {
         return Strings.DIRECTION_FILE;
     }
