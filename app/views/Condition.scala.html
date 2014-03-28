@@ -1,0 +1,120 @@
+@(parentKey:Integer,conditionKey:Integer,parentNo:Integer,parent:models.BaseMaster,masterMap:HashMap[Integer,BaseMasterManager])
+
+@main(masterMap) {
+
+    <div class="container" style="padding-top:100px;">
+        <div class="col">
+            <div class="span11">
+                @for(conditionKey <- parent.getConditionMap.keySet()){
+                    @defining(Game.getInstance().getData.get(conditionKey).asInstanceOf[models.BaseMasterManager]){ manager =>
+                        <div style="position: relative">
+                            <div>conditionKey  @conditionKey conditionName @manager.getName</div>
+                        </div>
+                    }
+                }
+                <table id="masterData">
+                    <thead>
+                        <th>No</th><th>種別</th><th>キー</th><th>数量</th><th>UPD</th><th>DEL</th><th>vki</th><th>vke</th>
+                        @defining(parent.getConditions(conditionKey).asInstanceOf[HashMap[Integer,BaseMaster]]){ conditions =>
+                            @for(key <- conditions.keySet()){
+                                @defining(conditions.get(key).asInstanceOf[BaseConditionMaster]){ row =>
+                                    <td>@row.getConditionNo</td>
+                                    <td>@row.getKind</td>
+                                    <td>@row.getKeyNo</td>
+                                    <td>@row.getValue</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                }
+                            }
+                        }
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div><a href='/master/json?key=@conditionKey'>JSONデータ取得</a></div>
+                <A href='#'><DIV class="addNew" style="display:inline-block;cursor:pointer;"><span class="label label-info">新規データ追加</span></DIV></A>
+                <div id="result"></div>
+                <div id='colSize'>0</div>
+                <div id='masterKey'>@conditionKey</div>
+                <div id='masterName'> - version </div>
+                <div id='diURL'>/tool/master?k=@ID.MASTER_DIRECTION</div>
+                <div id='mpURL'>/tool/master?k=@ID.MASTER_MAP</div>
+                <div id='maURL'>/tool/masterSub?k=@ID.MASTER_MAJOR_QUEST&d=</div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function(){
+            function updateKeyDropDown(rowNow){
+                var direct = $('#vdi' + rowNow ).text() - 0;
+                $('#ma' + rowNow ).autocomplete('option','source',$('#maURL' ).text() + direct);
+
+            }
+
+            kcClient.getRowData = function(id){
+                return {
+                    master  : $('#masterKey' ).text(),
+                    a001    : id - 0,
+                    a002    : $('#nm' + id ).text(),
+                    a003    : $('#dt' + id ).text(),
+                    a004    : $('#im' + id ).text(),
+                    b001    : $('#vdi' + id ).text(),
+                    b002    : $('#vma' + id ).text(),
+                    b009    : $('#vmp' + id ).text()
+                };
+            }
+            kcClient.updateURL = '/master/update';
+
+            kcClient.createNewRowData = function(no){
+                var $tr = $('<TR>');
+
+                $tr.append($('<TD>' ).text(no));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('di' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('ma' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('nm' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('mp' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vdi' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vma' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vmp' +no )));
+
+            return $tr;
+            }
+            kcClient.tableInfo = {
+                caption     : $('#masterName' ).text() ,
+                colratio    : [60,80,150,150,150,150,150,40,20,20,20],
+                height      : 400,
+                width       : 1000,
+                zebra       : true,
+                sortable    : true,
+                sortedColId : 0,
+                resizeCol   : true,
+                pager       : false,
+                sortType    : ['integer','string','string','string','string','string','string','string','string','string','string']
+            };
+
+            kcClient.setupRow = function(i){
+                kcClient.setNotModify(i);
+                var direct = $('#vdi' + i ).text() - 0 ;
+                kcClient.editDropDown({key:'di',no:i,source:$('#diURL' ).text(),callback:updateKeyDropDown});
+                kcClient.editDropDown({key:'ma',no:i,source:$('#maURL' ).text() + direct,callback:undefined});
+                kcClient.editCel($('#nm' + i));
+                kcClient.editCel($('#dt' + i));
+                kcClient.editCel($('#im' + i));
+                kcClient.editDropDown({key:'mp',no:i,source:$('#mpURL' ).text() ,callback:undefined});
+            }
+            // 初期の列数               ・
+            kcClient.colSize    = $('#colSize' ).text() - 0;
+            // 各種初期化を実行
+            kcClient.init();
+
+        });
+    </script>
+
+}

@@ -1,0 +1,143 @@
+@(masterKey:Integer,masterManager:models.master.manager.ScenarioManager,masterMap:HashMap[Integer,BaseMasterManager])
+
+@main(masterMap) {
+
+    <div class="container" style="padding-top:100px;">
+        <div class="col">
+            <div class="span11">
+                <table id="masterData">
+                    <thead>
+                        <th>No</th><th>方角</th><th>クエスト</th><th>名称</th><th>摘要</th><th>ファイル名</th><th>マップ</th><th></th><th></th><th></th><th></th>
+                    </thead>
+                    <tbody>
+                    @for(key <- masterManager.getData.keySet()){
+                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.MinorQuest]){ master =>
+                            <tr>
+                                <td>
+                                    <A HREF="/master/condition?k=@ID.MASTER_MINOR_QUEST&c=@ID.MASTER_QUEST_UNIT&m=@master.getMasterNo">@master.getMasterNo</A></td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id="di@master.getMasterNo">
+                                    @master.getDirectionName
+                                    </div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id="ma@master.getMasterNo">
+                                    @master.getMajorQuestName
+                                    </div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='nm@master.getMasterNo'>@master.getName</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='dt@master.getMasterNo'>@master.getDetail</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='im@master.getMasterNo'>@master.getImage</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id="mp@master.getMasterNo">
+                                    @master.getMapName
+                                    </div>
+                                </td>
+                                <td><div style="cursor:pointer;" class="updateBtn" id="@master.getMasterNo" tabindex="100">
+                                    <div id="ud@master.getMasterNo" class="label label-default"></div></div>
+                                </td>
+                                <td>
+                                    <div id="vdi@master.getMasterNo">@master.getDirectionNo</div>
+                                </td>
+                                <td>
+                                    <div id="vma@master.getMasterNo">@master.getMajorNo</div>
+                                </td>
+                                <td>
+                                    <div id="vmp@master.getMasterNo">@master.getMapNo</div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+                <div><a href='/master/json?key=@masterKey'>JSONデータ取得</a></div>
+                <A href='#'><DIV class="addNew" style="display:inline-block;cursor:pointer;"><span class="label label-info">新規データ追加</span></DIV></A>
+                <div id="result"></div>
+                <div id='colSize'>@masterManager.getData.size()</div>
+                <div id='masterKey'>@masterKey</div>
+                <div id='masterName'>@masterManager.getName - version @masterManager.getVersion</div>
+                <div id='diURL'>/tool/master?k=@ID.MASTER_DIRECTION</div>
+                <div id='mpURL'>/tool/master?k=@ID.MASTER_MAP</div>
+                <div id='maURL'>/tool/masterSub?k=@ID.MASTER_MAJOR_QUEST&d=</div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function(){
+            function updateKeyDropDown(rowNow){
+                var direct = $('#vdi' + rowNow ).text() - 0;
+                $('#ma' + rowNow ).autocomplete('option','source',$('#maURL' ).text() + direct);
+
+            }
+
+            kcClient.getRowData = function(id){
+                return {
+                    master  : $('#masterKey' ).text(),
+                    a001    : id - 0,
+                    a002    : $('#nm' + id ).text(),
+                    a003    : $('#dt' + id ).text(),
+                    a004    : $('#im' + id ).text(),
+                    b001    : $('#vdi' + id ).text(),
+                    b002    : $('#vma' + id ).text(),
+                    b009    : $('#vmp' + id ).text()
+                };
+            }
+            kcClient.updateURL = '/master/update';
+
+            kcClient.createNewRowData = function(no){
+                var $tr = $('<TR>');
+
+                $tr.append($('<TD>' ).text(no));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('di' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('ma' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('nm' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('mp' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vdi' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vma' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vmp' +no )));
+
+            return $tr;
+            }
+            kcClient.tableInfo = {
+                caption     : $('#masterName' ).text() ,
+                colratio    : [60,80,150,150,150,150,150,40,20,20,20],
+                height      : 400,
+                width       : 1000,
+                zebra       : true,
+                sortable    : true,
+                sortedColId : 0,
+                resizeCol   : true,
+                pager       : false,
+                sortType    : ['integer','string','string','string','string','string','string','string','string','string','string']
+            };
+
+            kcClient.setupRow = function(i){
+                kcClient.setNotModify(i);
+                var direct = $('#vdi' + i ).text() - 0 ;
+                kcClient.editDropDown({key:'di',no:i,source:$('#diURL' ).text(),callback:updateKeyDropDown});
+                kcClient.editDropDown({key:'ma',no:i,source:$('#maURL' ).text() + direct,callback:undefined});
+                kcClient.editCel($('#nm' + i));
+                kcClient.editCel($('#dt' + i));
+                kcClient.editCel($('#im' + i));
+                kcClient.editDropDown({key:'mp',no:i,source:$('#mpURL' ).text() ,callback:undefined});
+            }
+            // 初期の列数               ・
+            kcClient.colSize    = $('#colSize' ).text() - 0;
+            // 各種初期化を実行
+            kcClient.init();
+
+        });
+    </script>
+
+}
