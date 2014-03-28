@@ -14,4 +14,14 @@ public abstract class FamilyMaster extends BaseNamedMaster{
         super(node);
     }
     public abstract long getParentNo();
+    public String getParentName()
+    {
+        BaseNamedMaster parent = getParent();
+        if(parent != null){
+            parent.getName();
+        }
+        return "";
+    }
+    public abstract BaseNamedMaster getParent();
+
 }

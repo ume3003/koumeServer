@@ -1,11 +1,16 @@
 package models.master;
 
+import models.BaseMaster;
 import models.BaseNamedMaster;
+import models.ID;
 import models.master.manager.MapManager;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
+
+import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +22,29 @@ import org.codehaus.jackson.node.ObjectNode;
 public class Scenario extends BaseNamedMaster{
     public Scenario(JsonNode node){
         super(node);
+        setConditions(ID.MASTER_SCENARIO_RULE,ScenarioRules);
+        setConditions(ID.MASTER_SCENARIO_UNIT,ScenarioUnits);
     }
     protected long MapNo;
+    protected HashMap<Integer,BaseMaster> ScenarioRules = new HashMap<>();
+    protected HashMap<Integer,BaseMaster> ScenarioUnits = new HashMap<>();
+
+    public HashMap<Integer,BaseMaster> getScenarioRules() {
+        return ScenarioRules;
+    }
+
+    public HashMap<Integer,BaseMaster> getScenarioUnits() {
+        return ScenarioUnits;
+    }
+
+    public void addScenarioRule(ScenarioRule rule)
+    {
+        ScenarioRules.put(rule.getConditionNo(),rule);
+    }
+    public void addScenarioUnit(ScenarioUnit unit)
+    {
+        ScenarioUnits.put(unit.getConditionNo(),unit);
+    }
 
     public void setMapNo(long mapNo) {
         MapNo = mapNo;

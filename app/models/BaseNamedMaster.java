@@ -41,4 +41,16 @@ public class BaseNamedMaster extends BaseMaster {
         result.put(JsonKeyString.IMAGE,getImage());
         return result;
     }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public void setDetail(String detail) {
+        Detail = detail;
+    }
+
+    public void setImage(String image) {
+        Image = image;
+    }
 }

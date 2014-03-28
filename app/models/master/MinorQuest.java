@@ -1,9 +1,6 @@
 package models.master;
 
-import models.BaseNamedMaster;
-import models.FamilyMaster;
-import models.Game;
-import models.ID;
+import models.*;
 import models.master.manager.DirectionManager;
 import models.master.manager.MajorQuestManager;
 import models.master.manager.MapManager;
@@ -12,6 +9,7 @@ import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -30,42 +28,46 @@ public class MinorQuest extends FamilyMaster{
     public long getMajorNo()        { return MajorNo;}
     public long getMapNo()          { return MapNo;}
 
-    protected Vector<QuestUnit> QuestUnits = new Vector<>();
-    public Vector<QuestUnit> getQuestUnits() {
+    protected HashMap<Integer,BaseMaster> QuestUnits = new HashMap<>();
+    public HashMap<Integer,BaseMaster> getQuestUnits() {
         return QuestUnits;
     }
 
-    protected Vector<QuestAppearance> QuestAppearances = new Vector<>();
-    public Vector<QuestAppearance> getQuestAppearances() {
+    protected HashMap<Integer,BaseMaster> QuestAppearances = new HashMap<>();
+    public HashMap<Integer,BaseMaster> getQuestAppearances() {
         return QuestAppearances;
     }
-    protected Vector<QuestClear> QuestClears = new Vector<>();
-    protected Vector<QuestReward> QuestRewards = new Vector<>();
+    protected HashMap<Integer,BaseMaster> QuestClears = new HashMap<>();
+    protected HashMap<Integer,BaseMaster> QuestRewards = new HashMap<>();
 
-    public Vector<QuestClear> getQuestClears() {
+    public HashMap<Integer,BaseMaster> getQuestClears() {
         return QuestClears;
     }
 
-    public Vector<QuestReward> getQuestRewards() {
+    public HashMap<Integer,BaseMaster> getQuestRewards() {
         return QuestRewards;
     }
 
+
     public MinorQuest(JsonNode node){
         super(node);
+        setConditions(ID.MASTER_QUEST_APPEARANCE, QuestAppearances);
+        setConditions(ID.MASTER_QUEST_CLEAR, QuestClears);
+        setConditions(ID.MASTER_QUEST_REWARD, QuestRewards);
+        setConditions(ID.MASTER_QUEST_UNIT, QuestUnits);
     }
-
     public void setData(JsonNode node){
         super.setData(node);
         MapNo = JsonUtil.getLong(node,JsonKeyString.MAP,-1);
 
         DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
-        Direction direction = (Direction)Game.getInstance().getMasterManager(ID.MASTER_DIRECTION).getMaster(DirectionNo);
+        Direction direction = getDirection();
         if(direction != null){
             direction.addMinorQuest(this);
         }
 
         MajorNo = JsonUtil.getLong(node,JsonKeyString.MAJOR,-1);
-        MajorQuest major = (MajorQuest)Game.getInstance().getMasterManager(ID.MASTER_MAJOR_QUEST).getMaster(MajorNo);
+        MajorQuest major = getMajorQuest();
         if(major != null){
             major.addMinorQuest(this);
         }
@@ -81,20 +83,20 @@ public class MinorQuest extends FamilyMaster{
     }
     public void addQuestUnit(QuestUnit unit)
     {
-        QuestUnits.add(unit);
+        QuestUnits.put(unit.getConditionNo(),unit);
     }
     public void addQuestAppearance(QuestAppearance appearance)
     {
-        QuestAppearances.add(appearance);
+        QuestAppearances.put(appearance.getConditionNo(),appearance);
     }
     public void addQuestClear(QuestClear clear)
     {
-        QuestClears.add(clear);
+        QuestClears.put(clear.getConditionNo(),clear);
     }
 
     public void addQuestReward(QuestReward reward)
     {
-        QuestRewards.add(reward);
+        QuestRewards.put(reward.getConditionNo(),reward);
     }
 
     public void setDirectionNo(long directionNo) {
@@ -125,6 +127,11 @@ public class MinorQuest extends FamilyMaster{
     @Override
     public long getParentNo() {
         return MajorNo;
+    }
+
+    @Override
+    public BaseNamedMaster getParent() {
+       return getMajorQuest();
     }
 
     public String getMajorQuestName()

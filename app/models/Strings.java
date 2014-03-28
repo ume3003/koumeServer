@@ -23,6 +23,11 @@ public class Strings {
     public static final String SCENARIO_RULE_FILE       = "json/scenarioRule.json";
     public static final String SCENARIO_UNIT_FILE       = "json/scenarioUnit.json";
     public static final String UNIT_FILE                = "json/unit.json";
+    public static final String RANK_FILE                = "json/rank.json";
+    public static final String CHARACTER_COLUMN_FILE    = "json/characterColumn.json";
+    public static final String CONDITION_KIND_FILE      = "json/kind.json";
+    public static final String SKILL_FILE               = "json/skill.json";
+    public static final String UNIT_SKILL_FILE           = "json/unitSkill.json";
 
     public static final String COMPETITION_RULE         = "対戦ルール";
     public static final String DIRECTION                = "方角";
@@ -39,5 +44,11 @@ public class Strings {
     public static final String SCENARIO_RULE            = "対戦シナリオルール";
     public static final String SCENARIO_UNIT            = "対戦シナリオ使用ユニット";
     public static final String UNIT                     = "ユニット";
+    public static final String SKILL                    = "スキル";
+
+    public static final String RANK                     = "ランク";
+    public static final String CHARACTER_COLUMN         = "キャラ属性";
+    public static final String CONDITION_KIND           = "種別";
+    public static final String UNIT_SKILL               = "ユニットスキル";
 
 }

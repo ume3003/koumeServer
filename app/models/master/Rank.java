@@ -6,12 +6,12 @@ import org.codehaus.jackson.JsonNode;
 /**
  * Created with IntelliJ IDEA.
  * User: shouzouueno
- * Date: 2014/03/13
- * Time: 11:11
+ * Date: 2014/03/28
+ * Time: 17:13
  * To change this template use File | Settings | File Templates.
  */
-public class Map extends BaseNamedMaster{
-    public Map(JsonNode node){
+public class Rank extends BaseNamedMaster{
+    public Rank(JsonNode node) {
         super(node);
     }
 }

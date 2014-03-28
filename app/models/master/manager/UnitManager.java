@@ -1,8 +1,6 @@
 package models.master.manager;
 
-import models.BaseMaster;
-import models.BaseMasterManager;
-import models.Strings;
+import models.*;
 import models.master.Unit;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
@@ -15,7 +13,7 @@ import play.Logger;
  * Time: 11:37
  * To change this template use File | Settings | File Templates.
  */
-public class UnitManager extends BaseMasterManager {
+public class UnitManager extends BaseConditionOwnerMasterManager {
     private static UnitManager instance = new UnitManager();
     public static UnitManager getInstance() { return instance;};
 
@@ -23,6 +21,7 @@ public class UnitManager extends BaseMasterManager {
     {
         Logger.info("UnitManager created");
         loadMasterData();
+        addChild(ID.MASTER_SKILL, UnitSkillManager.getInstance());
     }
 
     @Override

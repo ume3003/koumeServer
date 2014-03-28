@@ -6,6 +6,8 @@ import models.master.manager.DirectionManager;
 import models.utils.*;
 import org.codehaus.jackson.JsonNode;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: shouzouueno
@@ -14,6 +16,15 @@ import org.codehaus.jackson.JsonNode;
  * To change this template use File | Settings | File Templates.
  */
 public class Unit extends BaseNamedMaster {
+    protected HashMap<Integer,BaseMaster> Skills = new HashMap<>();
+
+    public HashMap<Integer, BaseMaster> getSkills() {
+        return Skills;
+    }
+    public void addSkill(UnitSkill skill)
+    {
+        Skills.put(skill.getConditionNo(),skill);
+    }
 
     protected long DirectionNo;
     public long getDirectionNo()    {return DirectionNo;}
@@ -32,5 +43,13 @@ public class Unit extends BaseNamedMaster {
 
     public void setDirectionNo(long directionNo) {
         DirectionNo = directionNo;
+    }
+    public String getDirectionName()
+    {
+        Direction direction = getDirection();
+        if(direction != null){
+            return direction.getName();
+        }
+        return "";
     }
 }

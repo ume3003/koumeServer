@@ -19,6 +19,8 @@ public class JsonKeyString {
     final static public String VALUE            = "a008";
     final static public String KIND             = "a009";
     final static public String CONDITION_TYPE   = "a010";
+    final static public String PARENT           = "a011";
+    final static public String REFERENCE        = "a012";
 
     // master keys
     final static public String DIRECTION        = "b001";
@@ -36,6 +38,11 @@ public class JsonKeyString {
     final static public String COMPETITION_RULE = "b013";
     final static public String CONDITION        = "b014";
     final static public String SCENARIO_UNIT    = "b015";
+    final static public String CONDITION_KIND   = "b016";
+    final static public String RANK             = "b017";
+    final static public String CHARACTER_COLUMN = "b018";
+    final static public String SKILL            = "b019";
+    final static public String UNIT_SKILL       = "b020";
 
     // json structure Key
     final static public String DATA             = "c001";

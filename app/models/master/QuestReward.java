@@ -2,6 +2,7 @@ package models.master;
 
 import models.BaseConditionMaster;
 import models.BaseMaster;
+import models.BaseQuestCondition;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -11,17 +12,17 @@ import org.codehaus.jackson.JsonNode;
  * Time: 13:42
  * To change this template use File | Settings | File Templates.
  */
-public class QuestReward extends BaseConditionMaster{
+public class QuestReward extends BaseQuestCondition {
     public QuestReward(JsonNode node){
         super(node);
     }
 
     @Override
-    public void setData(JsonNode node) {
-        super.setData(node);
+    protected void registerToParent() {
         MinorQuest minorQuest = getMinorQuest();
         if(minorQuest != null){
             minorQuest.addQuestReward(this);
         }
+
     }
 }

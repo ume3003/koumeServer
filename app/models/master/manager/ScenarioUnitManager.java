@@ -1,8 +1,6 @@
 package models.master.manager;
 
-import models.BaseMaster;
-import models.BaseMasterManager;
-import models.Strings;
+import models.*;
 import models.master.ScenarioUnit;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
@@ -15,7 +13,7 @@ import play.Logger;
  * Time: 18:07
  * To change this template use File | Settings | File Templates.
  */
-public class ScenarioUnitManager extends BaseMasterManager{
+public class ScenarioUnitManager extends BaseConditionMasterManager {
     private static ScenarioUnitManager instance = new ScenarioUnitManager();
     public static ScenarioUnitManager getInstance() { return instance;};
     protected ScenarioUnitManager()
@@ -46,5 +44,10 @@ public class ScenarioUnitManager extends BaseMasterManager{
     ScenarioUnit getScenarioUnit(long no)
     {
         return (ScenarioUnit)getMaster(no);
+    }
+
+    @Override
+    public BaseMasterManager getParentMasterManager() {
+        return Game.getInstance().getMasterManager(ID.MASTER_SCENARIO);
     }
 }

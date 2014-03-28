@@ -1,10 +1,5 @@
 package models;
 
-import models.BaseMaster;
-import models.master.Condition;
-import models.master.MinorQuest;
-import models.master.manager.ConditionManager;
-import models.master.manager.MinorQuestManager;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -17,53 +12,75 @@ import org.codehaus.jackson.node.ObjectNode;
  * Time: 20:09
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BaseConditionMaster extends BaseMaster {
+public abstract class BaseConditionMaster extends FamilyMaster {
     protected BaseConditionMaster(JsonNode node){
         super(node);
     }
+    protected int conditionNo;
 
-    protected long MinorQuestNo;
-    protected long ConditionNo;
-
-    public long getMinorQuestNo() {
-        return MinorQuestNo;
+    public int getConditionNo() {
+        return conditionNo;
     }
 
-    public long getConditionNo() {
-        return ConditionNo;
+    public void setConditionNo(int conditionNo) {
+        this.conditionNo = conditionNo;
     }
 
-    public void setMinorQuestNo(long minorQuestNo) {
-        MinorQuestNo = minorQuestNo;
+    protected int Kind;
+    protected long KeyNo;
+    protected long Value;
+
+    public int getKind() {
+        return Kind;
     }
 
-    public void setConditionNo(long conditionNo) {
-        ConditionNo = conditionNo;
+    public long getKeyNo() {
+        return KeyNo;
     }
+
+    public long getValue() {
+        return Value;
+    }
+
+    public void setKind(int kind) {
+        Kind = kind;
+    }
+
+    public void setKeyNo(long keyNo) {
+        KeyNo = keyNo;
+    }
+
+    public void setValue(long value) {
+        Value = value;
+    }
+    protected abstract void registerToParent();
 
     @Override
     public void setData(JsonNode node) {
         super.setData(node);
-        MinorQuestNo = JsonUtil.getLong(node, JsonKeyString.MINOR, -1);
-        ConditionNo = JsonUtil.getLong(node,JsonKeyString.CONDITION,-1);
+        conditionNo = JsonUtil.getInt(node,JsonKeyString.CONDITION,-1);
+        Kind = JsonUtil.getInt(node, JsonKeyString.KIND,-1);
+        KeyNo = JsonUtil.getLong(node,JsonKeyString.KEY_NO,-1);
+        Value = JsonUtil.getLong(node,JsonKeyString.VALUE,-1);
     }
 
     @Override
     public ObjectNode toJsonObject() {
         ObjectNode result =  super.toJsonObject();
-        result.put(JsonKeyString.MINOR,String.valueOf(getMinorQuestNo()));
         result.put(JsonKeyString.CONDITION,String.valueOf(getConditionNo()));
+        result.put(JsonKeyString.KIND,String.valueOf(getKind()));
+        result.put(JsonKeyString.KEY_NO,String.valueOf(getKeyNo()));
+        result.put(JsonKeyString.VALUE,String.valueOf(getValue()));
         return result;
     }
 
-    public MinorQuest getMinorQuest()
+    public BaseMaster getKeyData()
     {
-        return MinorQuestManager.getInstance().getMinorQuest(getMinorQuestNo());
+        BaseMasterManager manager = Game.getInstance().getMasterManager(Kind);
+        if(manager != null){
+            return manager.getMaster(getKeyNo());
+        }
+        return null;
     }
-    public Condition getCondition()
-    {
-        return ConditionManager.getInstance().getCondition(getConditionNo());
-    }
-
 
 }

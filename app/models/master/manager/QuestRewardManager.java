@@ -1,8 +1,6 @@
 package models.master.manager;
 
-import models.BaseMaster;
-import models.BaseMasterManager;
-import models.Strings;
+import models.*;
 import models.master.QuestReward;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
@@ -15,7 +13,7 @@ import play.Logger;
  * Time: 15:20
  * To change this template use File | Settings | File Templates.
  */
-public class QuestRewardManager extends BaseMasterManager{
+public class QuestRewardManager extends BaseConditionMasterManager {
     private static QuestRewardManager instance = new QuestRewardManager();
     public static QuestRewardManager getInstance() { return instance;};
     protected QuestRewardManager(){
@@ -47,4 +45,8 @@ public class QuestRewardManager extends BaseMasterManager{
         return (QuestReward)getMaster(no);
     }
 
+    @Override
+    public BaseMasterManager getParentMasterManager() {
+        return Game.getInstance().getMasterManager(ID.MASTER_MINOR_QUEST);
+    }
 }

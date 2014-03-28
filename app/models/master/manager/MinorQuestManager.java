@@ -1,8 +1,6 @@
 package models.master.manager;
 
-import models.BaseMaster;
-import models.BaseMasterManager;
-import models.Strings;
+import models.*;
 import models.master.MinorQuest;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
@@ -15,7 +13,7 @@ import play.Logger;
  * Time: 14:12
  * To change this template use File | Settings | File Templates.
  */
-public class MinorQuestManager  extends BaseMasterManager {
+public class MinorQuestManager  extends BaseConditionOwnerMasterManager {
 
     private static MinorQuestManager instance = new MinorQuestManager();
     public static MinorQuestManager getInstance() { return instance;};
@@ -41,6 +39,10 @@ public class MinorQuestManager  extends BaseMasterManager {
     {
         Logger.info("MinorQuestManager created");
         loadMasterData();
+        addChild(ID.MASTER_QUEST_APPEARANCE, QuestAppearanceManager.getInstance());
+        addChild(ID.MASTER_QUEST_CLEAR, QuestClearManager.getInstance());
+        addChild(ID.MASTER_QUEST_REWARD, QuestRewardManager.getInstance());
+        addChild(ID.MASTER_QUEST_UNIT, QuestUnitManager.getInstance());
     }
     public MinorQuest getMinorQuest(long no)
     {

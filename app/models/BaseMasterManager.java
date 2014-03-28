@@ -25,6 +25,7 @@ public abstract class BaseMasterManager {
 
     protected long Version;
     protected JsonNode Node;
+
     protected HashMap<Long,BaseMaster> Data = new HashMap<Long,BaseMaster>();
 
     public JsonNode getNode()       { return Node;}

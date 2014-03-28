@@ -2,9 +2,7 @@ package controllers;
 
 import models.*;
 import models.master.Direction;
-import models.master.manager.DirectionManager;
-import models.master.manager.MajorQuestManager;
-import models.master.manager.MinorQuestManager;
+import models.master.manager.*;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -32,21 +30,41 @@ public class MasterApplication extends Controller
 {
     public static Result index()
     {
-        return ok(index.render(Game.getInstance().getData()));
+        return ok(index.render(Game.getInstance().getMenu()));
     }
 
     public static Result list(int key) {
         BaseMasterManager masterManager = Game.getInstance().getMasterManager(key);
         switch(key){
-            case ID.MASTER_UNIT:
             case ID.MASTER_MAJOR_QUEST:
-                return ok(views.html.MajorQuest.render(key, MajorQuestManager.getInstance(), Game.getInstance().getData()));
+                return ok(views.html.MajorQuest.render(key, MajorQuestManager.getInstance(), Game.getInstance().getMenu()));
             case ID.MASTER_MINOR_QUEST:
-                return ok(views.html.MinorQuest.render(key, MinorQuestManager.getInstance(), Game.getInstance().getData()));
+                return ok(views.html.MinorQuest.render(key, MinorQuestManager.getInstance(), Game.getInstance().getMenu()));
+            case ID.MASTER_CONDITION_KIND:
+                return ok(views.html.Kind.render(key, KindManager.getInstance(), Game.getInstance().getMenu()));
+            case ID.MASTER_UNIT:
+                return ok(views.html.Unit.render(key, UnitManager.getInstance(),Game.getInstance().getMenu()));
+            case ID.MASTER_SCENARIO:
+                return ok(views.html.Scenario.render(key,ScenarioManager.getInstance(),Game.getInstance().getMenu()));
             default:
                 break;
         }
-        return ok(list.render(key, masterManager, Game.getInstance().getData()));
+        return ok(list.render(key, masterManager, Game.getInstance().getMenu()));
+    }
+
+    public static Result condition(int parentKey,int conditionKey,int parentNo) {
+        BaseMasterManager parentMasterManager = Game.getInstance().getMasterManager(parentKey);
+        BaseMaster parentMaster = parentMasterManager.getMaster(parentNo);
+        Result result = ok("");
+        switch(parentKey){
+            case ID.MASTER_MINOR_QUEST:
+            case ID.MASTER_SCENARIO:
+            case ID.MASTER_UNIT_SKILL:
+                result = ok(views.html.Condition.render(parentKey,conditionKey,parentNo,parentMaster, Game.getInstance().getMenu()));
+            default:
+                break;
+        }
+        return result;
     }
     public static Result json(int key) {
         BaseMasterManager masterManager = Game.getInstance().getMasterManager(key);
@@ -60,6 +78,25 @@ public class MasterApplication extends Controller
         BaseMasterManager manager = Game.getInstance().getMasterManager(key);
         ObjectNode result = manager.updateAndInsertData(json);
         return ok(result);
+    }
+    public static Result kindList(int editMasterKey,String term)
+    {
+        BaseConditionMasterManager manager = (BaseConditionMasterManager)Game.getInstance().getMasterManager(editMasterKey);
+        ArrayNode result = Json.newObject().arrayNode();
+        if(manager != null){
+            result = manager.makeKindNameMatchList(term);
+        }
+        return ok(result);
+    }
+    public static Result keyList(int editMasterKey,int kind,String term)
+    {
+        BaseConditionMasterManager manager = (BaseConditionMasterManager)Game.getInstance().getMasterManager(editMasterKey);
+        ArrayNode result = Json.newObject().arrayNode();
+        if(manager != null){
+            result = manager.makeKeyNameMatchList(kind,term);
+        }
+        return ok(result);
+
     }
     public static Result masterSub(int key,int parentKey,String term)
     {
@@ -106,6 +143,24 @@ public class MasterApplication extends Controller
                     }
                 }
             }
+        }
+        else{
+            Set<Integer> set = Game.getInstance().getMenu().keySet();
+            Iterator<Integer> it = set.iterator();
+            while(it.hasNext()){
+                Integer i = it.next();
+                BaseMasterManager m = Game.getInstance().getMenu().get(i);
+                if(m != null){
+                    String name = m.getName();
+                    if(name != null && name.contains(term)){
+                        ObjectNode o = Json.newObject();
+                        o.put("label",name);
+                        o.put("no",i);
+                        result.add(o);
+                    }
+                }
+            }
+
         }
         return ok(result);
     }

@@ -66,4 +66,9 @@ public class MajorQuest extends FamilyMaster {
     public long getParentNo() {
         return DirectionNo;
     }
+
+    @Override
+    public BaseNamedMaster getParent() {
+        return getDirection();
+    }
 }

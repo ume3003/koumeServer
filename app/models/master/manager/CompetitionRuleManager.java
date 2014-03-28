@@ -27,6 +27,7 @@ public class CompetitionRuleManager extends BaseMasterManager
     }
 
 
+
     @Override
     public String getName() {
         return Strings.COMPETITION_RULE;
