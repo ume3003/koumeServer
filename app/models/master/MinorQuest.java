@@ -19,7 +19,7 @@ import java.util.Vector;
  * Time: 10:50
  * To change this template use File | Settings | File Templates.
  */
-public class MinorQuest extends FamilyMaster{
+public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
     protected long DirectionNo;
     protected long MajorNo;
     protected long MapNo;
@@ -127,6 +127,11 @@ public class MinorQuest extends FamilyMaster{
     @Override
     public long getParentNo() {
         return MajorNo;
+    }
+
+    @Override
+    public String getParentName() {
+        return getParent().getName();
     }
 
     @Override

@@ -2,6 +2,7 @@ package models.master;
 
 import models.BaseConditionMaster;
 import models.BaseNamedMaster;
+import models.ID;
 import models.master.manager.UnitManager;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
@@ -16,50 +17,32 @@ import org.codehaus.jackson.node.ObjectNode;
  * To change this template use File | Settings | File Templates.
  */
 public class UnitSkill extends BaseConditionMaster {
-    protected long UnitNo;
 
     public long getUnitNo() {
-        return UnitNo;
+        return getParentNo();
     }
 
     public void setUnitNo(long unitNo) {
-        UnitNo = unitNo;
-    }
-
-    @Override
-    public void setData(JsonNode node) {
-        super.setData(node);
-        UnitNo = JsonUtil.getLong(node, JsonKeyString.UNIT,-1);
-    }
-
-    @Override
-    public ObjectNode toJsonObject() {
-        ObjectNode result = super.toJsonObject();
-        result.put(JsonKeyString.UNIT,String.valueOf(getUnitNo()));
-        return result;
+        setParentNo(unitNo);
     }
 
     @Override
     protected void registerToParent() {
         Unit parent = getUnit();
         if(parent != null){
+            parent.addSkill(this);
 
         }
-    }
-
-    @Override
-    public long getParentNo() {
-        return getUnitNo();
-    }
-
-    @Override
-    public BaseNamedMaster getParent() {
-        return UnitManager.getInstance().getUnit(getUnitNo());
     }
 
     public UnitSkill(JsonNode node) {
         super(node);
 
+    }
+
+    @Override
+    protected int getParentKey() {
+        return ID.MASTER_UNIT;
     }
 
     public Unit getUnit()

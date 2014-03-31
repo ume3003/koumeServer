@@ -203,8 +203,8 @@
                         headers     : { 'Content-Type' : 'application/json'},
                         url         : arg.url,
                         success     : function(data,datatype){
-                            kcClient.setNotModify(arg.jsonData.a001);
-                            kcClient.activateLink(arg.jsonData.a001,arg.autoActivate);
+                            kcClient.setNotModify(arg.jsonData.jsData);
+                            kcClient.activateLink(arg.jsonData.jsData,arg.autoActivate);
                             if(arg.afterUpdate !== undefined){
                                 arg.afterUpdate(data);
                             }

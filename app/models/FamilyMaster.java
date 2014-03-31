@@ -9,19 +9,9 @@ import org.codehaus.jackson.JsonNode;
  * Time: 18:23
  * To change this template use File | Settings | File Templates.
  */
-public abstract class FamilyMaster extends BaseNamedMaster{
-    public FamilyMaster(JsonNode node){
-        super(node);
-    }
+public interface FamilyMaster {
     public abstract long getParentNo();
-    public String getParentName()
-    {
-        BaseNamedMaster parent = getParent();
-        if(parent != null){
-            parent.getName();
-        }
-        return "";
-    }
+    public abstract String getParentName();
     public abstract BaseNamedMaster getParent();
 
 }

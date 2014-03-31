@@ -57,6 +57,7 @@
 
             kcClient.getRowData = function(id){
                 return {
+                    jsData  : id - 0,
                     master  : $('#masterKey' ).text(),
                     a001    : id - 0,
                     a002    : $('#nm' + id ).text(),

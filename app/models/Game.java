@@ -36,6 +36,14 @@ public class Game {
         }
         return null;
     };
+    public String getMasterManagerName(int masterNo)
+    {
+       BaseMasterManager manager = getMasterManager(masterNo);
+        if(manager != null){
+            return manager.getName();
+        }
+        return "";
+    }
     public boolean init()
     {
         Data.put(ID.MASTER_DIRECTION, DirectionManager.getInstance());
@@ -76,6 +84,15 @@ public class Game {
         Menu.put(ID.MASTER_CONDITION_KIND,KindManager.getInstance());
         Menu.put(ID.MASTER_CHARACTER_COL,CharacterColumnManager.getInstance());
         Menu.put(ID.MASTER_SKILL,SkillManager.getInstance());
+
+        QuestAppearanceManager.getInstance().registerAllCondition();
+        QuestClearManager.getInstance().registerAllCondition();
+        QuestRewardManager.getInstance().registerAllCondition();
+        QuestUnitManager.getInstance().registerAllCondition();
+
+        ScenarioRuleManager.getInstance().registerAllCondition();
+        ScenarioUnitManager.getInstance().registerAllCondition();
+        UnitSkillManager.getInstance().registerAllCondition();
 
         return true;
 

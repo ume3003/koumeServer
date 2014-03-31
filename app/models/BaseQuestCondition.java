@@ -17,43 +17,21 @@ public abstract class BaseQuestCondition extends BaseConditionMaster{
     public BaseQuestCondition(JsonNode node){
         super(node);
     }
-    protected long MinorQuestNo;
+    @Override
+    protected int getParentKey() {
+        return ID.MASTER_MINOR_QUEST;
+    }
 
     public void setMinorQuestNo(long minorQuestNo) {
-        MinorQuestNo = minorQuestNo;
+        setParentNo(minorQuestNo);
     }
 
     public long getMinorQuestNo() {
-
-        return MinorQuestNo;
+        return getParentNo();
     }
 
     public MinorQuest getMinorQuest()
     {
         return (MinorQuest)getParent();
     }
-    @Override
-    public long getParentNo() {
-        return getMinorQuestNo();
-    }
-
-    @Override
-    public BaseNamedMaster getParent() {
-        return (BaseNamedMaster) Game.getInstance().getMaster(ID.MASTER_MINOR_QUEST,getMinorQuestNo());
-    }
-
-    @Override
-    public ObjectNode toJsonObject() {
-        ObjectNode result = super.toJsonObject();
-        result.put(JsonKeyString.MINOR,getMinorQuestNo());
-        return result;
-    }
-
-    @Override
-    public void setData(JsonNode node) {
-        super.setData(node);
-        MinorQuestNo = JsonUtil.getLong(node, JsonKeyString.MINOR, -1);
-        registerToParent();
-    }
-
 }

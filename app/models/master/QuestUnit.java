@@ -34,10 +34,8 @@ public class QuestUnit extends BaseQuestCondition{
 
     }
 
-    public long getMinorQuestNo()       { return getParentNo();}
     public long getUnitNo()             { return getKeyNo();}
     public long getAppearanceRate()     { return getValue();}
-    public MinorQuest getMinorQuest()   { return (MinorQuest)getParent(); }
     public Unit getUnit()               { return UnitManager.getInstance().getUnit(getUnitNo());}
 
 

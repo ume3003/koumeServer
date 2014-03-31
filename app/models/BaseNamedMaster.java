@@ -25,9 +25,9 @@ public class BaseNamedMaster extends BaseMaster {
     public void setData(JsonNode node)
     {
         super.setData(node);
-        Name = JsonUtil.getString(node, JsonKeyString.NAME,"");
-        Detail = JsonUtil.getString(node,JsonKeyString.DETAIL,"");
-        Image = JsonUtil.getString(node,JsonKeyString.IMAGE,"");
+        setName( JsonUtil.getString(node, JsonKeyString.NAME,""));
+        setDetail( JsonUtil.getString(node,JsonKeyString.DETAIL,""));
+        setImage( JsonUtil.getString(node,JsonKeyString.IMAGE,""));
     }
     public String getName()     { return Name;}
     public String getDetail()   { return Detail;}

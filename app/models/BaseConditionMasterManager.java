@@ -55,18 +55,23 @@ public abstract class BaseConditionMasterManager extends BaseMasterManager{
     public ArrayNode makeKeyNameMatchList(int kind,String term)
     {
         ArrayNode result = Json.newObject().arrayNode();
-        Set<Long> set = Game.getInstance().getMasterManager(kind).getData().keySet();
-        Iterator<Long> it = set.iterator();
-        while(it.hasNext()){
-            Long i = it.next();
-            BaseMasterManager m = Kinds.get(i);
-            if(m != null){
-                String name = m.getName();
-                if(name != null && name.contains(term)){
-                    ObjectNode o = Json.newObject();
-                    o.put("label",name);
-                    o.put("no",i);
-                    result.add(o);
+        BaseMasterManager manager = Kinds.get(kind);
+        if(manager != null && manager.getData() != null){
+            Set<Long> set = manager.getData().keySet();
+            Iterator<Long> it = set.iterator();
+            while(it.hasNext()){
+                Long i = it.next();
+                if(manager.getData() != null){
+                    BaseNamedMaster m = (BaseNamedMaster)manager.getData().get(i);
+                    if(m != null){
+                        String name = m.getName();
+                        if(name != null && name.contains(term)){
+                            ObjectNode o = Json.newObject();
+                            o.put("label",name);
+                            o.put("no",i);
+                            result.add(o);
+                        }
+                    }
                 }
             }
         }
@@ -74,21 +79,26 @@ public abstract class BaseConditionMasterManager extends BaseMasterManager{
 
     }
 
+    /*
+        親のマスターデータがもっている条件の配列からデータを探し、
+        ない場合は新規に本データ列及び、親の条件の配列に追加
+        持ち方はユニークIDと親ID+条件内NOがともにユニーク。ただしユニークIDは使用していない。
+     */
     public ObjectNode updateAndInsertConditionData(JsonNode json)
     {
         if(json == null){
             throw new RuntimeException("node is null");
         }
-        int conditionType = JsonUtil.getInt(json, JsonKeyString.CONDITION_TYPE, -1);
+        int conditionKey = JsonUtil.getInt(json, JsonKeyString.CONDITION_KEY, -1);
         long parentNo = JsonUtil.getLong(json, JsonKeyString.PARENT, -1);             // 条件をもってる親のNO
         int conditionNo = JsonUtil.getInt(json, JsonKeyString.CONDITION, -1);              // 条件内の番号
         ObjectNode result = Json.newObject();
-        if(parentNo >=0 && conditionNo >= 0 && conditionType >= 0){
+        if(parentNo >=0 && conditionNo >= 0 && conditionKey >= 0){
             BaseMaster parentMaster = getParentMasterManager().getMaster(parentNo);
             if(parentMaster != null){
-                HashMap<Integer,BaseMaster> masters = parentMaster.getConditions(conditionType);
+                HashMap<Integer,BaseMaster> masters = parentMaster.getConditions(conditionKey);
                 BaseMaster master = masters.get(conditionNo);
-                if(master == null){
+                if(!masters.containsKey(conditionNo)){
                     master = createMaster(json);
                     master.setMasterNo(size());
                     setMaster(master.getMasterNo(), master);
@@ -106,5 +116,17 @@ public abstract class BaseConditionMasterManager extends BaseMasterManager{
         result.put(JsonKeyString.SUCCESS,1);
         return result;
 
+    }
+
+    public void registerAllCondition()
+    {
+        HashMap<Long,BaseMaster> data = getData();
+        Set<Long> keySet = data.keySet();
+        Iterator<Long> it = keySet.iterator();
+        while(it.hasNext()){
+            long key = it.next();
+            BaseConditionMaster master = (BaseConditionMaster)data.get(key);
+            master.registerToParent();
+        }
     }
 }

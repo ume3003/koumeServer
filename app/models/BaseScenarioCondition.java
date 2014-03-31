@@ -17,13 +17,19 @@ public abstract class BaseScenarioCondition extends BaseConditionMaster {
     protected long ScenarioNo;
 
     public void setScenarioNo(long scenarioNo) {
-        ScenarioNo = scenarioNo;
+        setParentNo(scenarioNo);
     }
 
     public long getScenarioNo() {
 
-        return ScenarioNo;
+        return getParentNo();
     }
+
+    @Override
+    protected int getParentKey() {
+        return ID.MASTER_SCENARIO;
+    }
+
     public Scenario getScnario()
     {
         return (Scenario)getParent();
@@ -33,27 +39,4 @@ public abstract class BaseScenarioCondition extends BaseConditionMaster {
         super(node);
     }
 
-    @Override
-    public long getParentNo() {
-        return getScenarioNo();
-    }
-
-    @Override
-    public BaseNamedMaster getParent() {
-        return (BaseNamedMaster)Game.getInstance().getMaster(ID.MASTER_SCENARIO,getParentNo());
-    }
-
-    @Override
-    public ObjectNode toJsonObject() {
-        ObjectNode result = super.toJsonObject();
-        result.put(JsonKeyString.SCENARIO,getScenarioNo());
-        return result;
-    }
-
-    @Override
-    public void setData(JsonNode node) {
-        super.setData(node);
-        ScenarioNo = JsonUtil.getLong(node, JsonKeyString.SCENARIO, -1);
-        registerToParent();
-    }
 }

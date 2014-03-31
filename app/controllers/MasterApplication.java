@@ -54,7 +54,7 @@ public class MasterApplication extends Controller
 
     public static Result condition(int parentKey,int conditionKey,int parentNo) {
         BaseMasterManager parentMasterManager = Game.getInstance().getMasterManager(parentKey);
-        BaseMaster parentMaster = parentMasterManager.getMaster(parentNo);
+        BaseNamedMaster parentMaster = (BaseNamedMaster)parentMasterManager.getMaster(parentNo);
         Result result = ok("");
         switch(parentKey){
             case ID.MASTER_MINOR_QUEST:
@@ -78,6 +78,24 @@ public class MasterApplication extends Controller
         BaseMasterManager manager = Game.getInstance().getMasterManager(key);
         ObjectNode result = manager.updateAndInsertData(json);
         return ok(result);
+    }
+    public static Result conditionUpdate()
+    {
+        JsonNode json = JsonUtil.getJsonFromRequest(request());
+        int parentKey = JsonUtil.getInt(json,JsonKeyString.PARENT_KEY,-1);
+        int conditionKey = JsonUtil.getInt(json,JsonKeyString.CONDITION_KEY,-1);
+
+        BaseConditionOwnerMasterManager parentManager = (BaseConditionOwnerMasterManager)Game.getInstance().getMasterManager(parentKey);
+        BaseConditionMasterManager conditionManager = parentManager.getConditionManager(conditionKey);
+        Logger.info("parentKey " + parentKey + "-" + parentManager.getName() + " conditionKey " + conditionKey + "-" + conditionManager.getName());
+        ObjectNode result = conditionManager.updateAndInsertConditionData(json);
+        return ok(result);
+    }
+    public static Result conditionDelete()
+    {
+        JsonNode json = JsonUtil.getJsonFromRequest(request());
+        Logger.info(json.toString());
+        return ok(json.toString());
     }
     public static Result kindList(int editMasterKey,String term)
     {
@@ -108,8 +126,8 @@ public class MasterApplication extends Controller
             Iterator<Long> it = set.iterator();
             while (it.hasNext()){
                 Long k = it.next();
-                FamilyMaster m = (FamilyMaster)namedMasters.get(k);
-                if(m != null && m.getParentNo() == parentKey){
+                BaseNamedMaster m = (BaseNamedMaster)namedMasters.get(k);
+                if(m != null && ((FamilyMaster)m).getParentNo() == parentKey){
                     String name = m.getName();
                     if(name != null && name.contains(term)){
                         ObjectNode o = Json.newObject();

@@ -21,6 +21,7 @@ public class QuestUnitManager extends BaseConditionMasterManager
     {
         Logger.info("QuestUnitMaster created");
         loadMasterData();
+        addKind(ID.MASTER_UNIT,UnitManager.getInstance());
     }
 
     @Override

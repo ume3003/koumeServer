@@ -19,9 +19,15 @@ import java.util.Vector;
  * Time: 10:40
  * To change this template use File | Settings | File Templates.
  */
-public class MajorQuest extends FamilyMaster {
+public class MajorQuest extends BaseNamedMaster implements FamilyMaster {
     protected long DirectionNo;
     public long getDirectionNo()    {return DirectionNo;}
+
+    @Override
+    public String getParentName() {
+        return getParent().getName();
+    }
+
     public void setDirectionNo(long directionNo) {
         DirectionNo = directionNo;
     }
