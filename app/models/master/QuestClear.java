@@ -2,6 +2,7 @@ package models.master;
 
 import models.BaseConditionMaster;
 import models.BaseQuestCondition;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -12,6 +13,11 @@ import org.codehaus.jackson.JsonNode;
  * To change this template use File | Settings | File Templates.
  */
 public class QuestClear extends BaseQuestCondition{
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_QUEST_CLEAR;
+    }
+
     public QuestClear(JsonNode node){
         super(node);
     }

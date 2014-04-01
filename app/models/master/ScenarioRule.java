@@ -2,6 +2,7 @@ package models.master;
 
 import models.BaseMaster;
 import models.BaseScenarioCondition;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -13,6 +14,11 @@ import org.codehaus.jackson.JsonNode;
  */
 public class ScenarioRule extends BaseScenarioCondition{
 
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_SCENARIO_RULE;
+    }
+
     public ScenarioRule(JsonNode node)
     {
         super(node);
@@ -20,7 +26,7 @@ public class ScenarioRule extends BaseScenarioCondition{
 
     @Override
     protected void registerToParent() {
-        Scenario scenario = getScnario();
+        Scenario scenario = getScenario();
         if(scenario != null){
             scenario.addScenarioRule(this);
         }

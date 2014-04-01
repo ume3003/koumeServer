@@ -27,7 +27,8 @@ public class Strings {
     public static final String CHARACTER_COLUMN_FILE    = "json/characterColumn.json";
     public static final String CONDITION_KIND_FILE      = "json/kind.json";
     public static final String SKILL_FILE               = "json/skill.json";
-    public static final String UNIT_SKILL_FILE           = "json/unitSkill.json";
+    public static final String UNIT_SKILL_FILE          = "json/unitSkill.json";
+    public static final String FORCE_FILE               = "json/force.json";
 
     public static final String COMPETITION_RULE         = "対戦ルール";
     public static final String DIRECTION                = "方角";
@@ -50,5 +51,6 @@ public class Strings {
     public static final String CHARACTER_COLUMN         = "キャラ属性";
     public static final String CONDITION_KIND           = "種別";
     public static final String UNIT_SKILL               = "ユニットスキル";
+    public static final String FORCE                    = "勢力";
 
 }

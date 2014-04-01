@@ -1,6 +1,7 @@
 package models.master;
 
 import models.BaseNamedMaster;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -11,6 +12,11 @@ import org.codehaus.jackson.JsonNode;
  * To change this template use File | Settings | File Templates.
  */
 public class Skill extends BaseNamedMaster{
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_SKILL;
+    }
+
     public Skill(JsonNode node) {
         super(node);
     }

@@ -4,6 +4,7 @@ import models.master.manager.*;
 import models.utils.JsonKeyString;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
+import play.Logger;
 import play.libs.Json;
 
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public class Game {
 
         Data.put(ID.MASTER_SKILL,SkillManager.getInstance());
         Data.put(ID.MASTER_UNIT_SKILL,UnitSkillManager.getInstance());
+        Data.put(ID.MASTER_FORCE,ForceManager.getInstance());
 
         Menu.put(ID.MASTER_DIRECTION, DirectionManager.getInstance());
         Menu.put(ID.MASTER_MAJOR_QUEST, MajorQuestManager.getInstance());
@@ -84,6 +86,7 @@ public class Game {
         Menu.put(ID.MASTER_CONDITION_KIND,KindManager.getInstance());
         Menu.put(ID.MASTER_CHARACTER_COL,CharacterColumnManager.getInstance());
         Menu.put(ID.MASTER_SKILL,SkillManager.getInstance());
+        Menu.put(ID.MASTER_FORCE,ForceManager.getInstance());
 
         QuestAppearanceManager.getInstance().registerAllCondition();
         QuestClearManager.getInstance().registerAllCondition();
@@ -107,6 +110,9 @@ public class Game {
                row.put(JsonKeyString.MASTER_NO  ,String.valueOf(i));
                row.put(JsonKeyString.VERSION    ,String.valueOf(master.getVersion()));
                arr.add(row);
+            }
+            else{
+                Logger.debug(i + " is null");
             }
         }
         ObjectNode result = Json.newObject();

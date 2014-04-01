@@ -39,10 +39,10 @@ public class MinorQuestManager  extends BaseConditionOwnerMasterManager {
     {
         Logger.info("MinorQuestManager created");
         loadMasterData();
-        addChild(ID.MASTER_QUEST_APPEARANCE, QuestAppearanceManager.getInstance());
-        addChild(ID.MASTER_QUEST_CLEAR, QuestClearManager.getInstance());
-        addChild(ID.MASTER_QUEST_REWARD, QuestRewardManager.getInstance());
-        addChild(ID.MASTER_QUEST_UNIT, QuestUnitManager.getInstance());
+        addChildNo(ID.MASTER_QUEST_APPEARANCE);
+        addChildNo(ID.MASTER_QUEST_CLEAR);
+        addChildNo(ID.MASTER_QUEST_REWARD);
+        addChildNo(ID.MASTER_QUEST_UNIT);
     }
     public MinorQuest getMinorQuest(long no)
     {

@@ -7,17 +7,23 @@
             <div class="span11">
                 <table id="masterData">
                     <thead>
-                        <th>No</th><th>方角</th><th>名称</th><th>摘要</th><th>ファイル名</th><th></th><th></th><th></th><th></th>
+                        <th>No</th><th>方角</th><TH>勢力</TH></TF><th>名称</th><th>摘要</th><th>ファイル名</th><th>UPD</th><th>DIR</th><TH>FORCE</TH>
                     </thead>
                     <tbody>
                     @for(key <- masterManager.getData.keySet()){
                         @defining(masterManager.getData.get(key).asInstanceOf[models.master.Unit]){ master =>
                             <tr>
                                 <td>
-                                    <A HREF="/master/condition?k=@ID.MASTER_UNIT&c=@ID.MASTER_UNIT_SKILL&m=@master.getMasterNo">@master.getMasterNo</A></td>
+                                    <A HREF="/master/condition?k=@ID.MASTER_UNIT&c=@ID.MASTER_UNIT_SKILL&m=@master.getMasterNo">@master.getMasterNo</A>
+                                </td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id="di@master.getMasterNo">
                                     @master.getDirectionName
+                                    </div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id="fo@master.getMasterNo">
+                                    @master.getForceName
                                     </div>
                                 </td>
                                 <td tabindex="100">
@@ -35,6 +41,9 @@
                                 <td>
                                     <div id="vdi@master.getMasterNo">@master.getDirectionNo</div>
                                 </td>
+                                <td>
+                                    <div id="vfo@master.getMasterNo">@master.getForceNo</div>
+                                </td>
                             </tr>
                         }
                     }
@@ -47,6 +56,7 @@
                 <div id='masterKey'>@masterKey</div>
                 <div id='masterName'>@masterManager.getName - version @masterManager.getVersion</div>
                 <div id='diURL'>/tool/master?k=@ID.MASTER_DIRECTION</div>
+                <div id='foURL'>/tool/master?k=@ID.MASTER_FORCE</div>
             </div>
         </div>
     </div>
@@ -63,7 +73,8 @@
                     a002    : $('#nm' + id ).text(),
                     a003    : $('#dt' + id ).text(),
                     a004    : $('#im' + id ).text(),
-                    b001    : $('#vdi' + id ).text()
+                    b001    : $('#vdi' + id ).text(),
+                    b021    : $('#vfo' + id ).text()
                 };
             }
             kcClient.updateURL = '/master/update';
@@ -73,17 +84,19 @@
 
                 $tr.append($('<TD>' ).text(no));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('di' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('fo' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('nm' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
                 $tr.append($('<TD>' ).append(kcClient.makeDataCel('vdi' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vfo' +no )));
 
             return $tr;
             }
             kcClient.tableInfo = {
                 caption     : $('#masterName' ).text() ,
-                colratio    : [60,150,150,150,40,20],
+                colratio    : [60,150,150,150,150,240,40,40,40],
                 height      : 400,
                 width       : 1000,
                 zebra       : true,
@@ -91,13 +104,14 @@
                 sortedColId : 0,
                 resizeCol   : true,
                 pager       : false,
-                sortType    : ['integer','string','string','string','string','string','string']
+                sortType    : ['integer','string','string','string','string','string','string','string','string']
             };
 
             kcClient.setupRow = function(i){
                 kcClient.setNotModify(i);
                 var direct = $('#vdi' + i ).text() - 0 ;
                 kcClient.editDropDown({key:'di',no:i,source:$('#diURL' ).text(),callback:undefined});
+                kcClient.editDropDown({key:'fo',no:i,source:$('#foURL' ).text(),callback:undefined});
                 kcClient.editCel($('#nm' + i));
                 kcClient.editCel($('#dt' + i));
                 kcClient.editCel($('#im' + i));

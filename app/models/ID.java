@@ -31,6 +31,6 @@ public class ID {
     public static final int MASTER_SCENARIO_UNIT = 17;
 
     public static final int MASTER_UNIT_SKILL = 18;
-
-    public static final int MASTER_COUNT = MASTER_SCENARIO_UNIT + 1;
+    public static final int MASTER_FORCE = 19;
+    public static final int MASTER_COUNT = 20;
 }

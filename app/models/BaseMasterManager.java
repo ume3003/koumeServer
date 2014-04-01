@@ -24,12 +24,9 @@ public abstract class BaseMasterManager {
 
 
     protected long Version;
-    protected JsonNode Node;
 
     protected HashMap<Long,BaseMaster> Data = new HashMap<Long,BaseMaster>();
 
-    public JsonNode getNode()       { return Node;}
-    public void setNode(JsonNode node)  { Node = node;}
     public long getVersion()        { return Version;}
 
     public HashMap<Long, BaseMaster> getData() {
@@ -103,7 +100,6 @@ public abstract class BaseMasterManager {
         if(node == null){
             throw new RuntimeException("node is null");
         }
-        setNode(node.get(getTableKey()));
         setVersion(JsonUtil.getLong(node, JsonKeyString.VERSION,0L));
         ArrayNode array = JsonUtil.getArray(node,JsonKeyString.DATA);
         for(int i = 0 ; i < array.size() ;i++){

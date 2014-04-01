@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -11,22 +12,29 @@ import java.util.HashMap;
  */
 public abstract class BaseConditionOwnerMasterManager extends BaseMasterManager{
 
-    protected HashMap<Integer,BaseConditionMasterManager> Children = new HashMap<>();
+    protected ArrayList<Integer> ChildrenNo = new ArrayList<>();
 
-    public HashMap<Integer, BaseConditionMasterManager> getChildren() {
-        return Children;
+    public ArrayList<Integer> getChildrenNo() {
+        return ChildrenNo;
     }
-
-    public void addChild(int no, BaseConditionMasterManager manager)
+    public void addChildNo(Integer no)
     {
-        Children.put(no, manager);
+        if(!ChildrenNo.contains(no)){
+            ChildrenNo.add(no);
+        }
     }
-    public BaseConditionMasterManager getConditionManager(int no)
+    public BaseConditionMasterManager getConditionManager(Integer no)
     {
-        return Children.get(no);
+        if(ChildrenNo.contains(no)){
+            BaseMasterManager manager = Game.getInstance().getMasterManager(no);
+            if(BaseConditionMasterManager.class.isInstance(manager)){
+                return (BaseConditionMasterManager)manager;
+            }
+        }
+        return null;
     }
 
-    public String getConditionName(int no)
+    public String getConditionName(Integer no)
     {
         BaseConditionMasterManager manager = getConditionManager(no);
         if(manager != null){

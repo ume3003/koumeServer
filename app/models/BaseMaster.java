@@ -16,7 +16,8 @@ import java.util.Vector;
  * Time: 10:08
  * To change this template use File | Settings | File Templates.
  */
-public class BaseMaster {
+public abstract class BaseMaster {
+    public abstract int getMasterKey();
     protected long masterNo;
     protected HashMap<Integer,HashMap<Integer,BaseMaster>> ConditionMap = new HashMap<>();
     public long getMasterNo()   { return masterNo;}

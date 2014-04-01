@@ -7,7 +7,7 @@
             <div class="span11">
                 <table id="masterData">
                     <thead>
-                        <th>No</th><th>方角</th><th>クエスト</th><th>名称</th><th>摘要</th><th>ファイル名</th><th>マップ</th><th></th><th></th><th></th><th></th>
+                        <th>No</th><th>方角</th><th>クエスト</th><th>名称</th><th>摘要</th><th>ファイル名</th><th>マップ</th><th>UPD</th><th>D</th><th>A</th><th>P</th>
                     </thead>
                     <tbody>
                     @for(key <- masterManager.getData.keySet()){
@@ -110,17 +110,18 @@
 
             return $tr;
             }
+            // NO DIR MAJOR NAME DETAIL IMG MAP UPD NUM NUM NUM
             kcClient.tableInfo = {
                 caption     : $('#masterName' ).text() ,
-                colratio    : [60,80,150,150,150,150,150,40,20,20,20],
+                colratio    : [40,60,100,100,200,200,180,40,20,20,20],
                 height      : 400,
                 width       : 1000,
                 zebra       : true,
-                sortable    : true,
-                sortedColId : 0,
                 resizeCol   : true,
                 pager       : false,
-                sortType    : ['integer','string','string','string','string','string','string','string','string','string','string']
+                sortable    : true,
+                sortedColId : 0,
+                sortType    : ['integer','string','string','string','string','string','string','string','integer','integer','integer']
             };
 
             kcClient.setupRow = function(i){

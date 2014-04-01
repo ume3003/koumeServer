@@ -19,6 +19,7 @@ public class UnitSkillManager extends BaseConditionMasterManager{
     protected UnitSkillManager()
     {
         loadMasterData();
+        addKindNo(ID.MASTER_SKILL);
     }
     @Override
     public BaseMasterManager getParentMasterManager() {

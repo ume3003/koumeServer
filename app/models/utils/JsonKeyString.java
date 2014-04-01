@@ -43,6 +43,7 @@ public class JsonKeyString {
     final static public String CHARACTER_COLUMN = "b018";
     final static public String SKILL            = "b019";
     final static public String UNIT_SKILL       = "b020";
+    final static public String FORCE            = "b021";
 
     // json structure Key
     final static public String DATA             = "c001";

@@ -7,10 +7,7 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 import play.libs.Json;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,32 +18,44 @@ import java.util.Vector;
  */
 public abstract class BaseConditionMasterManager extends BaseMasterManager{
     public abstract BaseMasterManager getParentMasterManager();
-    protected HashMap<Integer,BaseMasterManager> Kinds = new HashMap<>();
+    protected ArrayList<Integer> KindNos = new ArrayList<>();
 
-    public HashMap<Integer, BaseMasterManager> getKinds() {
-        return Kinds;
+    public ArrayList<Integer> getKindNos() {
+        return KindNos;
     }
-    public void addKind(int no,BaseMasterManager manager)
+    public void addKindNo(Integer no){
+        if(!KindNos.contains(no)){
+            KindNos.add(no);
+        }
+    }
+    public BaseMasterManager getKindManager(Integer no)
     {
-        Kinds.put(no,manager);
+        if(KindNos.contains(no)){
+            return Game.getInstance().getMasterManager(no);
+        }
+        return null;
+    }
+    public String getKindName(Integer no)
+    {
+        BaseMasterManager manager = getKindManager(no);
+        if(manager != null){
+            return manager.getName();
+        }
+        return "";
     }
     // 種別のマッチングリストを作る
     public ArrayNode makeKindNameMatchList(String term)
     {
         ArrayNode result = Json.newObject().arrayNode();
-        Set<Integer> set = Kinds.keySet();
-        Iterator<Integer> it = set.iterator();
+        Iterator<Integer> it = KindNos.iterator();
         while(it.hasNext()){
-            Integer i = it.next();
-            BaseMasterManager m = Kinds.get(i);
-            if(m != null){
-                String name = m.getName();
-                if(name != null && name.contains(term)){
-                    ObjectNode o = Json.newObject();
-                    o.put("label",name);
-                    o.put("no",i);
-                    result.add(o);
-                }
+            Integer no = it.next();
+            String name = getKindName(no);
+            if(name.length() > 0 && name.contains(term)){
+                ObjectNode o = Json.newObject();
+                o.put("label",name);
+                o.put("no",no);
+                result.add(o);
             }
         }
         return result;
@@ -55,16 +64,16 @@ public abstract class BaseConditionMasterManager extends BaseMasterManager{
     public ArrayNode makeKeyNameMatchList(int kind,String term)
     {
         ArrayNode result = Json.newObject().arrayNode();
-        BaseMasterManager manager = Kinds.get(kind);
+        BaseMasterManager manager = getKindManager(kind);
         if(manager != null && manager.getData() != null){
             Set<Long> set = manager.getData().keySet();
             Iterator<Long> it = set.iterator();
             while(it.hasNext()){
                 Long i = it.next();
                 if(manager.getData() != null){
-                    BaseNamedMaster m = (BaseNamedMaster)manager.getData().get(i);
-                    if(m != null){
-                        String name = m.getName();
+                    BaseMaster m = manager.getData().get(i);
+                    if(m != null && BaseNamedMaster.class.isInstance(m)){
+                        String name = ((BaseNamedMaster)m).getName();
                         if(name != null && name.contains(term)){
                             ObjectNode o = Json.newObject();
                             o.put("label",name);

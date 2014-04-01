@@ -49,6 +49,11 @@ public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
     }
 
 
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_MINOR_QUEST;
+    }
+
     public MinorQuest(JsonNode node){
         super(node);
         setConditions(ID.MASTER_QUEST_APPEARANCE, QuestAppearances);

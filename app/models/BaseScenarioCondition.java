@@ -30,7 +30,7 @@ public abstract class BaseScenarioCondition extends BaseConditionMaster {
         return ID.MASTER_SCENARIO;
     }
 
-    public Scenario getScnario()
+    public Scenario getScenario()
     {
         return (Scenario)getParent();
     }

@@ -21,7 +21,7 @@ public class UnitManager extends BaseConditionOwnerMasterManager {
     {
         Logger.info("UnitManager created");
         loadMasterData();
-        addChild(ID.MASTER_SKILL, UnitSkillManager.getInstance());
+        addChildNo(ID.MASTER_UNIT_SKILL);
     }
 
     @Override

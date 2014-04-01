@@ -34,6 +34,11 @@ public class MajorQuest extends BaseNamedMaster implements FamilyMaster {
 
     protected Vector<MinorQuest> MinorQuests = new Vector<>();
 
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_MAJOR_QUEST;
+    }
+
     public MajorQuest(JsonNode node){
         super(node);
     }

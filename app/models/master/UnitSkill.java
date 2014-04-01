@@ -35,6 +35,11 @@ public class UnitSkill extends BaseConditionMaster {
         }
     }
 
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_UNIT_SKILL;
+    }
+
     public UnitSkill(JsonNode node) {
         super(node);
 

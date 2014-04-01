@@ -3,6 +3,7 @@ package models.master;
 import models.BaseMasterManager;
 import models.BaseNamedMaster;
 import models.Game;
+import models.ID;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -24,6 +25,11 @@ public class Kind extends BaseNamedMaster{
 
     public void setRefNo(int refNo) {
         this.RefNo = refNo;
+    }
+
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_CONDITION_KIND;
     }
 
     public Kind(JsonNode node) {

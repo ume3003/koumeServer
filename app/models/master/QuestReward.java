@@ -3,6 +3,7 @@ package models.master;
 import models.BaseConditionMaster;
 import models.BaseMaster;
 import models.BaseQuestCondition;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -13,6 +14,11 @@ import org.codehaus.jackson.JsonNode;
  * To change this template use File | Settings | File Templates.
  */
 public class QuestReward extends BaseQuestCondition {
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_QUEST_REWARD;
+    }
+
     public QuestReward(JsonNode node){
         super(node);
     }

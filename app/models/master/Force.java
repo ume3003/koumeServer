@@ -7,17 +7,17 @@ import org.codehaus.jackson.JsonNode;
 /**
  * Created with IntelliJ IDEA.
  * User: shouzouueno
- * Date: 2014/03/28
- * Time: 17:13
+ * Date: 2014/04/01
+ * Time: 19:37
  * To change this template use File | Settings | File Templates.
  */
-public class Rank extends BaseNamedMaster{
+public class Force extends BaseNamedMaster{
     @Override
     public int getMasterKey() {
-        return ID.MASTER_RANK;
+        return ID.MASTER_FORCE;
     }
 
-    public Rank(JsonNode node) {
+    public Force(JsonNode node) {
         super(node);
     }
 }

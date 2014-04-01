@@ -2,6 +2,7 @@ package models.master;
 
 import models.BaseMaster;
 import models.BaseScenarioCondition;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -12,13 +13,18 @@ import org.codehaus.jackson.JsonNode;
  * To change this template use File | Settings | File Templates.
  */
 public class ScenarioUnit extends BaseScenarioCondition{
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_SCENARIO_UNIT;
+    }
+
     public ScenarioUnit(JsonNode node){
         super(node);
     }
 
     @Override
     protected void registerToParent() {
-        Scenario scenario = getScnario();
+        Scenario scenario = getScenario();
         if(scenario != null){
             scenario.addScenarioUnit(this);
         }

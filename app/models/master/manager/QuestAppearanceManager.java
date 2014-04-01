@@ -20,8 +20,8 @@ public class QuestAppearanceManager extends BaseConditionMasterManager {
     protected QuestAppearanceManager(){
         Logger.info("Quest Appearance created");
         loadMasterData();
-        addKind(ID.MASTER_MINOR_QUEST,MinorQuestManager.getInstance());
-        addKind(ID.MASTER_CHARACTER_COL,CharacterColumnManager.getInstance());
+        addKindNo(ID.MASTER_MINOR_QUEST);
+        addKindNo(ID.MASTER_CHARACTER_COL);
     }
 
     @Override

@@ -20,6 +20,11 @@ import org.codehaus.jackson.node.ObjectNode;
  */
 public class QuestUnit extends BaseQuestCondition{
 
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_QUEST_UNIT;
+    }
+
     public QuestUnit(JsonNode node)
     {
         super(node);

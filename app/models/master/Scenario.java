@@ -20,6 +20,11 @@ import java.util.Vector;
  * To change this template use File | Settings | File Templates.
  */
 public class Scenario extends BaseNamedMaster{
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_SCENARIO;
+    }
+
     public Scenario(JsonNode node){
         super(node);
         setConditions(ID.MASTER_SCENARIO_RULE,ScenarioRules);

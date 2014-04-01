@@ -13,6 +13,11 @@ import org.codehaus.jackson.JsonNode;
 public class QuestAppearance extends BaseQuestCondition {
 
 
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_QUEST_APPEARANCE;
+    }
+
     public QuestAppearance(JsonNode node)
     {
         super(node);

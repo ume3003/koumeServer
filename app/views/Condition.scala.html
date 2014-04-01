@@ -5,10 +5,10 @@
     <div class="container" style="padding-top:100px;">
         <div class="col">
             <div class="span11">
-                @for(conditionKey <- parent.getConditionMap.keySet()){
-                    @defining(Game.getInstance().getData.get(conditionKey).asInstanceOf[models.BaseMasterManager]){ manager =>
+                @for(cKey <- parent.getConditionMap.keySet()){
+                    @defining(Game.getInstance().getData.get(cKey).asInstanceOf[models.BaseMasterManager]){ manager =>
                         <div style="position: relative">
-                            <div>conditionKey  @conditionKey conditionName @manager.getName</div>
+                            <A HREF="/master/condition?k=@parentKey&c=@cKey&m=@parentNo">@manager.getName</A>
                         </div>
                     }
                 }

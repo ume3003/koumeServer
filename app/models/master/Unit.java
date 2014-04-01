@@ -3,8 +3,11 @@ package models.master;
 import models.*;
 import models.master.*;
 import models.master.manager.DirectionManager;
+import models.master.manager.ForceManager;
+import models.master.manager.UnitSkillManager;
 import models.utils.*;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 
 import java.util.HashMap;
 
@@ -28,13 +31,38 @@ public class Unit extends BaseNamedMaster {
 
     protected long DirectionNo;
     public long getDirectionNo()    {return DirectionNo;}
+    protected long ForceNo;
+
+    public long getForceNo() {
+        return ForceNo;
+    }
+
+    public void setForceNo(long forceNo) {
+        ForceNo = forceNo;
+    }
+
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_UNIT;
+    }
+
     public Unit(JsonNode node){
         super(node);
+        setConditions(ID.MASTER_UNIT_SKILL,Skills);
     }
 
     public void setData(JsonNode node){
         super.setData(node);
-        DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
+        setDirectionNo(JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1));
+        setForceNo(JsonUtil.getLong(node,JsonKeyString.FORCE,-1));
+    }
+
+    public ObjectNode toJsonObject()
+    {
+        ObjectNode result = super.toJsonObject();
+        result.put(JsonKeyString.DIRECTION,String.valueOf(getDirectionNo()));
+        result.put(JsonKeyString.FORCE,String.valueOf(getForceNo()));
+        return result;
     }
     public Direction getDirection()
     {
@@ -49,6 +77,18 @@ public class Unit extends BaseNamedMaster {
         Direction direction = getDirection();
         if(direction != null){
             return direction.getName();
+        }
+        return "";
+    }
+    public Force getForce()
+    {
+        return ForceManager.getInstance().getForce(ForceNo);
+    }
+    public String getForceName()
+    {
+        Force force = getForce();
+        if(force != null){
+            return force.getName();
         }
         return "";
     }

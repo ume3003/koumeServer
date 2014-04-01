@@ -12,7 +12,7 @@ import org.codehaus.jackson.node.ObjectNode;
  * Time: 10:27
  * To change this template use File | Settings | File Templates.
  */
-public class BaseNamedMaster extends BaseMaster {
+public abstract class BaseNamedMaster extends BaseMaster {
 
     protected String Name;
     protected String Detail;

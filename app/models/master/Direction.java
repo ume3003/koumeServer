@@ -1,6 +1,7 @@
 package models.master;
 
 import models.BaseNamedMaster;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 import java.util.Vector;
@@ -16,6 +17,11 @@ public class Direction extends BaseNamedMaster {
 
     protected Vector<MajorQuest> MajorQuests = new Vector<>();
     protected Vector<MinorQuest> MinorQuests = new Vector<>();
+
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_DIRECTION;
+    }
 
     public Direction(JsonNode node){
         super(node);

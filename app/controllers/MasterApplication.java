@@ -59,7 +59,7 @@ public class MasterApplication extends Controller
         switch(parentKey){
             case ID.MASTER_MINOR_QUEST:
             case ID.MASTER_SCENARIO:
-            case ID.MASTER_UNIT_SKILL:
+            case ID.MASTER_UNIT:
                 result = ok(views.html.Condition.render(parentKey,conditionKey,parentNo,parentMaster, Game.getInstance().getMenu()));
             default:
                 break;

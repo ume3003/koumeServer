@@ -20,8 +20,8 @@ public class ScenarioManager extends BaseConditionOwnerMasterManager{
     {
         Logger.info("Scenario created");
         loadMasterData();
-        addChild(ID.MASTER_SCENARIO_RULE, ScenarioRuleManager.getInstance());
-        addChild(ID.MASTER_SCENARIO_UNIT, ScenarioUnitManager.getInstance());
+        addChildNo(ID.MASTER_SCENARIO_RULE);
+        addChildNo(ID.MASTER_SCENARIO_UNIT);
     }
 
     @Override

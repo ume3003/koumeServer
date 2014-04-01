@@ -2,6 +2,7 @@ package models.master;
 
 import models.BaseMaster;
 import models.BaseNamedMaster;
+import models.ID;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -13,6 +14,11 @@ import org.codehaus.jackson.JsonNode;
  */
 public class CompetitionRule extends BaseNamedMaster
 {
+    @Override
+    public int getMasterKey() {
+        return ID.MASTER_COMPETITION_RULE;
+    }
+
     public CompetitionRule(JsonNode node)
     {
         super(node);
