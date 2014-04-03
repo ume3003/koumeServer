@@ -127,4 +127,16 @@ public class Application extends Controller {
         }
         return ok(result);
     }
+    public static Result puzzleInit()
+    {
+        ObjectNode result = Json.newObject();
+        JsonNode req = JsonUtil.getJsonFromRequest(request());
+        Login login = getLoginFromSession(req);
+        if(req != null && login != null){
+            result.put(JsonKeyString.RANDOM_SEED,String.valueOf(System.currentTimeMillis()/1000L ));
+            result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
+        }
+        return ok(result);
+
+    }
 }

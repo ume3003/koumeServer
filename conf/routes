@@ -3,28 +3,29 @@
 # ~~~~
 
 # Home page
-POST        /login                   controllers.Application.login()
+POST        /login                         controllers.Application.login()
 
-POST        /master                  controllers.Application.master()
-POST        /masterVersion           controllers.Application.masterVersion()
+POST        /master                        controllers.Application.master()
+POST        /masterVersion                 controllers.Application.masterVersion()
 
-POST        /checkTime               controllers.Application.checkTime()
+POST        /checkTime                     controllers.Application.checkTime()
+POST        /puzzle/init                    controllers.Application.puzzleInit()
 
 # add for me
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file            controllers.Assets.at(path="/public", file)
+GET         /assets/*file                  controllers.Assets.at(path="/public", file)
 
 
-GET         /master/index            controllers.MasterApplication.index()
-GET         /master/list             controllers.MasterApplication.list(key:Integer)
-GET         /master/json             controllers.MasterApplication.json(key:Integer)
-GET         /master/condition        controllers.MasterApplication.condition(k:Integer,c:Integer,m:Integer)
-POST        /master/update           controllers.MasterApplication.updateMaster()
-POST        /master/conditionUpdate  controllers.MasterApplication.conditionUpdate()
-POST        /master/conditionDelete  controllers.MasterApplication.conditionDelete()
+GET         /master/index                  controllers.MasterApplication.index()
+GET         /master/list                   controllers.MasterApplication.list(key:Integer)
+GET         /master/json                   controllers.MasterApplication.json(key:Integer)
+GET         /master/condition              controllers.MasterApplication.condition(k:Integer,c:Integer,m:Integer)
+POST        /master/update                 controllers.MasterApplication.updateMaster()
+POST        /master/conditionUpdate        controllers.MasterApplication.conditionUpdate()
+POST        /master/conditionDelete        controllers.MasterApplication.conditionDelete()
 
-GET         /tool/master             controllers.MasterApplication.master(k:Integer,term:String)
-GET         /tool/masterSub          controllers.MasterApplication.masterSub(k:Integer,d:Integer,term:String)
-GET         /tool/kindList           controllers.MasterApplication.kindList(m:Integer,term:String)
-GET         /tool/keyList            controllers.MasterApplication.keyList(m:Integer,k:Integer,term:String)
+GET         /tool/master                   controllers.MasterApplication.master(k:Integer,term:String)
+GET         /tool/masterSub                controllers.MasterApplication.masterSub(k:Integer,d:Integer,term:String)
+GET         /tool/kindList                 controllers.MasterApplication.kindList(m:Integer,term:String)
+GET         /tool/keyList                  controllers.MasterApplication.keyList(m:Integer,k:Integer,term:String)
 
