@@ -56,6 +56,10 @@ public class JsonKeyString {
     final static public String PARENT_KEY       = "c008";
     final static public String CONDITION_KEY    = "c009";
     final static public String RANDOM_SEED      = "c010";
+    final static public String ACTION_NO		= "c011";
+    final static public String POSITION		    = "c012";
+    final static public String TAG_NO           = "c013";
+
     // db table key
     final static public String LOGIN            = "d001";
     final static public String GAME_CHARACTER   = "d002";
