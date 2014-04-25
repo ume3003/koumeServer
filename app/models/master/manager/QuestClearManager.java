@@ -20,6 +20,7 @@ public class QuestClearManager extends BaseConditionMasterManager {
     protected QuestClearManager(){
         Logger.info("Quest Clear created");
         loadMasterData();
+        addKindNo(ID.MASTER_CHARACTER_COL);
     }
 
     @Override
