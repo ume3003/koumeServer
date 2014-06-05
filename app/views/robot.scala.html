@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<table>
+    <tr>
+        <td><input id='urlInput' type=text size=100 /></td>
+        <TD><input type='button' id='doAll50' class='doAll' value='do all 50 times'/></TD>
+        <TD><input type='button' id='doAll100' class='doAll' value='do all 100 times'/></TD>
+        <TD><input type='button' id='doAll500' class='doAll' value='do all 500 times'/></TD>
+        <TD><input type='button' id='doAll1000' class='doAll' value='do all 1000 times'/></TD>
+        <TD><input type='button' id='addRow' value='行追加'/></TD>
+    </tr>
+</table>
+<table id='slot'>
+</table>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js" 	 	type="text/javascript"></script>
+<script type="text/javascript">
+         $(function(){
+             var rowCount = 0,
+                 maxRetry = 100,
+                count = {},
+                 timer = {},
+                 fail = {};
+             var summary = {};
+             var makeRow = function(id){
+                 var $table = $('#slot');
+                 var $tr = $('<TR>');
+                 var $button = $('<input>').attr('type','button' ).attr('value','アクセス開始' ).attr('id','start' + id ).addClass('start');
+                 var $vis   = $('<input>').attr('type','button' ).attr('value','表示' ).attr('id','vis' + id );
+                 var $file = $('<input>' ).attr('type','file' ).attr('id','jsonInput' + id ).addClass('jsonInput' );
+                 var $json = $('<div>' ).attr('id','json' + id);
+                 var $sec = $('<td>' );
+                 var $fst = $('<td>' );
+                 $fst.append($button);
+                 $fst.append($vis);
+                 $sec.append($file);
+                 $sec.append($json);
+                 $tr.append($fst);
+                 $tr.append($sec);
+                 $table.append($tr);
+
+                 $tr = $('<tr>');
+                 var $counter = $('<div>' ).attr('id','counter' + id);
+                 var $average = $('<div>' ).attr('id','average' + id);
+                 var $ctd = $('<Td>');
+                 var $atd = $('<td>');
+                 $ctd.append($counter);
+                 $atd.append($average);
+                 $tr.append($ctd);
+                 $tr.append($atd);
+                 $table.append($tr);
+
+                 $tr = $('<tr>');
+                 var $td = $('<td>').attr('colspan','2' );
+                 var $div = $('<div>').attr('id','result' + id).css('display','none' );
+                 $td.append($div);
+                 $tr.append($td);
+                 $table.append($tr);
+                 (function(i){
+                     $button.click(function(){
+                        loadJson(i,function(){
+                            callServer(i)
+                        });
+                     });
+                     $vis.click(
+                         function(){
+                             console.log('i = ' + i);
+                             if($('#result' + i).css('display') === 'none'){
+                                 $('#result' + i).css('display','');
+                                 $vis.attr('value','非表示');
+                             }
+                             else{
+                                 $('#result' + i).css('display','none');
+                                 $vis.attr('value','表示');
+                             }
+
+                         }
+                     )
+                 })(id);
+             };
+             var loadJson = function(id,callback){
+                 var file = $('#jsonInput' + id)[0].files[0];
+                 if(file === undefined){
+                     file = $('#jsonInput0')[0 ].files[0];
+                 }
+                 if(file === undefined ){
+                     console.log('file is undefined ' + id);
+                 }
+                 var reader = new FileReader();
+                 reader.onload = function(evt){
+                     $('#json' + id).text(reader.result);
+                     if(callback !== undefined){
+                         callback();
+                     }
+                 }
+                 reader.readAsText(file,'UTF-8');
+             };
+             var callServer = function(id){
+                var retryCount = 0;
+                var json = $('#json' + id).text();
+                var url = $('#urlInput' ).val();
+                count[id] = 0;
+                fail[id] = 0;
+                summary[id] = 0;
+                $('#result' +id ).text('accessing...');
+                    timer[id] = setInterval(
+                        function(){
+                            var now = $.now();
+                            retryCount++;
+                            count[id]++;
+                            if(retryCount >= maxRetry){
+                                clearInterval(timer[id]);
+                            }
+                            $.ajax({
+                                type        : "POST",
+                                dataType    : 'json',
+                                cache       : false,
+                                data        : json,
+                                headers     : { 'Content-Type' : 'application/json'},
+                                url         : url,
+                                success     :
+                                    function(data,datatype){
+                                        var past = ($.now() - now) / 1000;
+                                        summary[id] += past;
+                                        var avg = '' + summary[id] / count[id];
+                                        var sum = '' + summary[id];
+                                        $('#average' + id).text(avg.substr(0,6) + ' ' + sum.substr(0,6));
+                                        $('#counter' + id).text('' + count[id] + '(' + fail[id] + ')');
+                                        $('#result'  + id).text(JSON.stringify(data));
+                                    },
+                                error       :
+                                    function(XMLHttpRequest,textStatus,errorThrown){
+                                        fail[id]++;
+                                        console.log(textStatus);
+                                    }
+                            });
+                        }
+                    ,100);
+             };
+             var doAll = function(){
+                 for(var i = 0;i < rowCount;i++){
+                     (function(id){
+                         loadJson(id,function(){
+                             callServer(id);
+                         });
+                     })(i);
+                 }
+             }
+             $('#doAll1000').click(function(){
+                 maxRetry = 1000;
+                 doAll();
+             });
+             $('#doAll500').click(function(){
+                 maxRetry = 500;
+                 doAll();
+             });
+             $('#doAll100').click(function(){
+                 maxRetry = 100;
+                 doAll();
+             });
+             $('#doAll50').click(function(){
+                 maxRetry = 50;
+                 doAll();
+             });
+             $('#addRow' ).click(function(){
+                 makeRow(rowCount);
+                 rowCount++;
+             });
+         });
+</script>
+</body>
+</html>
