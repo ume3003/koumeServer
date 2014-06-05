@@ -9,51 +9,12 @@ import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 import play.*;
-import play.cache.Cache;
 import play.libs.Json;
 import play.mvc.*;
 
-import views.html.index;
 
-import java.util.UUID;
+public class Application extends BaseKoumeApplication {
 
-public class Application extends Controller {
-  
-    public static Login getLoginFromSession(JsonNode req)
-    {
-        //String sessionId = session(JsonKeyString.SESSION_ID);
-        String sessionId = JsonUtil.getString(req,JsonKeyString.SESSION_ID,"");
-        if(sessionId.length() == 0){
-            sessionId = UUID.randomUUID().toString();
-        }
-        else{
-            Logger.info("use exist session " + sessionId);
-        }
-        session(JsonKeyString.SESSION_ID,sessionId);
-        Logger.info("sessionId " + session(JsonKeyString.SESSION_ID));
-        Login login = (Login) Cache.get(sessionId + JsonKeyString.LOGIN);
-        if(login == null){
-            login = Login.gppLogin(req);
-            if(login == null){
-                login = Login.localLogin(req);
-                if(login == null){
-                    login = Login.createNewLogin(req);
-                    GameCharacter chara = GameCharacter.createGameCharacter();
-                    login.gameCharacter = chara;
-                    chara.login = login;
-                    login.save();
-                    chara.save();
-                }
-            }
-
-        }
-        if(login != null){
-            Cache.set(sessionId + JsonKeyString.LOGIN,login);
-        }
-        Login L = (Login)(Cache.get(sessionId + JsonKeyString.LOGIN));
-        Logger.info("cache login data " + L.id + " " + L.gppUUID + " " + L.uuid );
-        return login;
-    }
     public static Result login() {
         ObjectNode result = Json.newObject();
         JsonNode req = JsonUtil.getJsonFromRequest(request());
@@ -62,6 +23,9 @@ public class Application extends Controller {
             Login login = getLoginFromSession(req);
             if(login != null){
                 GameCharacter chara = login.gameCharacter;
+                login.accessCnt = login.accessCnt + 1;
+                login.save();
+                chara.save();
                 result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
                 result.put(JsonKeyString.UUID,login.uuid);
                 result.put(JsonKeyString.GAME_CHARACTER,chara.toJsonObject());
@@ -78,7 +42,6 @@ public class Application extends Controller {
         {
             Ebean.endTransaction();
         }
-
         return ok(result);
     }
 
@@ -133,6 +96,14 @@ public class Application extends Controller {
         JsonNode req = JsonUtil.getJsonFromRequest(request());
         Login login = getLoginFromSession(req);
         if(req != null && login != null){
+            if(login.gameCharacter == null){
+                login = Login.reloadLogin(login);
+                Logger.info("character is null");
+            }
+            GameCharacter chara = login.gameCharacter;
+            if(chara == null){
+                Logger.info("character is null");
+            }
             result.put(JsonKeyString.RANDOM_SEED,String.valueOf(System.currentTimeMillis()/1000L ));
             result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
         }

@@ -9,12 +9,19 @@ POST        /master                        controllers.Application.master()
 POST        /masterVersion                 controllers.Application.masterVersion()
 
 POST        /checkTime                     controllers.Application.checkTime()
-POST        /puzzle/init                    controllers.Application.puzzleInit()
+POST        /puzzle/init                   controllers.Application.puzzleInit()
 
+
+POST        /friend/list                   controllers.CommunityApplication.friendList()
+POST        /friend/add                    controllers.CommunityApplication.addFriend()
+
+POST        /compe/friend/list              controllers.CompetitionApplication.initialFriendCompetition()
+POST        /compe/friend/set               controllers.CompetitionApplication.createFriendCompetition()
+POST        /compe/friend/get               controllers.CompetitionApplication.getFriendCompetition()
 # add for me
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                  controllers.Assets.at(path="/public", file)
-
+GET         /master/robot                  controllers.MasterApplication.robot()
 
 GET         /master/index                  controllers.MasterApplication.index()
 GET         /master/list                   controllers.MasterApplication.list(key:Integer)

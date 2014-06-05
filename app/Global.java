@@ -16,4 +16,5 @@ public class Global extends GlobalSettings {
         super.onStart(app);    //To change body of overridden methods use File | Settings | File Templates.
         Game.getInstance().init();
     }
+
 }

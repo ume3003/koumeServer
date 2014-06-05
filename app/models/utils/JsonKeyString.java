@@ -21,6 +21,7 @@ public class JsonKeyString {
     final static public String CONDITION_TYPE   = "a010";
     final static public String PARENT           = "a011";
     final static public String REFERENCE        = "a012";
+    final static public String FRIEND           = "a013";
 
     // master keys
     final static public String DIRECTION        = "b001";
@@ -64,6 +65,8 @@ public class JsonKeyString {
     // db table key
     final static public String LOGIN            = "d001";
     final static public String GAME_CHARACTER   = "d002";
+    final static public String FRIENDS          = "d003";
+
     // db field key
     final static public String ID               = "d101";
     final static public String GPP_UUID         = "d102";
@@ -82,4 +85,10 @@ public class JsonKeyString {
     final static public String LAST_COMMAND     = "d114";
 
 
+    // COMPETITION
+    final static public String FRIEND_COM       = "e001";
+    final static public String FRIEND_INVITE    = "e002";
+    final static public String FRIEND_COM_ID    = "roomUUID";
+    final static public String FRIEND_COM_COUNT = "registeredUserCount";
+    final static public String FRIEND_REGISTERED= "registered";
 }

@@ -61,9 +61,10 @@ public class GameCharacter extends Model implements BaseData {
         result.put(JsonKeyString.MONEY          ,String.valueOf(money));
         result.put(JsonKeyString.GOLD           ,String.valueOf(gold));
         result.put(JsonKeyString.LAST_COMMAND   ,String.valueOf(lastCommand.getTime() / 1000));
-        result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(createDate.getTime()/ 1000));
-        result.put(JsonKeyString.UPDATE_DATE    ,String.valueOf(updateDate.getTime()/ 1000));
-
+        result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(
+                createDate == null ? 0 : createDate.getTime() / 1000));
+        result.put(JsonKeyString.UPDATE_DATE    ,String.valueOf(
+                updateDate == null ? 0 : updateDate.getTime() / 1000));
         return result;
     }
     public void loadFromJson(JsonNode node)

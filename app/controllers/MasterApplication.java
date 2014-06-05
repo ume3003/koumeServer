@@ -182,4 +182,8 @@ public class MasterApplication extends Controller
         }
         return ok(result);
     }
+
+    public static Result robot() {
+        return ok(views.html.robot.render());
+    }
 }
