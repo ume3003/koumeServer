@@ -61,6 +61,8 @@ public class JsonKeyString {
     final static public String POSITION		    = "c012";
     final static public String TAG_NO           = "c013";
     final static public String DURATION         = "c014";
+    final static public String COLOR            = "c015";
+    final static public String FRAME            = "c016";
 
     // db table key
     final static public String LOGIN            = "d001";

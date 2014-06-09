@@ -33,6 +33,25 @@ public class Unit extends BaseNamedMaster {
     public long getDirectionNo()    {return DirectionNo;}
     protected long ForceNo;
 
+    public String getFrameName() {
+        return FrameName;
+    }
+
+    public void setFrameName(String frameName) {
+        FrameName = frameName;
+    }
+
+    public String getColorName() {
+        return ColorName;
+    }
+
+    public void setColorName(String colorName) {
+        ColorName = colorName;
+    }
+
+    protected String FrameName;
+    protected String ColorName;
+
     public long getForceNo() {
         return ForceNo;
     }
@@ -55,6 +74,8 @@ public class Unit extends BaseNamedMaster {
         super.setData(node);
         setDirectionNo(JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1));
         setForceNo(JsonUtil.getLong(node,JsonKeyString.FORCE,-1));
+        setColorName(JsonUtil.getString(node,JsonKeyString.COLOR,"a"));
+        setFrameName(JsonUtil.getString(node,JsonKeyString.FRAME,""));
     }
 
     public ObjectNode toJsonObject()
@@ -62,6 +83,8 @@ public class Unit extends BaseNamedMaster {
         ObjectNode result = super.toJsonObject();
         result.put(JsonKeyString.DIRECTION,String.valueOf(getDirectionNo()));
         result.put(JsonKeyString.FORCE,String.valueOf(getForceNo()));
+        result.put(JsonKeyString.FRAME,getFrameName());
+        result.put(JsonKeyString.COLOR,getColorName());
         return result;
     }
     public Direction getDirection()

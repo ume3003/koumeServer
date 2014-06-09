@@ -7,7 +7,11 @@
             <div class="span11">
                 <table id="masterData">
                     <thead>
-                        <th>No</th><th>方角</th><TH>勢力</TH></TF><th>名称</th><th>摘要</th><th>ファイル名</th><th>UPD</th><th>DIR</th><TH>FORCE</TH>
+                        <th>No</th><th>方角</th><TH>勢力</TH><th>名称</th><th>摘要</th>
+                        <TH>フレーム名</TH>
+                        <th>ファイル名</th>
+                        <TH>色名</TH>
+                        <th>UPD</th><th>DIR</th><TH>FORCE</TH>
                     </thead>
                     <tbody>
                     @for(key <- masterManager.getData.keySet()){
@@ -33,7 +37,13 @@
                                     <div contenteditable="true" id='dt@master.getMasterNo'>@master.getDetail</div>
                                 </td>
                                 <td tabindex="100">
+                                    <div contenteditable="true" id='fr@master.getMasterNo'>@master.getFrameName</div>
+                                </td>
+                                <td tabindex="100">
                                     <div contenteditable="true" id='im@master.getMasterNo'>@master.getImage</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='co@master.getMasterNo'>@master.getColorName</div>
                                 </td>
                                 <td><div style="cursor:pointer;" class="updateBtn" id="@master.getMasterNo" tabindex="100">
                                     <div id="ud@master.getMasterNo" class="label label-default"></div></div>
@@ -74,6 +84,8 @@
                     a003    : $('#dt' + id ).text(),
                     a004    : $('#im' + id ).text(),
                     b001    : $('#vdi' + id ).text(),
+                    c015    : $('#co' + id ).text(),
+                    c016    : $("#fr" + id ).text(),
                     b021    : $('#vfo' + id ).text()
                 };
             }
@@ -87,7 +99,9 @@
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('fo' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('nm' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('fr' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('co' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
                 $tr.append($('<TD>' ).append(kcClient.makeDataCel('vdi' +no )));
                 $tr.append($('<TD>' ).append(kcClient.makeDataCel('vfo' +no )));
@@ -96,7 +110,7 @@
             }
             kcClient.tableInfo = {
                 caption     : $('#masterName' ).text() ,
-                colratio    : [60,150,150,150,150,240,40,40,40],
+                colratio    : [60,150,150,150,150,120,240,80,40,40,40],
                 height      : 400,
                 width       : 1000,
                 zebra       : true,
@@ -104,7 +118,7 @@
                 sortedColId : 0,
                 resizeCol   : true,
                 pager       : false,
-                sortType    : ['integer','string','string','string','string','string','string','string','string']
+                sortType    : ['integer','string','string','string','string','string','string','string','string','string','string']
             };
 
             kcClient.setupRow = function(i){
@@ -114,7 +128,9 @@
                 kcClient.editDropDown({key:'fo',no:i,source:$('#foURL' ).text(),callback:undefined});
                 kcClient.editCel($('#nm' + i));
                 kcClient.editCel($('#dt' + i));
+                kcClient.editCel($('#fr' + i));
                 kcClient.editCel($('#im' + i));
+                kcClient.editCel($('#co' + i));
             }
             // 初期の列数               ・
             kcClient.colSize    = $('#colSize' ).text() - 0;
