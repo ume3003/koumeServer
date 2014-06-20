@@ -22,6 +22,7 @@ public class JsonKeyString {
     final static public String PARENT           = "a011";
     final static public String REFERENCE        = "a012";
     final static public String FRIEND           = "a013";
+    final static public String ENEMY_FORCE      = "a014";
 
     // master keys
     final static public String DIRECTION        = "b001";
@@ -63,6 +64,7 @@ public class JsonKeyString {
     final static public String DURATION         = "c014";
     final static public String COLOR            = "c015";
     final static public String FRAME            = "c016";
+    final static public String SCORE_TYPE       = "c017";
 
     // db table key
     final static public String LOGIN            = "d001";

@@ -1,4 +1,4 @@
-@(masterKey:Integer,masterManager:models.master.manager.UnitManager,masterMap:HashMap[Integer,BaseMasterManager])
+@(masterKey:Integer,masterManager:models.master.manager.ForceManager,masterMap:HashMap[Integer,BaseMasterManager])
 
 @main(masterMap) {
 
@@ -7,29 +7,13 @@
             <div class="span11">
                 <table id="masterData">
                     <thead>
-                        <th>No</th><th>方角</th><TH>勢力</TH><th>名称</th><th>摘要</th>
-                        <TH>フレーム名</TH>
-                        <th>ファイル名</th>
-                        <TH>色名</TH>
-                        <th>UPD</th><th>DIR</th><TH>FORCE</TH>
+                        <th>No</th><th>名称</th><th>摘要</th><th>敵</th><th>ファイル名</th><th></th><th></th>
                     </thead>
                     <tbody>
                     @for(key <- masterManager.getData.keySet()){
-                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.Unit]){ master =>
+                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.Force]){ master =>
                             <tr>
-                                <td>
-                                    <A HREF="/master/condition?k=@ID.MASTER_UNIT&c=@ID.MASTER_UNIT_SKILL&m=@master.getMasterNo">@master.getMasterNo</A>
-                                </td>
-                                <td tabindex="100">
-                                    <div contenteditable="true" id="di@master.getMasterNo">
-                                    @master.getDirectionName
-                                    </div>
-                                </td>
-                                <td tabindex="100">
-                                    <div contenteditable="true" id="fo@master.getMasterNo">
-                                    @master.getForceName
-                                    </div>
-                                </td>
+                                <td>@master.getMasterNo</td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id='nm@master.getMasterNo'>@master.getName</div>
                                 </td>
@@ -37,22 +21,18 @@
                                     <div contenteditable="true" id='dt@master.getMasterNo'>@master.getDetail</div>
                                 </td>
                                 <td tabindex="100">
-                                    <div contenteditable="true" id='fr@master.getMasterNo'>@master.getFrameName</div>
+                                    <div contenteditable="true" id="en@master.getMasterNo">
+                                    @master.getEnemyForceName
+                                    </div>
                                 </td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id='im@master.getMasterNo'>@master.getImage</div>
-                                </td>
-                                <td tabindex="100">
-                                    <div contenteditable="true" id='co@master.getMasterNo'>@master.getColorName</div>
                                 </td>
                                 <td><div style="cursor:pointer;" class="updateBtn" id="@master.getMasterNo" tabindex="100">
                                     <div id="ud@master.getMasterNo" class="label label-default"></div></div>
                                 </td>
                                 <td>
-                                    <div id="vdi@master.getMasterNo">@master.getDirectionNo</div>
-                                </td>
-                                <td>
-                                    <div id="vfo@master.getMasterNo">@master.getForceNo</div>
+                                    <div id="ven@master.getMasterNo">@master.getEnemyForceNo</div>
                                 </td>
                             </tr>
                         }
@@ -65,8 +45,7 @@
                 <div id='colSize'>@masterManager.getData.size()</div>
                 <div id='masterKey'>@masterKey</div>
                 <div id='masterName'>@masterManager.getName - version @masterManager.getVersion</div>
-                <div id='diURL'>/tool/master?k=@ID.MASTER_DIRECTION</div>
-                <div id='foURL'>/tool/master?k=@ID.MASTER_FORCE</div>
+                <div id='enURL'>/tool/master?k=@ID.MASTER_FORCE</div>
             </div>
         </div>
     </div>
@@ -74,7 +53,6 @@
 
     <script type="text/javascript">
         $(function(){
-
             kcClient.getRowData = function(id){
                 return {
                     jsData  : id - 0,
@@ -83,10 +61,7 @@
                     a002    : $('#nm' + id ).text(),
                     a003    : $('#dt' + id ).text(),
                     a004    : $('#im' + id ).text(),
-                    b001    : $('#vdi' + id ).text(),
-                    c015    : $('#co' + id ).text(),
-                    c016    : $("#fr" + id ).text(),
-                    b021    : $('#vfo' + id ).text()
+                    a014    : $('#ven' + id ).text()
                 };
             }
             kcClient.updateURL = '/master/update';
@@ -95,42 +70,34 @@
                 var $tr = $('<TR>');
 
                 $tr.append($('<TD>' ).text(no));
-                $tr.append($('<TD>' ).append(kcClient.makeEditCel('di' + no )));
-                $tr.append($('<TD>' ).append(kcClient.makeEditCel('fo' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('nm' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
-                $tr.append($('<TD>' ).append(kcClient.makeEditCel('fr' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('en' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
-                $tr.append($('<TD>' ).append(kcClient.makeEditCel('co' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
-                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vdi' +no )));
-                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vfo' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vre' +no )));
 
             return $tr;
             }
             kcClient.tableInfo = {
                 caption     : $('#masterName' ).text() ,
-                colratio    : [60,90,60,140,140,90,200,80,40,40,40],
+                colratio    : [60,120,200,120,200,40,20],
                 height      : 400,
-                width       : 1000,
+                width       : 960,
                 zebra       : true,
                 sortable    : true,
                 sortedColId : 0,
                 resizeCol   : true,
                 pager       : false,
-                sortType    : ['integer','string','string','string','string','string','string','string','string','string','string']
+                sortType    : ['integer','string','string','string','string','string','string']
             };
 
             kcClient.setupRow = function(i){
                 kcClient.setNotModify(i);
-                var direct = $('#vdi' + i ).text() - 0 ;
-                kcClient.editDropDown({key:'di',no:i,source:$('#diURL' ).text(),callback:undefined});
-                kcClient.editDropDown({key:'fo',no:i,source:$('#foURL' ).text(),callback:undefined});
                 kcClient.editCel($('#nm' + i));
                 kcClient.editCel($('#dt' + i));
-                kcClient.editCel($('#fr' + i));
+                kcClient.editDropDown({key:'en',no:i,source:$('#enURL' ).text(),callback:undefined});
                 kcClient.editCel($('#im' + i));
-                kcClient.editCel($('#co' + i));
             }
             // 初期の列数               ・
             kcClient.colSize    = $('#colSize' ).text() - 0;

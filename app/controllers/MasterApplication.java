@@ -46,6 +46,8 @@ public class MasterApplication extends Controller
                 return ok(views.html.Unit.render(key, UnitManager.getInstance(),Game.getInstance().getMenu()));
             case ID.MASTER_SCENARIO:
                 return ok(views.html.Scenario.render(key,ScenarioManager.getInstance(),Game.getInstance().getMenu()));
+            case ID.MASTER_FORCE:
+                return ok(views.html.Force.render(key,ForceManager.getInstance(),Game.getInstance().getMenu()));
             default:
                 break;
         }
