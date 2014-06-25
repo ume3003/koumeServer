@@ -72,6 +72,10 @@ public class Game {
         Data.put(ID.MASTER_UNIT_SKILL,UnitSkillManager.getInstance());
         Data.put(ID.MASTER_FORCE,ForceManager.getInstance());
 
+        Data.put(ID.MASTER_NPC_DATA,NPCManager.getInstance());
+        Data.put(ID.MASTER_WORDS,WordsManager.getInstance());
+        Data.put(ID.MASTER_NPC_WORDS,NPCWordsManager.getInstance());
+
         Menu.put(ID.MASTER_DIRECTION, DirectionManager.getInstance());
         Menu.put(ID.MASTER_MAJOR_QUEST, MajorQuestManager.getInstance());
         Menu.put(ID.MASTER_MINOR_QUEST, MinorQuestManager.getInstance());
@@ -88,6 +92,9 @@ public class Game {
         Menu.put(ID.MASTER_SKILL,SkillManager.getInstance());
         Menu.put(ID.MASTER_FORCE,ForceManager.getInstance());
 
+        Menu.put(ID.MASTER_NPC_DATA,NPCManager.getInstance());
+        Menu.put(ID.MASTER_WORDS,WordsManager.getInstance());
+
         QuestAppearanceManager.getInstance().registerAllCondition();
         QuestClearManager.getInstance().registerAllCondition();
         QuestRewardManager.getInstance().registerAllCondition();
@@ -96,6 +103,8 @@ public class Game {
         ScenarioRuleManager.getInstance().registerAllCondition();
         ScenarioUnitManager.getInstance().registerAllCondition();
         UnitSkillManager.getInstance().registerAllCondition();
+
+        NPCWordsManager.getInstance().registerAllCondition();
 
         return true;
 

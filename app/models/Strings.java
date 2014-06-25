@@ -29,6 +29,9 @@ public class Strings {
     public static final String SKILL_FILE               = "json/skill.json";
     public static final String UNIT_SKILL_FILE          = "json/unitSkill.json";
     public static final String FORCE_FILE               = "json/force.json";
+    public static final String NPC_FILE                 = "json/npc.json";
+    public static final String WORDS_FILE               = "json/words.json";
+    public static final String NPC_WORDS_FILE           = "json/npc_words.jspn";
 
     public static final String COMPETITION_RULE         = "対戦ルール";
     public static final String DIRECTION                = "方角";
@@ -46,6 +49,9 @@ public class Strings {
     public static final String SCENARIO_UNIT            = "対戦シナリオ使用ユニット";
     public static final String UNIT                     = "ユニット";
     public static final String SKILL                    = "スキル";
+    public static final String NPC                      = "NPC";
+    public static final String WORDS                    = "台詞テンプレ";
+    public static final String NPC_WORDS                = "NPC台詞";
 
     public static final String RANK                     = "ランク";
     public static final String CHARACTER_COLUMN         = "キャラ属性";

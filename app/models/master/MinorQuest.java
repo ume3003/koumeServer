@@ -4,6 +4,7 @@ import models.*;
 import models.master.manager.DirectionManager;
 import models.master.manager.MajorQuestManager;
 import models.master.manager.MapManager;
+import models.master.manager.NPCManager;
 import models.utils.JsonKeyString;
 import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
@@ -23,6 +24,26 @@ public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
     protected long DirectionNo;
     protected long MajorNo;
     protected long MapNo;
+
+    public int getAttackCount() {
+        return AttackCount;
+    }
+
+    public void setAttackCount(int attackCount) {
+        AttackCount = attackCount;
+    }
+
+    public long getNPCNo() {
+        return NPCNo;
+    }
+
+    public void setNPCNo(long NPCNo) {
+        this.NPCNo = NPCNo;
+    }
+
+    protected long NPCNo;
+    protected int AttackCount;
+
 
     public long getDirectionNo()    { return DirectionNo;}
     public long getMajorNo()        { return MajorNo;}
@@ -64,6 +85,8 @@ public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
     public void setData(JsonNode node){
         super.setData(node);
         MapNo = JsonUtil.getLong(node,JsonKeyString.MAP,-1);
+        NPCNo = JsonUtil.getLong(node,JsonKeyString.NPC,-1);
+        AttackCount = JsonUtil.getInt(node,JsonKeyString.ATTACK_COUNT,1);
 
         DirectionNo = JsonUtil.getLong(node, JsonKeyString.DIRECTION,-1);
         Direction direction = getDirection();
@@ -83,6 +106,8 @@ public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
         result.put(JsonKeyString.DIRECTION,String.valueOf(getDirectionNo()));
         result.put(JsonKeyString.MAJOR,String.valueOf(getMajorNo()));
         result.put(JsonKeyString.MAP,String.valueOf(getMapNo()));
+        result.put(JsonKeyString.NPC,String.valueOf(getNPCNo()));
+        result.put(JsonKeyString.ATTACK_COUNT, String.valueOf(getAttackCount()));
 
         return result;
     }
@@ -128,6 +153,10 @@ public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
     {
         return MapManager.getInstance().getMap(MapNo);
     }
+    public NPC getNPC()
+    {
+        return NPCManager.getInstance().getNPCMaster(NPCNo);
+    }
 
     @Override
     public long getParentNo() {
@@ -167,5 +196,14 @@ public class MinorQuest extends BaseNamedMaster implements FamilyMaster{
             return "";
         }
         return m.getName();
+    }
+    public String getNPCName()
+    {
+        NPC n = getNPC();
+        if(n == null)
+        {
+            return "";
+        }
+        return n.getName();
     }
 }

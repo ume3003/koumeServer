@@ -7,11 +7,12 @@
             <div class="span11">
                 <table id="masterData">
                     <thead>
-                        <th>No</th><th>方角</th><th>クエスト</th><th>名称</th><th>摘要</th><th>ファイル名</th><th>マップ</th><th>UPD</th><th>D</th><th>A</th><th>P</th>
+                        <th>No</th><th>方角</th><th>クエスト</th><th>名称</th><th>摘要</th><th>ファイル名</th><th>マップ</th><th>NPC</th><TH>戦闘回数</TH><th>UPD</th><th>D</th><th>A</th><th>P</th><TH>N</TH>
                     </thead>
                     <tbody>
-                    @for(key <- masterManager.getData.keySet()){
-                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.MinorQuest]){ master =>
+                    @for(key <- 0 until masterManager.getData.size()){
+                        @defining(masterManager.getMaster(key).asInstanceOf[models.master.MinorQuest]){ master =>
+                            @if(master != null){
                             <tr>
                                 <td>
                                     <A HREF="/master/condition?k=@ID.MASTER_MINOR_QUEST&c=@ID.MASTER_QUEST_UNIT&m=@master.getMasterNo">@master.getMasterNo</A></td>
@@ -35,11 +36,17 @@
                                     <div contenteditable="true" id='im@master.getMasterNo'>@master.getImage</div>
                                 </td>
                                 <td tabindex="100">
-                                    <div contenteditable="true" id="mp@master.getMasterNo">
+                                    <div contenteditable="true" id='mp@master.getMasterNo'>
                                     @master.getMapName
                                     </div>
                                 </td>
-                                <td><div style="cursor:pointer;" class="updateBtn" id="@master.getMasterNo" tabindex="100">
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='np@master.getMasterNo'>@master.getNPCName</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='at@master.getMasterNo'>@master.getAttackCount</div>
+                                </td>
+                                <td><div style="cursor:pointer;" class="updateBtn" id='@master.getMasterNo' tabindex="100">
                                     <div id="ud@master.getMasterNo" class="label label-default"></div></div>
                                 </td>
                                 <td>
@@ -51,7 +58,11 @@
                                 <td>
                                     <div id="vmp@master.getMasterNo">@master.getMapNo</div>
                                 </td>
+                                <td>
+                                    <div id="vnp@master.getMasterNo">@master.getNPCNo</div>
+                                </td>
                             </tr>
+                            }
                         }
                     }
                     </tbody>
@@ -64,6 +75,7 @@
                 <div id='masterName'>@masterManager.getName - version @masterManager.getVersion</div>
                 <div id='diURL'>/tool/master?k=@ID.MASTER_DIRECTION</div>
                 <div id='mpURL'>/tool/master?k=@ID.MASTER_MAP</div>
+                <div id='npURL'>/tool/master?k=@ID.MASTER_NPC_DATA</div>
                 <div id='maURL'>/tool/masterSub?k=@ID.MASTER_MAJOR_QUEST&d=</div>
             </div>
         </div>
@@ -88,7 +100,10 @@
                     a004    : $('#im' + id ).text(),
                     b001    : $('#vdi' + id ).text(),
                     b002    : $('#vma' + id ).text(),
-                    b009    : $('#vmp' + id ).text()
+                    b009    : $('#vmp' + id ).text(),
+                    b022    : $('#vnp' + id ).text(),
+                    a017    : $('#at'  + id ).text()
+
                 };
             }
             kcClient.updateURL = '/master/update';
@@ -103,25 +118,28 @@
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeEditCel('mp' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('np' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('at' + no )));
                 $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
                 $tr.append($('<TD>' ).append(kcClient.makeDataCel('vdi' +no )));
                 $tr.append($('<TD>' ).append(kcClient.makeDataCel('vma' +no )));
                 $tr.append($('<TD>' ).append(kcClient.makeDataCel('vmp' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vnp' +no )));
 
             return $tr;
             }
             // NO DIR MAJOR NAME DETAIL IMG MAP UPD NUM NUM NUM
             kcClient.tableInfo = {
                 caption     : $('#masterName' ).text() ,
-                colratio    : [40,60,100,100,200,200,180,40,20,20,20],
+                colratio    : [40,60,100,100,200,200,180,80,80,40,20,20,20,20],
                 height      : 400,
-                width       : 1000,
+                width       : 1300,
                 zebra       : true,
                 resizeCol   : true,
                 pager       : false,
-                sortable    : true,
+                sortable    : false,
                 sortedColId : 0,
-                sortType    : ['integer','string','string','string','string','string','string','string','integer','integer','integer']
+                sortType    : ['integer','string','string','string','string','string','string','string','integer','string','integer','integer','integer','integer']
             };
 
             kcClient.setupRow = function(i){
@@ -132,7 +150,9 @@
                 kcClient.editCel($('#nm' + i));
                 kcClient.editCel($('#dt' + i));
                 kcClient.editCel($('#im' + i));
+                kcClient.editCel($('#at' + i));
                 kcClient.editDropDown({key:'mp',no:i,source:$('#mpURL' ).text() ,callback:undefined});
+                kcClient.editDropDown({key:'np',no:i,source:$('#npURL' ).text() ,callback:undefined});
             }
             // 初期の列数               ・
             kcClient.colSize    = $('#colSize' ).text() - 0;

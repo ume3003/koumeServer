@@ -10,8 +10,8 @@
                         <th>No</th><th>方角</th><th>名称</th><th>摘要</th><th>ファイル名</th><th></th><th></th>
                     </thead>
                     <tbody>
-                    @for(key <- masterManager.getData.keySet()){
-                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.MajorQuest]){ master =>
+                    @for(key <- 0 until masterManager.getData.size()){
+                        @defining(masterManager.getMaster(key).asInstanceOf[models.master.MajorQuest]){ master =>
                             <tr>
                                 <td>@master.getMasterNo</td>
                                 <td tabindex="100">

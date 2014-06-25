@@ -38,6 +38,15 @@ public class GameCharacter extends Model implements BaseData {
     public long maxStamina;
 
     @NotNull
+    public long exp;
+
+    @NotNull
+    public long level;
+
+    @NotNull
+    public long hp;
+
+    @NotNull
     public long money;       // リアルまねー
 
     @NotNull
@@ -58,6 +67,9 @@ public class GameCharacter extends Model implements BaseData {
         result.put(JsonKeyString.ID             ,String.valueOf(id));
         result.put(JsonKeyString.STAMINA        ,String.valueOf(stamina));
         result.put(JsonKeyString.MAX_STAMINA    ,String.valueOf(maxStamina));
+        result.put(JsonKeyString.EXPERIENCE     ,String.valueOf(exp));
+        result.put(JsonKeyString.HP             ,String.valueOf(hp));
+        result.put(JsonKeyString.LEVEL          ,String.valueOf(level));
         result.put(JsonKeyString.MONEY          ,String.valueOf(money));
         result.put(JsonKeyString.GOLD           ,String.valueOf(gold));
         result.put(JsonKeyString.LAST_COMMAND   ,String.valueOf(lastCommand.getTime() / 1000));
@@ -74,6 +86,9 @@ public class GameCharacter extends Model implements BaseData {
         maxStamina  = JsonUtil.getLong(node,JsonKeyString.MAX_STAMINA,maxStamina);
         money       = JsonUtil.getLong(node,JsonKeyString.MONEY,money);
         gold        = JsonUtil.getLong(node,JsonKeyString.GOLD,gold);
+        level       = JsonUtil.getLong(node,JsonKeyString.LEVEL,level);
+        exp         = JsonUtil.getLong(node,JsonKeyString.EXPERIENCE,exp);
+        hp          = JsonUtil.getLong(node,JsonKeyString.HP,hp);
         lastCommand = new Date(JsonUtil.getLong(node,JsonKeyString.LAST_COMMAND,lastCommand.getTime()));
 
     }
@@ -91,6 +106,9 @@ public class GameCharacter extends Model implements BaseData {
         chara.maxStamina = 10;
         chara.stamina = 10;
         chara.money = 0;
+        chara.exp = 0;
+        chara.hp = 100;
+        chara.level = 1;
         chara.lastCommand = new Date();
         return chara;
     }

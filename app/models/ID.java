@@ -32,5 +32,13 @@ public class ID {
 
     public static final int MASTER_UNIT_SKILL = 18;
     public static final int MASTER_FORCE = 19;
-    public static final int MASTER_COUNT = 20;
-}
+
+    public static final int MASTER_NPC_DATA = 20;
+
+    public static final int MASTER_WORDS = 21;
+    public static final int MASTER_NPC_WORDS = 22;
+
+    public static final int MASTER_COUNT = 23;
+
+
+};

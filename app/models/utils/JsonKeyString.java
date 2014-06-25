@@ -23,6 +23,11 @@ public class JsonKeyString {
     final static public String REFERENCE        = "a012";
     final static public String FRIEND           = "a013";
     final static public String ENEMY_FORCE      = "a014";
+    final static public String HP               = "a015";
+    final static public String LEVEL            = "a016";
+    final static public String ATTACK_COUNT     = "a017";
+    final static public String EXPERIENCE       = "a018";
+    final static public String WORD             = "a019";
 
     // master keys
     final static public String DIRECTION        = "b001";
@@ -46,6 +51,9 @@ public class JsonKeyString {
     final static public String SKILL            = "b019";
     final static public String UNIT_SKILL       = "b020";
     final static public String FORCE            = "b021";
+    final static public String NPC              = "b022";
+    final static public String WORDS            = "b023";
+    final static public String NPC_WORDS        = "b024";
 
     // json structure Key
     final static public String DATA             = "c001";

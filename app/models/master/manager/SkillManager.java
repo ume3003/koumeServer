@@ -33,7 +33,7 @@ public class SkillManager extends BaseMasterManager{
         return JsonKeyString.SKILL;
     }
 
-    public SkillManager() {
+    protected SkillManager() {
         loadMasterData();
     }
 

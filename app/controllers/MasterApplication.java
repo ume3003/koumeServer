@@ -48,6 +48,8 @@ public class MasterApplication extends Controller
                 return ok(views.html.Scenario.render(key,ScenarioManager.getInstance(),Game.getInstance().getMenu()));
             case ID.MASTER_FORCE:
                 return ok(views.html.Force.render(key,ForceManager.getInstance(),Game.getInstance().getMenu()));
+            case ID.MASTER_NPC_DATA:
+                return ok(views.html.NPC.render(key,NPCManager.getInstance(),Game.getInstance().getMenu()));
             default:
                 break;
         }
@@ -59,6 +61,9 @@ public class MasterApplication extends Controller
         BaseNamedMaster parentMaster = (BaseNamedMaster)parentMasterManager.getMaster(parentNo);
         Result result = ok("");
         switch(parentKey){
+            case ID.MASTER_NPC_DATA:
+                result = ok(views.html.NPCWords.render(parentKey,conditionKey,parentNo,parentMaster,Game.getInstance().getMenu()));
+                break;
             case ID.MASTER_MINOR_QUEST:
             case ID.MASTER_SCENARIO:
             case ID.MASTER_UNIT:
@@ -89,7 +94,7 @@ public class MasterApplication extends Controller
 
         BaseConditionOwnerMasterManager parentManager = (BaseConditionOwnerMasterManager)Game.getInstance().getMasterManager(parentKey);
         BaseConditionMasterManager conditionManager = parentManager.getConditionManager(conditionKey);
-        Logger.info("parentKey " + parentKey + "-" + parentManager.getName() + " conditionKey " + conditionKey + "-" + conditionManager.getName());
+        //Logger.info("parentKey " + parentKey + "-" + parentManager.getName() + " conditionKey " + conditionKey + "-" + conditionManager.getName());
         ObjectNode result = conditionManager.updateAndInsertConditionData(json);
         return ok(result);
     }

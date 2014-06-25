@@ -14,8 +14,8 @@
                         <th>UPD</th><th>DIR</th><TH>FORCE</TH>
                     </thead>
                     <tbody>
-                    @for(key <- masterManager.getData.keySet()){
-                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.Unit]){ master =>
+                    @for(key <- 0 until masterManager.getData.size()){
+                        @defining(masterManager.getMaster(key).asInstanceOf[models.master.Unit]){ master =>
                             <tr>
                                 <td>
                                     <A HREF="/master/condition?k=@ID.MASTER_UNIT&c=@ID.MASTER_UNIT_SKILL&m=@master.getMasterNo">@master.getMasterNo</A>
@@ -114,7 +114,7 @@
                 height      : 400,
                 width       : 1000,
                 zebra       : true,
-                sortable    : true,
+                sortable    : false,
                 sortedColId : 0,
                 resizeCol   : true,
                 pager       : false,

@@ -10,19 +10,19 @@
                         <th>No</th><th>方角</th><th>クエスト</th><th>名称</th><th>摘要</th><th>ファイル名</th><th>マップ</th><th></th><th></th><th></th><th></th>
                     </thead>
                     <tbody>
-                    @for(key <- masterManager.getData.keySet()){
-                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.MinorQuest]){ master =>
+                    @for(key <- 0 until masterManager.getData.size()){
+                        @defining(masterManager.getMaster(key).asInstanceOf[models.master.Scenario]){ master =>
                             <tr>
                                 <td>
                                     <A HREF="/master/condition?k=@ID.MASTER_MINOR_QUEST&c=@ID.MASTER_QUEST_UNIT&m=@master.getMasterNo">@master.getMasterNo</A></td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id="di@master.getMasterNo">
-                                    @master.getDirectionName
+                                    @master.getName
                                     </div>
                                 </td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id="ma@master.getMasterNo">
-                                    @master.getMajorQuestName
+                                    @master.getName
                                     </div>
                                 </td>
                                 <td tabindex="100">
@@ -36,17 +36,17 @@
                                 </td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id="mp@master.getMasterNo">
-                                    @master.getMapName
+                                    @master.getName
                                     </div>
                                 </td>
                                 <td><div style="cursor:pointer;" class="updateBtn" id="@master.getMasterNo" tabindex="100">
                                     <div id="ud@master.getMasterNo" class="label label-default"></div></div>
                                 </td>
                                 <td>
-                                    <div id="vdi@master.getMasterNo">@master.getDirectionNo</div>
+                                    <div id="vdi@master.getMasterNo">@master.getMapNo</div>
                                 </td>
                                 <td>
-                                    <div id="vma@master.getMasterNo">@master.getMajorNo</div>
+                                    <div id="vma@master.getMasterNo">@master.getMapNo</div>
                                 </td>
                                 <td>
                                     <div id="vmp@master.getMasterNo">@master.getMapNo</div>

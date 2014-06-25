@@ -1,0 +1,164 @@
+@(parentKey:Integer,conditionKey:Integer,parentNo:Integer,parent:models.BaseNamedMaster,masterMap:HashMap[Integer,BaseMasterManager])
+
+@main(masterMap) {
+
+    <div class="container" style="padding-top:100px;">
+        <div class="col">
+            <div class="span11">
+                @for(cKey <- parent.getConditionMap.keySet()){
+                    @defining(Game.getInstance().getData.get(cKey).asInstanceOf[models.BaseMasterManager]){ manager =>
+                        <div style="position: relative">
+                            <A HREF="/master/condition?k=@parentKey&c=@cKey&m=@parentNo">@manager.getName</A>
+                        </div>
+                    }
+                }
+                @defining(parent.getConditions(conditionKey).asInstanceOf[HashMap[Integer,BaseMaster]]){ conditions =>
+                    <table id="masterData">
+                        <thead>
+                            <th>No</th><th>種別</th><th>キー</th><th>数量</th>
+                            <th>台詞</th><th>イメージ</th><th>UPD</th><th>DEL</th>
+                            <th>vki</th><th>vke</th><th>no</th>
+                        </thead>
+                        <tbody>
+                                @for(key <- conditions.keySet()){
+                                    @defining(conditions.get(key).asInstanceOf[models.master.NPCWords]){ row =>
+                                        <tr>
+                                            <td class='num'>@row.getConditionNo</td>
+                                            <td tabindex="100">
+                                                <div contenteditable="true" id="ki@row.getConditionNo">
+                                                @Game.getInstance().getMasterManagerName(row.getKind)
+                                                </div>
+                                            </td>
+                                            <td tabindex="100">
+                                                <div contenteditable="true" id="ky@row.getConditionNo">
+                                                @row.getKeyName
+                                                </div>
+                                            </td>
+                                            <td tabindex="100">
+                                                <div contenteditable="true" class='num' id='vl@row.getConditionNo'>@row.getValue</div>
+                                            </td>
+                                            <td tabindex="100">
+                                                <div contenteditable="true" id='wo@row.getConditionNo'>@row.getWord</div>
+                                            </td>
+                                            <td tabindex="100">
+                                                <div contenteditable="true" id='im@row.getConditionNo'>@row.getImage</div>
+                                            </td>
+                                            <td><div style="cursor:pointer;" class="updateBtn" id="@row.getConditionNo" tabindex="100">
+                                                <div id="ud@row.getConditionNo" class="label label-default"></div></div>
+                                            </td>
+                                            <td><div style="cursor:pointer;" tabindex="100">
+                                                <div id="dl@row.getConditionNo" class="deleteBtn label label-default">削除</div>
+                                            </div>
+                                            <td>
+                                                <div id="vki@row.getConditionNo">@row.getKind</div>
+                                            </td>
+                                            <td>
+                                                <div id="vky@row.getConditionNo">@row.getKeyNo</div>
+                                            </td>
+                                            <td>
+                                                <div id="no@row.getConditionNo">@row.getMasterNo</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                        </tbody>
+                    </table>
+                    <div><a href='/master/json?key=@conditionKey'>JSONデータ取得</a></div>
+                    <A href='#'><DIV class="addNew" style="display:inline-block;cursor:pointer;"><span class="label label-info">新規データ追加</span></DIV></A>
+                    <div id="result"></div>
+                    <div id='colSize'>@conditions.size()</div>
+                    <div id='parentKey'>@parentKey</div>
+                    <div id='conditionKey'>@conditionKey</div>
+                    <div id='parentNo' >@parentNo</div>
+                    <div id='masterName'>@parent.getName - version @Game.getInstance().getMasterManagerName(conditionKey)</div>
+                    <div id='kiURL'>/tool/kindList?m=@conditionKey</div>
+                    <div id='kyURL'>/tool/keyList?m=@conditionKey&k=</div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function(){
+            function updateKeyDropDown(rowNow){
+                var kindNo = $('#vki' + rowNow ).text() - 0;
+                $('#ky' + rowNow ).autocomplete('option','source',$('#kyURL' ).text() + kindNo);
+
+            }
+
+            kcClient.getRowData = function(id){
+                return {
+                    jsData  : id - 0,
+                    c008    : $('#parentKey' ).text(),
+                    c009    : $('#conditionKey' ).text(),
+                    a011    : $('#parentNo' ).text(),
+                    b014    : id - 0,
+                    a001    : $('#no' + id).text(),
+                    a004    : $('#im' + id ).text(),
+                    a019    : $('#wo' + id ).text(),
+                    a009    : $('#vki' + id ).text(),
+                    a007    : $('#vky' + id ).text(),
+                    a008    : $('#vl' + id ).text()
+                };
+            }
+            kcClient.deleteData = function(id){
+                return {
+                    c008    : $('#parentKey' ).text(),
+                    c009    : $('#conditionKey' ).text(),
+                    a011    : $('#parentNo' ).text(),
+                    b014    : id - 0
+                }
+            }
+            kcClient.updateURL = '/master/conditionUpdate';
+            kcClient.deleteURL = '/master/conditionDelete';
+
+            kcClient.createNewRowData = function(no){
+                var $tr = $('<TR>');
+
+                $tr.append($('<TD>' ).text(no));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('ki' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('ky' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('vl' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('wo' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
+                $tr.append($('<TD>' ).append(kcClient.makeDeleteBtn(no)));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vki' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('vky' +no )));
+                $tr.append($('<TD>' ).append(kcClient.makeDataCel('no' +no )));
+
+            return $tr;
+            }
+            kcClient.tableInfo = {
+                caption     : $('#masterName' ).text() ,
+                colratio    : [40,80,80,80,200,200,40,40,40,40,40],
+                height      : 400,
+                width       : 1000,
+                zebra       : true,
+                resizeCol   : true,
+                pager       : false,
+                sortable    : true,
+                sortedColId : 0,
+                sortType    : ['integer','string','string','integer','string','string','string','string','integer','integer','integer']
+
+            }
+
+            kcClient.setupRow = function(i){
+                kcClient.setNotModify(i);
+                var kindNo = $('#vki' + i ).text() - 0 ;
+                kcClient.editDropDown({key:'ki',no:i,source:$('#kiURL' ).text() ,callback:updateKeyDropDown});
+                kcClient.editDropDown({key:'ky',no:i,source:$('#kyURL' ).text() + kindNo,callback:undefined});
+                kcClient.editCel($('#vl' + i));
+                kcClient.editCel($('#wo' + i));
+                kcClient.editCel($('#im' + i));
+            }
+            // 初期の列数               ・
+            kcClient.colSize    = $('#colSize' ).text() - 0;
+            // 各種初期化を実行
+            kcClient.init();
+
+        });
+    </script>
+
+}

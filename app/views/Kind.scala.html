@@ -10,8 +10,8 @@
                         <th>No</th><th>参照</th><th>名称</th><th>摘要</th><th>ファイル名</th><th></th><th></th>
                     </thead>
                     <tbody>
-                    @for(key <- masterManager.getData.keySet()){
-                        @defining(masterManager.getData.get(key).asInstanceOf[models.master.Kind]){ master =>
+                    @for(key <- 0 until masterManager.getData.size()){
+                        @defining(masterManager.getMaster(key).asInstanceOf[models.master.Kind]){ master =>
                             <tr>
                                 <td>@master.getMasterNo</td>
                                 <td tabindex="100">

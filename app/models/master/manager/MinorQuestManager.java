@@ -29,7 +29,7 @@ public class MinorQuestManager  extends BaseConditionOwnerMasterManager {
     }
     protected String getTableKey()
     {
-        return JsonKeyString.MAJOR;
+        return JsonKeyString.MINOR;
     }
     public BaseMaster createMaster(JsonNode col)
     {
