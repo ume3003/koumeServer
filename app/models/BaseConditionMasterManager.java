@@ -5,6 +5,7 @@ import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
+import play.Logger;
 import play.libs.Json;
 
 import java.util.*;
@@ -110,6 +111,9 @@ public abstract class BaseConditionMasterManager extends BaseMasterManager{
                 if(!masters.containsKey(conditionNo)){
                     master = createMaster(json);
                     master.setMasterNo(size());
+                    if(master.getMasterNo() < 0){
+                        Logger.info("id " + master.getMasterNo() + " size " + size());
+                    }
                     setMaster(master.getMasterNo(), master);
                     masters.put(conditionNo,master);
                 }

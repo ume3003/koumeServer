@@ -75,6 +75,7 @@ public class Game {
         Data.put(ID.MASTER_NPC_DATA,NPCManager.getInstance());
         Data.put(ID.MASTER_WORDS,WordsManager.getInstance());
         Data.put(ID.MASTER_NPC_WORDS,NPCWordsManager.getInstance());
+        Data.put(ID.MASTER_BASE_DAMAGE,BaseDamageManager.getInstance());
 
         Menu.put(ID.MASTER_DIRECTION, DirectionManager.getInstance());
         Menu.put(ID.MASTER_MAJOR_QUEST, MajorQuestManager.getInstance());
@@ -94,6 +95,8 @@ public class Game {
 
         Menu.put(ID.MASTER_NPC_DATA,NPCManager.getInstance());
         Menu.put(ID.MASTER_WORDS,WordsManager.getInstance());
+
+        Menu.put(ID.MASTER_BASE_DAMAGE,BaseDamageManager.getInstance());
 
         QuestAppearanceManager.getInstance().registerAllCondition();
         QuestClearManager.getInstance().registerAllCondition();

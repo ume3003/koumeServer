@@ -28,6 +28,11 @@ public class JsonKeyString {
     final static public String ATTACK_COUNT     = "a017";
     final static public String EXPERIENCE       = "a018";
     final static public String WORD             = "a019";
+    final static public String DESCRIPTION      = "a020";
+    final static public String OWN_HIT_POINT    = "a021";
+    final static public String OWN_POWER        = "a022";
+    final static public String ENEMY_HIT_POINT  = "a023";
+    final static public String ENEMY_POWER      = "a024";
 
     // master keys
     final static public String DIRECTION        = "b001";

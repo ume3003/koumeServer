@@ -1,0 +1,109 @@
+@(masterKey:Integer,masterManager:models.master.manager.BaseDamageManager,masterMap:HashMap[Integer,BaseMasterManager])
+
+@main(masterMap) {
+
+    <div class="container" style="padding-top:100px;">
+        <div class="col">
+            <div class="span11">
+                <table id="masterData">
+                    <thead>
+                        <th>No</th><th>摘要</th><th>味方HP</th><th>味方PW</th><th>敵HP</th><th>敵PW</th><th></th>
+                    </thead>
+                    <tbody>
+                    @for(key <- 0 until masterManager.getData.size()){
+                        @defining(masterManager.getMaster(key).asInstanceOf[models.master.BaseDamage]){ master =>
+                            <tr>
+                                <td>@master.getMasterNo</td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='de@master.getMasterNo'>@master.getDescription</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" class='num' id='oh@master.getMasterNo'>@master.getOwnHP</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" class='num' id='op@master.getMasterNo'>@master.getOwnPW</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" class='num' id='eh@master.getMasterNo'>@master.getEnemyHP</div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" class='num' id='ep@master.getMasterNo'>@master.getEnemyPW</div>
+                                </td>
+                                <td><div style="cursor:pointer;" class="updateBtn" id="@master.getMasterNo" tabindex="100">
+                                    <div id="ud@master.getMasterNo" class="label label-default"></div></div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+                <div><a href='/master/json?key=@masterKey'>JSONデータ取得</a></div>
+                <A href='#'><DIV class="addNew" style="display:inline-block;cursor:pointer;"><span class="label label-info">新規データ追加</span></DIV></A>
+                <div id="result"></div>
+                <div id='colSize'>@masterManager.getData.size()</div>
+                <div id='masterKey'>@masterKey</div>
+                <div id='masterName'>@masterManager.getName - version @masterManager.getVersion</div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function(){
+            kcClient.getRowData = function(id){
+                return {
+                    jsData  : id - 0,
+                    master  : $('#masterKey' ).text(),
+                    a001    : id - 0,
+                    a020    : $('#de' + id ).text(),
+                    a021    : $('#oh' + id ).text(),
+                    a022    : $('#op' + id ).text(),
+                    a023    : $('#eh' + id ).text(),
+                    a024    : $('#ep' + id ).text()
+                };
+            }
+            kcClient.updateURL = '/master/update';
+
+            kcClient.createNewRowData = function(no){
+                var $tr = $('<TR>');
+
+                $tr.append($('<TD>' ).text(no));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('de' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('oh' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('op' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('eh' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeEditCel('ep' + no )));
+                $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
+
+                return $tr;
+            }
+            kcClient.tableInfo = {
+                caption     : $('#masterName' ).text() ,
+                colratio    : [60,200,80,80,80,80,40],
+                height      : 400,
+                width       : 960,
+                zebra       : true,
+                sortable    : true,
+                sortedColId : 0,
+                resizeCol   : true,
+                pager       : false,
+                sortType    : ['integer','string','integer','integer','integer','integer','string']
+            };
+
+            kcClient.setupRow = function(i){
+                kcClient.setNotModify(i);
+                kcClient.editCel($('#de' + i));
+                kcClient.editCel($('#oh' + i));
+                kcClient.editCel($('#op' + i));
+                kcClient.editCel($('#eh' + i));
+                kcClient.editCel($('#ep' + i));
+            }
+            // 初期の列数               ・
+            kcClient.colSize    = $('#colSize' ).text() - 0;
+            // 各種初期化を実行
+            kcClient.init();
+
+        });
+    </script>
+
+}

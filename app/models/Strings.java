@@ -31,7 +31,8 @@ public class Strings {
     public static final String FORCE_FILE               = "json/force.json";
     public static final String NPC_FILE                 = "json/npc.json";
     public static final String WORDS_FILE               = "json/words.json";
-    public static final String NPC_WORDS_FILE           = "json/npc_words.jspn";
+    public static final String NPC_WORDS_FILE           = "json/npc_words.json";
+    public static final String BASE_DAMAGE_FILE         = "json/base_damage.json";
 
     public static final String COMPETITION_RULE         = "対戦ルール";
     public static final String DIRECTION                = "方角";
@@ -52,6 +53,7 @@ public class Strings {
     public static final String NPC                      = "NPC";
     public static final String WORDS                    = "台詞テンプレ";
     public static final String NPC_WORDS                = "NPC台詞";
+    public static final String BASE_DAMAGE              = "基本ダメージ";
 
     public static final String RANK                     = "ランク";
     public static final String CHARACTER_COLUMN         = "キャラ属性";

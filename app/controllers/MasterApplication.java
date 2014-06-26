@@ -50,6 +50,8 @@ public class MasterApplication extends Controller
                 return ok(views.html.Force.render(key,ForceManager.getInstance(),Game.getInstance().getMenu()));
             case ID.MASTER_NPC_DATA:
                 return ok(views.html.NPC.render(key,NPCManager.getInstance(),Game.getInstance().getMenu()));
+            case ID.MASTER_BASE_DAMAGE:
+                return ok(views.html.BaseDamage.render(key,BaseDamageManager.getInstance(),Game.getInstance().getMenu()));
             default:
                 break;
         }
