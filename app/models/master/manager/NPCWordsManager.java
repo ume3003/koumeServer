@@ -2,6 +2,7 @@ package models.master.manager;
 
 import models.*;
 import models.master.NPCWords;
+import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
 
@@ -38,7 +39,7 @@ public class NPCWordsManager extends BaseConditionMasterManager {
 
     @Override
     protected String getTableKey() {
-        return Strings.NPC_WORDS;
+        return JsonKeyString.NPC_WORDS;
     }
 
     @Override

@@ -4,6 +4,7 @@ import models.BaseMaster;
 import models.BaseMasterManager;
 import models.Strings;
 import models.master.Words;
+import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -34,8 +35,7 @@ public class WordsManager extends BaseMasterManager{
 
     @Override
     protected String getTableKey() {
-        return Strings.WORDS;
-    }
+        return JsonKeyString.WORDS;}
 
     protected WordsManager() {
         loadMasterData();;

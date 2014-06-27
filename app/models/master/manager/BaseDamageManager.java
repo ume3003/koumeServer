@@ -4,6 +4,7 @@ import models.BaseMaster;
 import models.BaseMasterManager;
 import models.Strings;
 import models.master.BaseDamage;
+import models.utils.JsonKeyString;
 import org.codehaus.jackson.JsonNode;
 
 /**
@@ -37,7 +38,7 @@ public class BaseDamageManager extends BaseMasterManager {
 
     @Override
     protected String getTableKey() {
-        return Strings.BASE_DAMAGE;
+        return JsonKeyString.BASE_DAMAGE;
     }
 
     @Override

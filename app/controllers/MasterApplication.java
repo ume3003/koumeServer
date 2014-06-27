@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import models.master.BaseDamage;
 import models.master.Direction;
 import models.master.manager.*;
 import models.utils.JsonKeyString;
@@ -48,10 +49,12 @@ public class MasterApplication extends Controller
                 return ok(views.html.Scenario.render(key,ScenarioManager.getInstance(),Game.getInstance().getMenu()));
             case ID.MASTER_FORCE:
                 return ok(views.html.Force.render(key,ForceManager.getInstance(),Game.getInstance().getMenu()));
+            case ID.MASTER_SKILL:
+                return ok(views.html.Skill.render(key, SkillManager.getInstance(), Game.getInstance().getMenu()));
             case ID.MASTER_NPC_DATA:
                 return ok(views.html.NPC.render(key,NPCManager.getInstance(),Game.getInstance().getMenu()));
             case ID.MASTER_BASE_DAMAGE:
-                return ok(views.html.BaseDamage.render(key,BaseDamageManager.getInstance(),Game.getInstance().getMenu()));
+                return ok(views.html.BaseDamage.render(key, BaseDamageManager.getInstance(), Game.getInstance().getMenu()));
             default:
                 break;
         }
@@ -159,14 +162,28 @@ public class MasterApplication extends Controller
             Iterator<Long> it = set.iterator();
             while (it.hasNext()){
                 Long k = it.next();
-                BaseNamedMaster m = (BaseNamedMaster)namedMasters.get(k);
-                if(m != null){
-                    String name = m.getName();
-                    if(name != null && name.contains(term)){
-                        ObjectNode o = Json.newObject();
-                        o.put("label",name);
-                        o.put("no",k);
-                        result.add(o);
+                if(key == ID.MASTER_BASE_DAMAGE){
+                    BaseDamage m = (BaseDamage)namedMasters.get(k);
+                    if(m != null){
+                        String name = m.getDescription();
+                        if(name != null && name.contains(term)){
+                            ObjectNode o = Json.newObject();
+                            o.put("label",name);
+                            o.put("no",k);
+                            result.add(o);
+                        }
+                    }
+                }
+                else{
+                    BaseNamedMaster m = (BaseNamedMaster)namedMasters.get(k);
+                    if(m != null){
+                        String name = m.getName();
+                        if(name != null && name.contains(term)){
+                            ObjectNode o = Json.newObject();
+                            o.put("label",name);
+                            o.put("no",k);
+                            result.add(o);
+                        }
                     }
                 }
             }

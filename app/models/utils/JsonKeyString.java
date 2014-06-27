@@ -59,6 +59,7 @@ public class JsonKeyString {
     final static public String NPC              = "b022";
     final static public String WORDS            = "b023";
     final static public String NPC_WORDS        = "b024";
+    final static public String BASE_DAMAGE      = "b025";
 
     // json structure Key
     final static public String DATA             = "c001";
