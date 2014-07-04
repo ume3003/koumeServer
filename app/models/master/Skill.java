@@ -26,6 +26,7 @@ public class Skill extends BaseNamedMaster{
         ObjectNode result = super.toJsonObject();
         result.put(JsonKeyString.BASE_DAMAGE,String.valueOf(getBaseDamageNo()));
         result.put(JsonKeyString.AREA_TYPE,String.valueOf(getAreaType()));
+        result.put(JsonKeyString.FRAME,getFrameName());
         return result;
     }
 
@@ -34,6 +35,7 @@ public class Skill extends BaseNamedMaster{
         super.setData(node);
         setBaseDamageNo(JsonUtil.getLong(node,JsonKeyString.BASE_DAMAGE,0));
         setAreaType(JsonUtil.getInt(node,JsonKeyString.AREA_TYPE,0));
+        setFrameName(JsonUtil.getString(node,JsonKeyString.FRAME,""));
     }
 
     public Skill(JsonNode node) {
@@ -41,6 +43,15 @@ public class Skill extends BaseNamedMaster{
     }
 
     protected long BaseDamageNo;
+    protected String FrameName;
+
+    public String getFrameName() {
+        return FrameName;
+    }
+
+    public void setFrameName(String frameName) {
+        FrameName = frameName;
+    }
 
     public int getAreaType() {
         return areaType;
