@@ -104,6 +104,7 @@ public class JsonKeyString {
     final static public String WIN_LOSE		    = "d115";
     final static public String WIN_CONDITION	= "d116";
     final static public String TURN			    = "d117";
+    final static public String AREA_TYPE        = "d118";
 
 
     // COMPETITION

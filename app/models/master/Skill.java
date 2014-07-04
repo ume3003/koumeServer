@@ -25,6 +25,7 @@ public class Skill extends BaseNamedMaster{
     public ObjectNode toJsonObject() {
         ObjectNode result = super.toJsonObject();
         result.put(JsonKeyString.BASE_DAMAGE,String.valueOf(getBaseDamageNo()));
+        result.put(JsonKeyString.AREA_TYPE,String.valueOf(getAreaType()));
         return result;
     }
 
@@ -32,6 +33,7 @@ public class Skill extends BaseNamedMaster{
     public void setData(JsonNode node) {
         super.setData(node);
         setBaseDamageNo(JsonUtil.getLong(node,JsonKeyString.BASE_DAMAGE,0));
+        setAreaType(JsonUtil.getInt(node,JsonKeyString.AREA_TYPE,0));
     }
 
     public Skill(JsonNode node) {
@@ -39,6 +41,16 @@ public class Skill extends BaseNamedMaster{
     }
 
     protected long BaseDamageNo;
+
+    public int getAreaType() {
+        return areaType;
+    }
+
+    public void setAreaType(int areaType) {
+        this.areaType = areaType;
+    }
+
+    protected int areaType;
 
     public long getBaseDamageNo() {
         return BaseDamageNo;

@@ -7,7 +7,7 @@
             <div class="span11">
                 <table id="masterData">
                     <thead>
-                        <th>No</th><th>名称</th><th>摘要</th><th>ダメージ</th><th>ファイル名</th><th></th><th></th>
+                        <th>No</th><th>名称</th><th>摘要</th><th>ダメージ</th><th>エリアタイプ</th><th>ファイル名</th><th></th><th></th>
                     </thead>
                     <tbody>
                     @for(key <- 0 until masterManager.getData.size()){
@@ -24,6 +24,9 @@
                                     <div contenteditable="true" id="ba@master.getMasterNo">
                                     @master.getBaseDamageDescription
                                     </div>
+                                </td>
+                                <td tabindex="100">
+                                    <div contenteditable="true" id='ar@master.getMasterNo'>@master.getAreaType</div>
                                 </td>
                                 <td tabindex="100">
                                     <div contenteditable="true" id='im@master.getMasterNo'>@master.getImage</div>
@@ -61,7 +64,8 @@
     a002    : $('#nm' + id ).text(),
     a003    : $('#dt' + id ).text(),
     a004    : $('#im' + id ).text(),
-    b025    : $('#vba' + id ).text()
+    b025    : $('#vba' + id ).text(),
+    d118    : $('#ar' + id ).text()
     };
     }
     kcClient.updateURL = '/master/update';
@@ -73,6 +77,7 @@
     $tr.append($('<TD>' ).append(kcClient.makeEditCel('nm' + no )));
     $tr.append($('<TD>' ).append(kcClient.makeEditCel('dt' + no )));
     $tr.append($('<TD>' ).append(kcClient.makeEditCel('ba' + no )));
+    $tr.append($('<TD>' ).append(kcClient.makeEditCel('ar' + no )));
     $tr.append($('<TD>' ).append(kcClient.makeEditCel('im' + no )));
     $tr.append($('<TD>' ).append(kcClient.makeUpdateBtn(no)));
     $tr.append($('<TD>' ).append(kcClient.makeDataCel('vba' +no )));
@@ -81,7 +86,7 @@
     }
     kcClient.tableInfo = {
     caption     : $('#masterName' ).text() ,
-    colratio    : [60,120,200,120,200,40,20],
+    colratio    : [60,120,200,120,40,200,40,40],
     height      : 400,
     width       : 960,
     zebra       : true,
@@ -89,13 +94,14 @@
     sortedColId : 0,
     resizeCol   : true,
     pager       : false,
-    sortType    : ['integer','string','string','string','string','string','string']
+    sortType    : ['integer','string','string','string','integer','string','string','string']
     };
 
     kcClient.setupRow = function(i){
     kcClient.setNotModify(i);
     kcClient.editCel($('#nm' + i));
     kcClient.editCel($('#dt' + i));
+    kcClient.editCel($('#ar' + i));
     kcClient.editDropDown({key:'ba',no:i,source:$('#baURL' ).text(),callback:undefined});
     kcClient.editCel($('#im' + i));
     }
