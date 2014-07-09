@@ -110,6 +110,8 @@ public class JsonKeyString {
     // COMPETITION
     final static public String FRIEND_COM       = "e001";
     final static public String FRIEND_INVITE    = "e002";
+    final static public String FRIEND_ME        = "e003";
+    final static public String FRIEND_YOU       = "e004";
     final static public String FRIEND_COM_ID    = "roomUUID";
     final static public String FRIEND_COM_COUNT = "registeredUserCount";
     final static public String FRIEND_REGISTERED= "registered";

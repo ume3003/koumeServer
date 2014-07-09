@@ -15,9 +15,12 @@ POST        /puzzle/init                   controllers.Application.puzzleInit()
 POST        /friend/list                   controllers.CommunityApplication.friendList()
 POST        /friend/add                    controllers.CommunityApplication.addFriend()
 
-POST        /compe/friend/list              controllers.CompetitionApplication.initialFriendCompetition()
-POST        /compe/friend/set               controllers.CompetitionApplication.createFriendCompetition()
-POST        /compe/friend/get               controllers.CompetitionApplication.getFriendCompetition()
+POST        /compe/friend/list             controllers.CompetitionApplication.initialFriendCompetition()
+POST        /compe/friend/set              controllers.CompetitionApplication.createFriendCompetition()
+POST        /compe/friend/get              controllers.CompetitionApplication.getFriendCompetition()
+POST        /compe/friend/cancel           controllers.CompetitionApplication.cancelFriendCompetition()
+POST        /compe/firend/check            controllers.CompetitionApplication.getMyFriendCompetition()
+POST        /compe/friend/start             controllers.CompetitionApplication.startFriendCompetition()
 # add for me
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                  controllers.Assets.at(path="/public", file)

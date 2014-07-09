@@ -182,7 +182,9 @@ public class Login extends Model implements BaseData {
             Friend f = friends.get(i);
             arr.add(f.toJsonObject());
         }
-        result.put(JsonKeyString.FRIEND,arr);
+        if(arr.size() > 0){
+            result.put(JsonKeyString.FRIEND,arr);
+        }
         return result;
     }
 
@@ -190,7 +192,6 @@ public class Login extends Model implements BaseData {
     {
         ObjectNode result = Json.newObject();
         result.put(JsonKeyString.ID             ,String.valueOf(id));
-        result.put(JsonKeyString.GPP_UUID       ,gppUUID);
         result.put(JsonKeyString.UUID           ,uuid);
         result.put(JsonKeyString.DISPLAY_NAME   ,displayName);
         result.put(JsonKeyString.MAIL_ADDRESS   ,mailAddress);

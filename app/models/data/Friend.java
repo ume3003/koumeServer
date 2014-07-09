@@ -50,7 +50,7 @@ public class Friend extends Model implements BaseData {
     public ObjectNode toJsonObject() {
         ObjectNode result = Json.newObject();
         result.put(JsonKeyString.ID,id);
-        result.put(JsonKeyString.FRIEND,friend.toJsonObject());
+        result.put(JsonKeyString.FRIEND,friend.toPublicJsonObject());
         result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(
                 createDate == null ? 0 : createDate.getTime() / 1000));
         result.put(JsonKeyString.UPDATE_DATE    ,String.valueOf(

@@ -60,6 +60,117 @@ public class BaseKoumeApplication extends Controller {
     {
         poolSession.returnResource(jedis);
     }
+
+    public static ObjectNode getJedisForMatch(String competitionUUID)
+    {
+        Jedis jedis = getCompetitionJedis();
+        ObjectNode node = null;
+        try{
+            String str = (String)jedis.get(competitionUUID);
+            if(str != null && str.length() > 0){
+                node = (ObjectNode)Json.parse(str);
+            }
+        }
+        catch(Exception e){
+            Logger.debug(e.getMessage());
+            returnCompetitionBrokenJedis(jedis);
+        }
+        finally {
+            returnCompetitionJedis(jedis);
+        }
+        return node;
+
+    }
+
+   public static void setJedisForMatch(String competitionUUID,ObjectNode data)
+   {
+       Jedis jedis = getCompetitionJedis();
+       String str = data.toString();
+       try{
+           jedis.set(competitionUUID,str);
+           jedis.expire(competitionUUID,600);
+       }
+       catch(Exception e){
+           Logger.debug(e.getMessage());
+           returnCompetitionBrokenJedis(jedis);
+       }
+       finally {
+           returnCompetitionJedis(jedis);
+       }
+
+   }
+   public static void removeJedisForMatch(String competitionUUID)
+   {
+       Jedis jedis = getCompetitionJedis();
+       try{
+           jedis.del(competitionUUID);
+       }
+       catch(Exception e){
+           Logger.debug(e.getMessage());
+           returnCompetitionBrokenJedis(jedis);
+       }
+       finally {
+           returnCompetitionJedis(jedis);
+       }
+
+   }
+    // フレンドマッチデータを登録する
+    public static ObjectNode addFriendMatch(Login target,Login my)
+    {
+        ObjectNode result = Json.newObject();
+        String comUUID = UUID.randomUUID().toString();                  // FriendMatch のキー
+        result.put(JsonKeyString.FRIEND_COM_ID,comUUID);
+        result.put(JsonKeyString.FRIEND_COM_COUNT, 2);
+        result.put(JsonKeyString.FRIEND_ME,my.uuid);
+        result.put(JsonKeyString.FRIEND_YOU,target.uuid);
+        ObjectNode  registered = Json.newObject();
+                    registered.put(my.uuid,my.toPublicJsonObject());
+                    registered.put(target.uuid,target.toPublicJsonObject());
+        result.put(JsonKeyString.FRIEND_REGISTERED,registered);
+        setJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + target.uuid,result);// 招待された側。複数持てる
+        setJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + my.uuid,result);   // 招待した側。招待は一人１つ。
+        setJedisForMatch(JsonKeyString.FRIEND_COM    + ":" + comUUID,result);
+        return result;
+    };
+    // フレンドマッチデータをキャンセルする
+    public static ObjectNode cancelFriendMatch(Login target,Login my,String comUUID)
+    {
+        ObjectNode result = getFriendMatch(comUUID);
+        removeJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + target.uuid);
+        removeJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + my.uuid);
+        removeJedisForMatch(JsonKeyString.FRIEND_COM + ":" + comUUID);
+        return result;
+    };
+    // フレンドマッチを開始する。主催者側
+    public static ObjectNode startFriendMatchFromMe(Login my,String comUUID)
+    {
+        ObjectNode result = getFriendMatch(comUUID);
+        removeJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + my.uuid);
+        return result;
+    }
+    // フレンドマッチを開始する。被招待者側　
+    public static ObjectNode startFriendMatchFromYou(Login my,Login you,String comUUID)
+    {
+        ObjectNode result = getFriendMatch(comUUID);
+        removeJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + you.uuid);
+        return result;
+    }
+    // 作成されているフレンドマッチデータを取る
+    public static ObjectNode getFriendMatch(String comUUID)
+    {
+        return getJedisForMatch(JsonKeyString.FRIEND_COM + ":" + comUUID);
+    }
+    //　自分が招待されているかどうかをとる
+    public static ObjectNode getInvitedFriendMatch(Login my , Login tgt)
+    {
+        return getJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + tgt.uuid);
+    }
+    // 　自分が招待しているかをとる
+    public static ObjectNode getInviteFriendMatch(Login my)
+    {
+        return getJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + my.uuid);
+    }
+/*
     public static ObjectNode getCompetition(String competitionUUID)
     {
         Jedis jedis = getCompetitionJedis();
@@ -96,6 +207,20 @@ public class BaseKoumeApplication extends Controller {
             returnCompetitionJedis(jedis);
         }
     };
+    public static void removeCompetition(String competitionUUID)
+    {
+        Jedis jedis = getCompetitionJedis();
+        try{
+            jedis.del(competitionUUID);
+        }
+        catch(Exception e){
+            Logger.debug(e.getMessage());
+            returnCompetitionBrokenJedis(jedis);
+        }
+        finally {
+            returnCompetitionJedis(jedis);
+        }
+    };
     public static ObjectNode getFriendInvite(String uuid)
     {
         return getCompetition(JsonKeyString.FRIEND_INVITE + ":" + uuid);
@@ -119,7 +244,16 @@ public class BaseKoumeApplication extends Controller {
         setPoolCompetition(JsonKeyString.FRIEND_COM + ":" + comUUID,result);
         return result;
     };
-
+    public static ObjectNode cancelFriendInvite(Login target,Login my,String comUUID)
+    {
+        ObjectNode result = Json.newObject();
+        result.put(JsonKeyString.FRIEND_COM_ID,comUUID);
+        removeCompetition(JsonKeyString.FRIEND_INVITE + ":" + target.uuid);
+        removeCompetition(JsonKeyString.FRIEND_INVITE + ":" + my.uuid);
+        removeCompetition(JsonKeyString.FRIEND_COM + ":" + comUUID);
+        return result;
+    };
+*/
     public static ObjectNode getFromCache(String key)
     {
         Jedis jedis = getSessionJedis();
