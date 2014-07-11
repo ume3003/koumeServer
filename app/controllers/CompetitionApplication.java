@@ -67,7 +67,9 @@ public class CompetitionApplication extends BaseKoumeApplication{
                     ownInvite.put(JsonKeyString.ERROR,"no such login data");
                 }
             }
-            result.put(JsonKeyString.FRIEND_COM,ownInvite);
+            if(ownInvite != null){
+                result.put(JsonKeyString.FRIEND_COM,ownInvite);
+            }
         }
         result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
         return ok(result);
@@ -85,7 +87,9 @@ public class CompetitionApplication extends BaseKoumeApplication{
             login = Login.reloadLogin(login);
             // 自分がすでに招待してるかチェック
             ObjectNode ownInvite = getInviteFriendMatch(login);
-            result.put(JsonKeyString.FRIEND_COM,ownInvite);
+            if(ownInvite != null){
+                result.put(JsonKeyString.FRIEND_COM,ownInvite);
+            }
         }
         result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
         return ok(result);
@@ -124,7 +128,10 @@ public class CompetitionApplication extends BaseKoumeApplication{
             String comUUID = JsonUtil.getString(req,JsonKeyString.FRIEND_COM_ID,"");
             Login tgt = Login.findUser(JsonUtil.getString(req, JsonKeyString.FRIEND_COM, ""));
             if(tgt != null){
-                result.put(JsonKeyString.FRIEND_COM, cancelFriendMatch(tgt, login, comUUID));
+                ObjectNode node = cancelFriendMatch(tgt, login, comUUID);
+                if(node != null){
+                    result.put(JsonKeyString.FRIEND_COM,node);
+                }
             }
         }
         result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
@@ -146,11 +153,17 @@ public class CompetitionApplication extends BaseKoumeApplication{
             Login tgt = Login.findUser(JsonUtil.getString(req, JsonKeyString.FRIEND_COM, ""));
             if(tgt == null){
                 result.put(JsonKeyString.FRIEND_ME,login.uuid);
-                result.put(JsonKeyString.FRIEND_COM,startFriendMatchFromMe(login,comUUID));
+                ObjectNode node =startFriendMatchFromMe( login,comUUID);
+                if(node != null){
+                    result.put(JsonKeyString.FRIEND_COM,node);
+                }
             }
             else{
                 result.put(JsonKeyString.FRIEND_YOU,tgt.uuid);
-               result.put(JsonKeyString.FRIEND_COM,startFriendMatchFromYou(tgt,login,comUUID));
+                ObjectNode node = startFriendMatchFromYou(tgt,login,comUUID);
+                if(node != null){
+                    result.put(JsonKeyString.FRIEND_COM,node);
+                }
             }
         }
         result.put(JsonKeyString.SESSION_ID,session(JsonKeyString.SESSION_ID));
