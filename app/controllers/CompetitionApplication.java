@@ -60,8 +60,9 @@ public class CompetitionApplication extends BaseKoumeApplication{
             ObjectNode ownInvite = getInviteFriendMatch(login);
             if(ownInvite == null){
                 Login tgt = Login.findUser(JsonUtil.getString(req,JsonKeyString.FRIEND_COM,""));
+                long scenario = JsonUtil.getLong(req,JsonKeyString.SCENARIO,0L);
                 if(tgt != null){
-                    ownInvite = addFriendMatch(tgt,login);
+                    ownInvite = addFriendMatch(tgt,login,scenario);
                 }
                 else{
                     ownInvite.put(JsonKeyString.ERROR,"no such login data");
@@ -188,7 +189,7 @@ public class CompetitionApplication extends BaseKoumeApplication{
         if(login != null){
            for(int i = 0; i < login.friends.size(); i++){
                Friend f = login.friends.get(i);
-               ObjectNode ar = getInvitedFriendMatch(f.login,login);
+               ObjectNode ar = getInvitedFriendMatch(f.friend,login);
                if(ar != null){
                    result.add(ar);
                }

@@ -20,6 +20,7 @@ public class ScenarioUnitManager extends BaseConditionMasterManager {
     {
         Logger.info("senariounit created");
         loadMasterData();
+        addKindNo(ID.MASTER_UNIT);
     }
 
     @Override

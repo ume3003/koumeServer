@@ -30,7 +30,7 @@ public class BaseKoumeApplication extends Controller {
     private static Jedis getCompetitionJedis()
     {
         if(poolCompetition == null){
-            poolCompetition = new JedisPool(new JedisPoolConfig(),"dev02.tomoeto.com",6379,300,null,5);
+            poolCompetition = new JedisPool(new JedisPoolConfig(),"127.0.0.1",6379,300,null,5);
         }
         return poolCompetition.getResource();
     }
@@ -45,7 +45,7 @@ public class BaseKoumeApplication extends Controller {
 
     private static Jedis getSessionJedis(){
         if(poolSession == null){
-            poolSession = new JedisPool(new JedisPoolConfig(), "dev02.tomoeto.com",6379,300,null,4);
+            poolSession = new JedisPool(new JedisPoolConfig(), "127.0.0.1",6379,300,null,4);
 
         }
         return poolSession.getResource();
@@ -115,7 +115,7 @@ public class BaseKoumeApplication extends Controller {
 
    }
     // フレンドマッチデータを登録する
-    public static ObjectNode addFriendMatch(Login target,Login my)
+    public static ObjectNode addFriendMatch(Login target,Login my,long scenario)
     {
         ObjectNode result = Json.newObject();
         String comUUID = UUID.randomUUID().toString();                  // FriendMatch のキー
@@ -123,10 +123,12 @@ public class BaseKoumeApplication extends Controller {
         result.put(JsonKeyString.FRIEND_COM_COUNT, 2);
         result.put(JsonKeyString.FRIEND_ME,my.uuid);
         result.put(JsonKeyString.FRIEND_YOU,target.uuid);
+        result.put(JsonKeyString.SCENARIO,scenario);
         ObjectNode  registered = Json.newObject();
                     registered.put(my.uuid,my.toPublicJsonObject());
                     registered.put(target.uuid,target.toPublicJsonObject());
         result.put(JsonKeyString.FRIEND_REGISTERED,registered);
+        result.put(JsonKeyString.RANDOM_SEED,String.valueOf(System.currentTimeMillis()/1000L ));
         setJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + target.uuid,result);// 招待された側。複数持てる
         setJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + my.uuid,result);   // 招待した側。招待は一人１つ。
         setJedisForMatch(JsonKeyString.FRIEND_COM    + ":" + comUUID,result);
@@ -145,6 +147,7 @@ public class BaseKoumeApplication extends Controller {
     public static ObjectNode startFriendMatchFromMe(Login my,String comUUID)
     {
         ObjectNode result = getFriendMatch(comUUID);
+        Logger.info("remove my invite data " + my.uuid);
         removeJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + my.uuid);
         return result;
     }
@@ -152,6 +155,7 @@ public class BaseKoumeApplication extends Controller {
     public static ObjectNode startFriendMatchFromYou(Login my,Login you,String comUUID)
     {
         ObjectNode result = getFriendMatch(comUUID);
+        Logger.info("remove ur invite data " + my.uuid + " " + you.uuid);
         removeJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + you.uuid);
         return result;
     }

@@ -77,4 +77,12 @@ public class Scenario extends BaseNamedMaster{
     {
         return MapManager.getInstance().getMap(getMapNo());
     }
+    public String getMapName()
+    {
+        Map map = getMap();
+        if(map != null){
+            return map.getName();
+        }
+        return "";
+    }
 }
