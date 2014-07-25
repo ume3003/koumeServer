@@ -167,7 +167,7 @@ public class BaseKoumeApplication extends Controller {
     //　自分が招待されているかどうかをとる
     public static ObjectNode getInvitedFriendMatch(Login my , Login tgt)
     {
-        return getJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + my.uuid + ":" + tgt.uuid);
+        return getJedisForMatch(JsonKeyString.FRIEND_INVITE + ":" + tgt.uuid + ":" + my.uuid);
     }
     // 　自分が招待しているかをとる
     public static ObjectNode getInviteFriendMatch(Login my)
