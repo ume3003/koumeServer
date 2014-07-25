@@ -30,9 +30,13 @@ public class Friend extends Model implements BaseData {
     @JoinColumn(name="login_Id")
     public Login login;
 
+    /*
     @OneToOne
     @JoinColumn(name="friend_id")
     public Login friend;
+    */
+    @NotNull
+    public long friend_id;
 
     @CreatedTimestamp
     public Date createDate;
@@ -50,6 +54,7 @@ public class Friend extends Model implements BaseData {
     public ObjectNode toJsonObject() {
         ObjectNode result = Json.newObject();
         result.put(JsonKeyString.ID,id);
+        Login friend = Login.findUserById(friend_id);
         result.put(JsonKeyString.FRIEND,friend.toPublicJsonObject());
         result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(
                 createDate == null ? 0 : createDate.getTime() / 1000));

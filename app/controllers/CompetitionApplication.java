@@ -189,7 +189,8 @@ public class CompetitionApplication extends BaseKoumeApplication{
         if(login != null){
            for(int i = 0; i < login.friends.size(); i++){
                Friend f = login.friends.get(i);
-               ObjectNode ar = getInvitedFriendMatch(f.friend,login);
+               Login fFriend = Login.findUserById(f.friend_id);
+               ObjectNode ar = getInvitedFriendMatch(fFriend,login);
                if(ar != null){
                    result.add(ar);
                }

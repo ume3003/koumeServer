@@ -148,27 +148,33 @@ public class Login extends Model implements BaseData {
         }
         return null;
     }
+    public static Login findUserById(long id)
+    {
+        com.avaje.ebean.Query<Login> q = find.where("id" + "=" + id);
+        Login l = q.findUnique();
+        return l;
+    }
     public int addFriend(Login friend)
     {
         for(int i = 0 ; i < friends.size();i++){
             Friend ff = friends.get(i);
-            if(ff.friend.id == friend.id){
+            if(ff.friend_id == friend.id){
                 return -1;
             }
         }
         for(int i = 0 ; i < friend.friends.size();i++)
         {
             Friend ff = friend.friends.get(i);
-            if(ff.friend.id == this.id){
+            if(ff.friend_id == this.id){
                 return -1;
             }
         }
         Friend f = new Friend();
-        f.friend = friend;
+        f.friend_id = friend.id;
         f.login = this;
         f.save();
         Friend ff = new Friend();
-        ff.friend = this;
+        ff.friend_id = this.id;
         ff.login = friend;
         ff.save();
         this.friends.add(f);
