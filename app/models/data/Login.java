@@ -10,6 +10,7 @@ import models.utils.JsonUtil;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
+import play.Logger;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.libs.Json;
@@ -203,6 +204,7 @@ public class Login extends Model implements BaseData {
         result.put(JsonKeyString.MAIL_ADDRESS   ,mailAddress);
         result.put(JsonKeyString.IMAGE_URL      ,imageUrl);
         if(this.gameCharacter != null){
+            Logger.info("game chara " + gameCharacter.id + " " + gameCharacter.hp);
             result.put(JsonKeyString.HP,gameCharacter.hp);
             result.put(JsonKeyString.LEVEL,gameCharacter.level);
         }

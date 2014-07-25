@@ -55,7 +55,9 @@ public class Friend extends Model implements BaseData {
         ObjectNode result = Json.newObject();
         result.put(JsonKeyString.ID,id);
         Login friend = Login.findUserById(friend_id);
-        result.put(JsonKeyString.FRIEND,friend.toPublicJsonObject());
+        if(friend != null){
+            result.put(JsonKeyString.FRIEND,friend.toPublicJsonObject());
+        }
         result.put(JsonKeyString.CREATE_DATE    ,String.valueOf(
                 createDate == null ? 0 : createDate.getTime() / 1000));
         result.put(JsonKeyString.UPDATE_DATE    ,String.valueOf(
