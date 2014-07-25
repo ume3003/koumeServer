@@ -30,6 +30,7 @@ public class Application extends BaseKoumeApplication {
                 result.put(JsonKeyString.UUID,login.uuid);
                 result.put(JsonKeyString.GAME_CHARACTER,chara.toJsonObject());
                 result.put(JsonKeyString.UNIX_TIME,String.valueOf(System.currentTimeMillis() / 1000));
+                result.put(JsonKeyString.ID,String.valueOf((login.id)));
             }
             Ebean.commitTransaction();
         }
