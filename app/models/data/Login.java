@@ -196,6 +196,10 @@ public class Login extends Model implements BaseData {
         result.put(JsonKeyString.DISPLAY_NAME   ,displayName);
         result.put(JsonKeyString.MAIL_ADDRESS   ,mailAddress);
         result.put(JsonKeyString.IMAGE_URL      ,imageUrl);
+        if(this.gameCharacter != null){
+            result.put(JsonKeyString.HP,gameCharacter.hp);
+            result.put(JsonKeyString.LEVEL,gameCharacter.level);
+        }
         return result;
 
     }
