@@ -1,0 +1,71 @@
+#root
+curl -X GET "http://localhost:9000/"
+
+#login
+curl -X POST "http://localhost:9000/login" -H "Content-type: application/json" -d "@login.json" | python -mjson.tool
+curl -X POST "http://localhost:9000/friend/add" -H "Content-type: application/json" -d "@addFriend.json" | python -mjson.tool
+
+#user
+curl -X POST "http://localhost:9000/user" -H "Content-type: application/json" -d "@user.json" | python -mjson.tool
+
+#doCommand
+curl -X POST "http://localhost:9000/doCommand" -H "Content-type: application/json" -d "@doCommand.json" | python -mjson.tool
+
+#getUserBuildingData
+curl -X POST "http://localhost:9000/buildings" -H "Content-type: application/json" -d "@uuid.json" | python -mjson.tool
+
+#getUserItemData
+curl -X POST "http://localhost:9000/items" -H "Content-type: application/json" -d "@page.json" | python -mjson.tool
+
+#getEnableBuildList
+curl -X POST "http://localhost:9000/build/buildableList" -H "Content-type: application/json" -d "@user.json" | python -mjson.tool
+
+#addNewBuild
+curl -X POST "http://localhost:9000/build/addNew" -H "Content-type: application/json" -d "@addNewBuild.json" | python -mjson.tool
+
+#updateBuild
+curl -X POST "http://localhost:9000/build/update" -H "Content-type: application/json" -d "@updateBuild.json" | python -mjson.tool
+
+#POST        /build/delete               controllers.Application.deleteBuild()
+curl -X POST "http://localhost:9000/build/delete" -H "Content-type: application/json" -d "@BuildId.json" | python -mjson.tool
+
+#POST        /build/start                controllers.Application.startBuild()
+curl -X POST "http://localhost:9000/build/start" -H "Content-type: application/json" -d "@BuildId.json" | python -mjson.tool
+
+#POST        /build/complete             controllers.Application.checkCompleteBuild()
+curl -X POST "http://localhost:9000/build/complete" -H "Content-type: application/json" -d "@BuildId.json" | python -mjson.tool
+
+# Quest method
+#POST        /quest/list                 controllers.Application.getAcceptableQuests()
+curl -X POST "http://localhost:9000/quest/list" -H "Content-type: application/json" -d "@page.json" | python -mjson.tool
+
+#POST        /quest/accept               controllers.Application.acceptQuest()
+curl -X POST "http://localhost:9000/quest/accept" -H "Content-type: application/json" -d "@questId.json" | python -mjson.tool
+
+#POST        /quest/clearQuests          controllers.Application.getClearedQuests()
+curl -X POST "http://localhost:9000/quest/clearQuests" -H "Content-type: application/json" -d "@page.json" | python -mjson.tool
+
+#POST        /quest/update               controllers.Application.updateQuest()
+curl -X POST "http://localhost:9000/quest/update" -H "Content-type: application/json" -d "@questId.json" | python -mjson.tool
+
+#POST        /quest/clear                controllers.Application.clearQuest()
+curl -X POST "http://localhost:9000/quest/clear" -H "Content-type: application/json" -d "@questId.json" | python -mjson.tool
+
+#POST        /quest/cancel               controllers.Application.cancelQuest()
+curl -X POST "http://localhost:9000/quest/cancel" -H "Content-type: application/json" -d "@questId.json" | python -mjson.tool
+
+# Puzzle method
+#POST        /puzzle/list                controllers.Application.getPuzzleList()
+#POST        /puzzle/prepare             controllers.Application.preparePuzzle()
+#POST        /puzzle/start               controllers.Application.startPuzzle()
+#POST        /puzzle/clear               controllers.Application.clearPuzzle()
+#POST        /puzzle/cancel              controllers.Application.cancelPuzzle()
+
+# Item gain method
+#POST        /item/gain                  controllers.Application.getGatherItemList()
+#POST        /item/recipe                controllers.Application.getItemRecipe()
+#POST        /item/resipeList            controllers.Application.getCraftList()
+#POST        /item/prepareCraft          controllers.Application.prepareCraft()
+#POST        /item/crafting              controllers.Application.crafting()
+#POST        /item/gathering             controllers.Application.gathering()
+
